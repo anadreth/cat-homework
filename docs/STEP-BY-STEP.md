@@ -29,12 +29,12 @@
 
 ## Phase 1 — State Model & Store
 
-- [ ] Define types: `WidgetInstance`, `LayoutItem`, `DashboardDoc`
-- [ ] Implement `coreSlice` (layout + instances + import/reset)
-- [ ] Implement `selectionSlice` (selectedId)
-- [ ] Implement `uiSlice` (panel open/tab, saveStatus)
-- [ ] Wrap `coreSlice` with `redux-undo` (limit ~100)
-- [ ] Configure store; add listener middleware placeholder
+- [x] Define types: `WidgetInstance`, `LayoutItem`, `DashboardDoc`
+- [x] Implement `coreSlice` (layout + instances + import/reset)
+- [x] Implement `selectionSlice` (selectedId)
+- [x] Implement `uiSlice` (panel open/tab, saveStatus)
+- [x] Wrap `coreSlice` with `redux-undo` (limit ~100)
+- [x] Configure store; add listener middleware placeholder
 
 ---
 
