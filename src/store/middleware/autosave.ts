@@ -57,10 +57,7 @@ autosaveMiddleware.startListening({
       const dashboard = state.core.present.dashboard;
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dashboard));
-
       listenerApi.dispatch(markSaved());
-
-      console.log("[Autosave] Dashboard saved to LocalStorage");
     } catch (error) {
       console.error("[Autosave] Failed to save dashboard:", error);
       listenerApi.dispatch(markError());
@@ -90,7 +87,6 @@ export const loadDashboard = () => {
 export const clearDashboard = () => {
   try {
     localStorage.removeItem(STORAGE_KEY);
-    console.log("[Autosave] Dashboard cleared from LocalStorage");
   } catch (error) {
     console.error("[Autosave] Failed to clear dashboard:", error);
   }
@@ -109,7 +105,6 @@ export const exportDashboardToFile = (dashboard: unknown) => {
     link.download = `dashboard-${Date.now()}.json`;
     link.click();
     URL.revokeObjectURL(url);
-    console.log("[Export] Dashboard exported to file");
   } catch (error) {
     console.error("[Export] Failed to export dashboard:", error);
     throw error;

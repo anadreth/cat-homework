@@ -50,7 +50,6 @@ function CanvasContent() {
   const dispatch = useAppDispatch();
   const {
     gridStack,
-    saveOptions,
     removeWidget: removeWidgetFromGrid,
     addWidget: addWidgetToGrid,
   } = useGridStackContext();
@@ -94,10 +93,14 @@ function CanvasContent() {
    * Sync Gridstack changes back to Redux
    */
   const handleGridChange = useCallback(() => {
-    if (!gridStack || !saveOptions) return;
+    if (!gridStack) return;
 
-    const currentState = saveOptions();
-    if (!Array.isArray(currentState)) return;
+    const currentState = gridStack.save(true);
+
+    if (!Array.isArray(currentState)) {
+      console.error("[Canvas] Failed to save grid state - not an array");
+      return;
+    }
 
     currentState.forEach((item: GridStackWidget) => {
       if (!item.id) return;
@@ -112,18 +115,24 @@ function CanvasContent() {
         })
       );
     });
-  }, [gridStack, saveOptions, dispatch]);
+  }, [gridStack, dispatch]);
 
   /**
-   * Set up change listener
+   * Set up drag/resize listeners
+   * Note: "change" event doesn't fire reliably (Gridstack issue #2671)
+   * We use dragstop/resizestop instead for reliable position updates
    */
   useEffect(() => {
-    if (!gridStack) return;
+    if (!gridStack) {
+      return;
+    }
 
-    gridStack.on("change", handleGridChange);
+    gridStack.on("dragstop", handleGridChange);
+    gridStack.on("resizestop", handleGridChange);
 
     return () => {
-      gridStack.off("change");
+      gridStack.off("dragstop");
+      gridStack.off("resizestop");
     };
   }, [gridStack, handleGridChange]);
 
