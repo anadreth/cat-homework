@@ -73,7 +73,15 @@ export const TableWidget = <
 >(
   props: TableWidgetProps<TData, TIdKey>
 ) => {
-  const { data, columns, idKey, caption, footer } = props;
+  const { data = [], columns = [], idKey, caption, footer } = props;
+
+  if (!columns || columns.length === 0) {
+    return (
+      <div style={{ padding: '1rem', color: '#ef4444' }}>
+        <p>Error: Table widget requires columns configuration</p>
+      </div>
+    );
+  }
 
   return (
     <TableRoot>

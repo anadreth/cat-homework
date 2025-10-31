@@ -38,13 +38,21 @@ export const AreaChartWidget = <
   props: AreaChartWidgetProps<TData, TIndex, TCategory>
 ) => {
   const {
-    className = "h-80",
+    className = "h-full",
     valueFormatter = defaultValueFormatter,
     onValueChange = defaultOnValueChange,
-    data,
+    data = [],
     index,
-    categories,
+    categories = [],
   } = props;
+
+  if (!data || data.length === 0 || !categories || categories.length === 0) {
+    return (
+      <div style={{ padding: '1rem', color: '#ef4444' }}>
+        <p>Error: Chart widget requires data and categories</p>
+      </div>
+    );
+  }
 
   return (
     <AreaChart

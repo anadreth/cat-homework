@@ -11,7 +11,8 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "./store/hooks";
 import { importDashboard, loadDashboard } from "./store";
-import { GridStackDemo } from "./components/Gridstack/GridstackDemo";
+import { addMultipleTestWidgets } from "@/utils/devTools";
+import { Canvas } from "./components/Canvas";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ function App() {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {}}
+            onClick={() => addMultipleTestWidgets(dispatch)}
             className="rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600"
           >
             Add Test Widgets
@@ -58,8 +59,8 @@ function App() {
         </aside>
 
         {/* Center Canvas */}
-        <div className="flex-1 overflow-auto">
-          <GridStackDemo />
+        <div className="flex-1 overflow-hidden">
+          <Canvas />
         </div>
 
         {/* Right Inspector - TODO Phase 5 */}

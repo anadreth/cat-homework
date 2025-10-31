@@ -40,10 +40,10 @@
 
 ## Phase 2 — Canvas Grid (Gridstack)
 
-- [ ] Build `CanvasGrid` component: initialize Gridstack; render tiles from `core.present.layout`
-- [ ] Map grid events → Redux:
-  - [ ] onAdded/external drop → `addWidget`
-  - [ ] drag/resize stop → `moveResizeWidget`
+- [x] Build `CanvasGrid` component: initialize Gridstack; render tiles from `core.present.layout`
+- [x] Map grid events → Redux:
+  - [x] onAdded/external drop → `addWidget`
+  - [x] drag/resize stop → `moveResizeWidget`
   - [ ] delete via tile toolbar → `removeWidget`
 - [ ] Selection: click header selects tile (`selectionSlice.select(id)`)
 

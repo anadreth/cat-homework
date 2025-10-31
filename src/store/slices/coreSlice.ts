@@ -11,6 +11,7 @@
  */
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import type {
   CoreState,
   DashboardDoc,
@@ -60,7 +61,7 @@ const coreSlice = createSlice({
         props?: Record<string, SerializableValue>;
       }>
     ) => {
-      const id = crypto.randomUUID();
+      const id = uuidv4();
       const now = Date.now();
 
       // Create widget instance
@@ -246,7 +247,6 @@ const coreSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   addWidget,
   updateWidgetProps,
@@ -260,21 +260,24 @@ export const {
   toggleWidgetLock,
 } = coreSlice.actions;
 
-// Export reducer
 export default coreSlice.reducer;
 
 // Selectors
-export const selectDashboard = (state: { core: CoreState }) =>
-  state.core.dashboard;
+// Note: These selectors work with the undoable state shape from redux-undo
+// State shape: { core: { present: CoreState, past: [], future: [] } }
+import type { RootState } from '../types';
 
-export const selectAllWidgets = (state: { core: CoreState }) =>
-  state.core.dashboard.instances;
+export const selectDashboard = (state: RootState) =>
+  state.core.present.dashboard;
 
-export const selectWidgetById = (id: string) => (state: { core: CoreState }) =>
-  state.core.dashboard.instances[id];
+export const selectAllWidgets = (state: RootState) =>
+  state.core.present.dashboard.instances;
 
-export const selectLayout = (state: { core: CoreState }) =>
-  state.core.dashboard.layout;
+export const selectWidgetById = (id: string) => (state: RootState) =>
+  state.core.present.dashboard.instances[id];
 
-export const selectLayoutItemById = (id: string) => (state: { core: CoreState }) =>
-  state.core.dashboard.layout.find((item) => item.id === id);
+export const selectLayout = (state: RootState) =>
+  state.core.present.dashboard.layout;
+
+export const selectLayoutItemById = (id: string) => (state: RootState) =>
+  state.core.present.dashboard.layout.find((item) => item.id === id);
