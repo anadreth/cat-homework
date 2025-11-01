@@ -103,16 +103,18 @@
 
 ---
 
-## Phase 9 — Constraints & Responsiveness
+## Phase 9 — Constraints & Responsiveness - SKIPPING (future impl)
 
-- [ ] Breakpoints: store separate layouts per breakpoint - use toggle group to simulate different canvas widths for different screen sizes and these should be specifically and separately saved in localStorage, export, import
+- Breakpoints: store separate layouts per breakpoint - use toggle group to simulate different canvas widths for different screen sizes and these should be specifically and separately saved in localStorage, export, import
 
 ---
 
 ## Phase 10 — Undo/Redo Integration & Safeguards
 
-- [ ] Wire toolbar buttons to undo/redo (redux-undo)
-- [ ] Ensure autosave operates on present state; exclude history from persistence
+- [x] Wire toolbar buttons to undo/redo (redux-undo)
+- [x] Ensure autosave operates on present state; exclude history from persistence
+- [x] Add undo/redo to mobile menu for mobile accessibility
+- [x] Add selectors for canUndo/canRedo state to enable/disable buttons
 
 ---
 

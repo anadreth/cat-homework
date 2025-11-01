@@ -7,7 +7,7 @@
  * - Handles widget lifecycle (add/remove/update)
  */
 
-import { useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback, useRef } from "react";
 import type { GridStackOptions, GridStackWidget } from "gridstack";
 import {
   GridStackProvider,
@@ -271,6 +271,17 @@ function CanvasContent() {
 export function Canvas() {
   const layout = useAppSelector(selectLayout);
   const widgets = useAppSelector(selectAllWidgets);
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Reset scroll position when canvas is cleared
+   */
+  useEffect(() => {
+    if (layout.length === 0 && canvasRef.current) {
+      canvasRef.current.scrollTop = 0;
+      canvasRef.current.scrollLeft = 0;
+    }
+  }, [layout.length]);
 
   const initialOptions = useMemo((): GridStackOptions => {
     return {
@@ -306,6 +317,7 @@ export function Canvas() {
 
   return (
     <div
+      ref={canvasRef}
       className="canvas relative h-full w-full overflow-x-auto overflow-y-auto bg-gray-50 p-4"
       style={{ minHeight: "100%" }}
     >

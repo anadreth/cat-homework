@@ -48,6 +48,12 @@ export type { RootState };
 export const undo = () => ({ type: "UNDO" });
 export const redo = () => ({ type: "REDO" });
 
+/**
+ * Selectors for undo/redo state
+ */
+export const selectCanUndo = (state: RootState) => state.core.past.length > 0;
+export const selectCanRedo = (state: RootState) => state.core.future.length > 0;
+
 export {
   addWidget,
   updateWidgetProps,

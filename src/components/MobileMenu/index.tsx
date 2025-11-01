@@ -12,7 +12,7 @@ import {
   selectPaletteOpen,
   selectInspectorOpen,
 } from "@/store/slices/uiSlice";
-import { resetDashboard } from "@/store";
+import { resetDashboard, selectCanUndo, selectCanRedo } from "@/store";
 import { addMultipleTestWidgets } from "@/utils/devTools";
 import {
   RiLayoutLeftLine,
@@ -22,6 +22,8 @@ import {
   RiAddLine,
   RiDeleteBin6Line,
   RiCloseLine,
+  RiArrowGoBackLine,
+  RiArrowGoForwardLine,
 } from "@remixicon/react";
 
 interface MobileMenuProps {
@@ -29,12 +31,23 @@ interface MobileMenuProps {
   onClose: () => void;
   onExport: () => void;
   onImport: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
-export function MobileMenu({ isOpen, onClose, onExport, onImport }: MobileMenuProps) {
+export function MobileMenu({
+  isOpen,
+  onClose,
+  onExport,
+  onImport,
+  onUndo,
+  onRedo,
+}: MobileMenuProps) {
   const dispatch = useAppDispatch();
   const paletteOpen = useAppSelector(selectPaletteOpen);
   const inspectorOpen = useAppSelector(selectInspectorOpen);
+  const canUndo = useAppSelector(selectCanUndo);
+  const canRedo = useAppSelector(selectCanRedo);
 
   const handleTogglePalette = () => {
     dispatch(togglePalette());
@@ -65,6 +78,16 @@ export function MobileMenu({ isOpen, onClose, onExport, onImport }: MobileMenuPr
 
   const handleImport = () => {
     onImport();
+    onClose();
+  };
+
+  const handleUndo = () => {
+    onUndo();
+    onClose();
+  };
+
+  const handleRedo = () => {
+    onRedo();
     onClose();
   };
 
@@ -133,6 +156,24 @@ export function MobileMenu({ isOpen, onClose, onExport, onImport }: MobileMenuPr
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Actions
             </p>
+            <button
+              onClick={handleUndo}
+              disabled={!canUndo}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+            >
+              <RiArrowGoBackLine size={20} />
+              <span className="font-medium">Undo</span>
+            </button>
+
+            <button
+              onClick={handleRedo}
+              disabled={!canRedo}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+            >
+              <RiArrowGoForwardLine size={20} />
+              <span className="font-medium">Redo</span>
+            </button>
+
             <button
               onClick={handleExport}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"

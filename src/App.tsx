@@ -10,7 +10,15 @@
 
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { importDashboard, loadDashboard, resetDashboard } from "./store";
+import {
+  importDashboard,
+  loadDashboard,
+  resetDashboard,
+  undo,
+  redo,
+  selectCanUndo,
+  selectCanRedo,
+} from "./store";
 import {
   togglePalette,
   toggleInspector,
@@ -31,12 +39,16 @@ import {
   RiLayoutLeftLine,
   RiLayoutRightLine,
   RiMenuLine,
+  RiArrowGoBackLine,
+  RiArrowGoForwardLine,
 } from "@remixicon/react";
 
 function App() {
   const dispatch = useAppDispatch();
   const paletteOpen = useAppSelector(selectPaletteOpen);
   const inspectorOpen = useAppSelector(selectInspectorOpen);
+  const canUndo = useAppSelector(selectCanUndo);
+  const canRedo = useAppSelector(selectCanRedo);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   /**
@@ -76,6 +88,29 @@ function App() {
 
         {/* Right section */}
         <div className="flex items-center gap-1 sm:gap-2">
+          {/* Undo/Redo buttons */}
+          <button
+            onClick={() => dispatch(undo())}
+            disabled={!canUndo}
+            className="rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:px-2"
+            title="Undo (Ctrl+Z)"
+            aria-label="Undo"
+          >
+            <RiArrowGoBackLine size={18} />
+          </button>
+
+          <button
+            onClick={() => dispatch(redo())}
+            disabled={!canRedo}
+            className="rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:px-2"
+            title="Redo (Ctrl+Shift+Z)"
+            aria-label="Redo"
+          >
+            <RiArrowGoForwardLine size={18} />
+          </button>
+
+          <div className="mx-1 h-6 border-l border-gray-300 sm:mx-2" />
+
           <ExportButton />
           <ImportButton />
 
@@ -181,6 +216,8 @@ function App() {
           ) as HTMLButtonElement;
           importBtn?.click();
         }}
+        onUndo={() => dispatch(undo())}
+        onRedo={() => dispatch(redo())}
       />
     </div>
   );

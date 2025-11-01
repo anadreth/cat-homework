@@ -34,20 +34,29 @@ export const autosaveMiddleware = createListenerMiddleware();
 
 /**
  * Start listening for core state changes
+ * Including undo/redo actions
  */
 autosaveMiddleware.startListening({
-  matcher: isAnyOf(
-    addWidget,
-    updateWidgetProps,
-    moveResizeWidget,
-    removeWidget,
-    setLayout,
-    importDashboard,
-    updateDashboardMeta,
-    duplicateWidget,
-    toggleWidgetLock,
-    resetDashboard
-  ),
+  predicate: (action) => {
+    // Listen to all core slice actions
+    const isCoreAction = isAnyOf(
+      addWidget,
+      updateWidgetProps,
+      moveResizeWidget,
+      removeWidget,
+      setLayout,
+      importDashboard,
+      updateDashboardMeta,
+      duplicateWidget,
+      toggleWidgetLock,
+      resetDashboard
+    )(action);
+
+    // Also listen to undo/redo actions
+    const isUndoRedo = action.type === "UNDO" || action.type === "REDO";
+
+    return isCoreAction || isUndoRedo;
+  },
   effect: async (_, listenerApi) => {
     listenerApi.cancelActiveListeners();
     listenerApi.dispatch(markSaving());
