@@ -95,11 +95,11 @@
 
 ## Phase 8 — Visual/File Exports
 
-- [ ] Chart → PNG/SVG/PDF: prefer native chart export; fallback html2canvas + jsPDF
-- [ ] Table → CSV/XLSX (SheetJS)
-- [ ] Widget screenshot (tile DOM → html2canvas)
-- [ ] Dashboard export menu: JSON
-- [ ] Widget menu: JSON/PNG/PDF/CSV
+- [x] Chart → PNG/PDF via html2canvas + jsPDF
+- [x] Table → CSV/XLSX (SheetJS)
+- [x] Widget screenshot (tile DOM → html2canvas)
+- [x] Dashboard export menu: JSON
+- [x] Widget menu: JSON/PNG/PDF/CSV/XLSX
 
 ---
 

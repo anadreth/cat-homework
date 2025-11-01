@@ -71,7 +71,9 @@ export function WidgetWrapper({
       </div>
 
       {/* Widget Content */}
-      <div className="flex-1 overflow-auto p-2">{children}</div>
+      <div className="flex-1 overflow-auto p-2" data-widget-content="true">
+        {children}
+      </div>
     </div>
   );
 }

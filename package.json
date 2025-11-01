@@ -24,7 +24,7 @@
     "clsx": "^2.1.1",
     "geist": "^1.5.1",
     "gridstack": "^12.3.3",
-    "html2canvas": "^1.4.1",
+    "html2canvas-pro": "^1.5.12",
     "jspdf": "^3.0.3",
     "react": "^19.1.1",
     "react-dom": "^19.2.0",

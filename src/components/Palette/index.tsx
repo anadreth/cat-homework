@@ -99,13 +99,6 @@ export function Palette() {
           );
         })}
       </div>
-
-      <div className="mt-6 rounded border border-gray-200 bg-gray-50 p-3">
-        <div className="text-xs text-gray-600">
-          <strong>Tip:</strong> Drag any widget to the canvas to add it to your
-          dashboard.
-        </div>
-      </div>
     </div>
   );
 }
