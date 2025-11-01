@@ -1,13 +1,13 @@
 import type { ReactElement } from 'react';
 import { render, type RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import undoable, { excludeAction } from 'redux-undo';
+import { configureStore, type Reducer, type UnknownAction } from '@reduxjs/toolkit';
+import undoable, { excludeAction, type StateWithHistory } from 'redux-undo';
 import coreReducer from '@/store/slices/coreSlice';
 import selectionReducer from '@/store/slices/selectionSlice';
 import uiReducer from '@/store/slices/uiSlice';
 import { autosaveMiddleware } from '@/store/middleware/autosave';
-import type { DashboardDoc, RootState } from '@/store/types';
+import type { DashboardDoc, RootState, CoreState, SelectionState, UIState } from '@/store/types';
 
 /**
  * Create a test store with optional preloaded state
@@ -27,11 +27,21 @@ export function setupStore(preloadedState?: Partial<RootState>) {
     redoType: 'REDO',
   });
 
+  // Redux v5 uses 3-generic Reducer type: Reducer<State, Action, PreloadedState>
+  // The third generic must be the expanded StateWithHistory structure with '| undefined'
+  type CoreReducerType = Reducer<
+    StateWithHistory<CoreState>,
+    UnknownAction,
+    { past: CoreState[]; present: CoreState; future: CoreState[] } | undefined
+  >;
+  type SelectionReducerType = Reducer<SelectionState, UnknownAction, SelectionState | undefined>;
+  type UIReducerType = Reducer<UIState, UnknownAction, UIState | undefined>;
+
   return configureStore({
     reducer: {
-      core: undoableCore,
-      selection: selectionReducer,
-      ui: uiReducer,
+      core: undoableCore as CoreReducerType,
+      selection: selectionReducer as SelectionReducerType,
+      ui: uiReducer as UIReducerType,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -39,7 +49,7 @@ export function setupStore(preloadedState?: Partial<RootState>) {
         serializableCheck: {
           ignoredPaths: ['core.present.dashboard.meta'],
         },
-      }).concat(autosaveMiddleware.middleware)
+      }).prepend(autosaveMiddleware.middleware),
   });
 }
 
