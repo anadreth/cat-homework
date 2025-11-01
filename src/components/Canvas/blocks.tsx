@@ -403,18 +403,18 @@ function LivePropsWidget({
     children: React.ReactNode;
   }>;
 }) {
-  // Subscribe to Redux for live prop updates
   const widget = useAppSelector((state) => selectWidgetById(widgetId)(state));
 
   const WidgetComponent = componentMap[widgetType];
 
   if (!WidgetComponent) {
-    console.error(`[LivePropsWidget] Component not found for type: ${widgetType}`);
+    console.error(
+      `[LivePropsWidget] Component not found for type: ${widgetType}`
+    );
     return null;
   }
 
   if (!widget) {
-    console.error(`[LivePropsWidget] Widget not found in Redux: ${widgetId}`);
     return null;
   }
 

@@ -5,10 +5,12 @@
  * Uses Gridstack external drag-and-drop functionality.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GridStack } from "gridstack";
-import { WIDGET_REGISTRY } from "@/constants/widget-registry";
+import { WIDGET_REGISTRY, getWidgetDefaultProps } from "@/constants/widget-registry";
 import type { WidgetType } from "@/store/types";
+import { useAppDispatch } from "@/store/hooks";
+import { addWidget } from "@/store";
 import {
   RiBarChartBoxLine,
   RiTableLine,
@@ -41,6 +43,11 @@ const WIDGET_COLORS: Record<WidgetType, string> = {
  */
 export function Palette() {
   const paletteRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const [lastTap, setLastTap] = useState<{ type: WidgetType | null; time: number }>({
+    type: null,
+    time: 0,
+  });
 
   /**
    * Initialize Gridstack draggable on palette items
@@ -58,6 +65,52 @@ export function Palette() {
     });
   }, []);
 
+  /**
+   * Add widget to canvas
+   */
+  const addWidgetToCanvas = (type: WidgetType) => {
+    const meta = WIDGET_REGISTRY[type];
+    const props = getWidgetDefaultProps(type);
+
+    dispatch(
+      addWidget({
+        type,
+        layout: {
+          x: 0,
+          y: 0,
+          w: meta.defaultSize.w,
+          h: meta.defaultSize.h,
+        },
+        props,
+      })
+    );
+  };
+
+  /**
+   * Handle double-click to add widget (desktop)
+   */
+  const handleDoubleClick = (type: WidgetType) => {
+    addWidgetToCanvas(type);
+  };
+
+  /**
+   * Handle touch for mobile double-tap detection
+   */
+  const handleTouchEnd = (type: WidgetType) => {
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTap.time;
+
+    // Double-tap detected (within 300ms and same widget type)
+    if (timeSinceLastTap < 300 && lastTap.type === type) {
+      addWidgetToCanvas(type);
+      // Reset to prevent triple-tap from adding multiple widgets
+      setLastTap({ type: null, time: 0 });
+    } else {
+      // First tap or different widget - record it
+      setLastTap({ type, time: now });
+    }
+  };
+
   const widgetTypes = Object.keys(WIDGET_REGISTRY) as WidgetType[];
 
   return (
@@ -65,7 +118,8 @@ export function Palette() {
       <div className="mb-4">
         <h2 className="text-sm font-semibold text-gray-700">Widget Palette</h2>
         <p className="mt-1 text-xs text-gray-500">
-          Drag widgets onto the canvas
+          <span className="hidden lg:inline">Drag widgets onto the canvas</span>
+          <span className="lg:hidden">Double-tap to add widget</span>
         </p>
       </div>
 
@@ -82,6 +136,11 @@ export function Palette() {
               data-gs-width={meta.defaultSize.w}
               data-gs-height={meta.defaultSize.h}
               data-widget-type={type}
+              onDoubleClick={() => handleDoubleClick(type)}
+              onTouchEnd={() => handleTouchEnd(type)}
+              role="button"
+              tabIndex={0}
+              aria-label={`Add ${meta.name} widget`}
             >
               <div className="flex items-start gap-2">
                 <Icon size={20} className="mt-0.5 flex-shrink-0" />

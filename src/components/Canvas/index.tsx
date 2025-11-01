@@ -306,12 +306,20 @@ export function Canvas() {
 
   return (
     <div
-      className="canvas relative h-full w-full overflow-auto bg-gray-50 p-4"
+      className="canvas relative h-full w-full overflow-x-auto overflow-y-auto bg-gray-50 p-4"
       style={{ minHeight: "100%" }}
     >
-      <GridStackProvider initialOptions={initialOptions}>
-        <CanvasContent />
-      </GridStackProvider>
+      <div
+        className="mx-auto"
+        style={{
+          minWidth: "480px",
+          maxWidth: "1440px",
+        }}
+      >
+        <GridStackProvider initialOptions={initialOptions}>
+          <CanvasContent />
+        </GridStackProvider>
+      </div>
     </div>
   );
 }

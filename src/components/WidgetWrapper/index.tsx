@@ -5,13 +5,15 @@
  * - Header with widget type name
  * - Delete button in toolbar
  * - Click header to select widget
+ * - Double-click widget content to select and open inspector
  * - Visual highlight when selected
  */
 
-import { type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { removeWidget } from "@/store";
 import { selectWidget, selectIsSelected } from "@/store/slices/selectionSlice";
+import { toggleInspector, selectInspectorOpen } from "@/store/slices/uiSlice";
 import { RiDeleteBin6Line } from "@remixicon/react";
 
 export interface WidgetWrapperProps {
@@ -27,14 +29,85 @@ export function WidgetWrapper({
 }: WidgetWrapperProps) {
   const dispatch = useAppDispatch();
   const isSelected = useAppSelector(selectIsSelected(widgetId));
+  const inspectorOpen = useAppSelector(selectInspectorOpen);
+  const [lastTap, setLastTap] = useState<number>(0);
+
+  const [lastHeaderTap, setLastHeaderTap] = useState<number>(0);
 
   const handleHeaderClick = () => {
     dispatch(selectWidget(widgetId));
   };
 
+  /**
+   * Handle double-click on header (desktop)
+   */
+  const handleHeaderDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    selectAndInspect();
+  };
+
+  /**
+   * Handle touch for mobile double-tap detection on header
+   */
+  const handleHeaderTouchEnd = (e: React.TouchEvent) => {
+    const now = Date.now();
+    const timeSinceLastTap = now - lastHeaderTap;
+
+    // Double-tap detected (within 300ms)
+    if (timeSinceLastTap < 300) {
+      e.stopPropagation();
+      selectAndInspect();
+      // Reset to prevent triple-tap from triggering
+      setLastHeaderTap(0);
+    } else {
+      // First tap - record it and select widget
+      setLastHeaderTap(now);
+      dispatch(selectWidget(widgetId));
+    }
+  };
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation(); // Don't trigger selection when deleting
     dispatch(removeWidget(widgetId));
+  };
+
+  /**
+   * Select widget and open inspector
+   */
+  const selectAndInspect = () => {
+    dispatch(selectWidget(widgetId));
+    // Open inspector if not already open
+    if (!inspectorOpen) {
+      dispatch(toggleInspector());
+    }
+  };
+
+  /**
+   * Handle double-click on widget content (desktop)
+   */
+  const handleContentDoubleClick = (e: React.MouseEvent) => {
+    // Don't interfere with text selection or other interactions
+    e.stopPropagation();
+    selectAndInspect();
+  };
+
+  /**
+   * Handle touch for mobile double-tap detection on widget content
+   */
+  const handleContentTouchEnd = (e: React.TouchEvent) => {
+    const now = Date.now();
+    const timeSinceLastTap = now - lastTap;
+
+    // Double-tap detected (within 300ms)
+    if (timeSinceLastTap < 300) {
+      e.stopPropagation();
+      selectAndInspect();
+      // Reset to prevent triple-tap from triggering
+      setLastTap(0);
+    } else {
+      // First tap - record it
+      setLastTap(now);
+    }
   };
 
   return (
@@ -48,6 +121,8 @@ export function WidgetWrapper({
       {/* Widget Header */}
       <div
         onClick={handleHeaderClick}
+        onDoubleClick={handleHeaderDoubleClick}
+        onTouchEnd={handleHeaderTouchEnd}
         className={`flex cursor-pointer items-center justify-between border-b px-3 py-2 ${
           isSelected
             ? "border-blue-500 bg-blue-50"
@@ -71,7 +146,12 @@ export function WidgetWrapper({
       </div>
 
       {/* Widget Content */}
-      <div className="flex-1 overflow-auto p-2" data-widget-content="true">
+      <div
+        className="flex-1 overflow-auto p-2"
+        data-widget-content="true"
+        onDoubleClick={handleContentDoubleClick}
+        onTouchEnd={handleContentTouchEnd}
+      >
         {children}
       </div>
     </div>
