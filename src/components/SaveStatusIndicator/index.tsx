@@ -34,7 +34,7 @@ export function SaveStatusIndicator() {
             className="animate-spin text-blue-500"
             aria-label="Saving"
           />
-          <span className="text-gray-600">Saving...</span>
+          <span className="text-gray-600 whitespace-nowrap">Saving...</span>
         </>
       )}
 
@@ -45,7 +45,7 @@ export function SaveStatusIndicator() {
             className="text-green-500"
             aria-label="Saved"
           />
-          <span className="text-gray-600">
+          <span className="text-gray-600 whitespace-nowrap">
             Saved {formatRelativeTime(lastSaved)}
           </span>
         </>
@@ -58,7 +58,7 @@ export function SaveStatusIndicator() {
             className="text-red-500"
             aria-label="Save failed"
           />
-          <span className="text-red-600">Save failed</span>
+          <span className="text-red-600 whitespace-nowrap">Save failed</span>
         </>
       )}
 
@@ -69,7 +69,7 @@ export function SaveStatusIndicator() {
             className="text-gray-400"
             aria-label="All changes saved"
           />
-          <span className="text-gray-500">
+          <span className="text-gray-500 whitespace-nowrap">
             Saved {formatRelativeTime(lastSaved)}
           </span>
         </>

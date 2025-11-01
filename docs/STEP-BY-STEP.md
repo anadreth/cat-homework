@@ -118,20 +118,12 @@
 
 ---
 
-## Phase 11 — Performance Pass
-
-- [ ] Subscribe components via selector hooks (slice smallest needed data)
-- [ ] Throttle drag updates; commit only on stop events
-- [ ] Memoize `WidgetRenderer` and Inspector forms
-
----
-
-## Phase 12 — Documentation & Example Content
+## Phase 11 — Documentation & Example Content
 
 - [ ] Update README:
   - [ ] Architecture diagram
   - [ ] How to add a new widget type
   - [ ] Import/export format
 
-## Phase 13 - Unit tests
+## Phase 12 - Unit tests
 - [ ] write unit test with vitest for import/export functionality, adding widgets to canvas, clearing canvas, editing widget properties, autosave functionality, undo/redo, drag/drop from palette,  

@@ -48,7 +48,7 @@ export const AreaChartWidget = <
 
   if (!data || data.length === 0 || !categories || categories.length === 0) {
     return (
-      <div style={{ padding: '1rem', color: '#ef4444' }}>
+      <div style={{ padding: "1rem", color: "#ef4444" }}>
         <p>Error: Chart widget requires data and categories</p>
       </div>
     );

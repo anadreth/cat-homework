@@ -78,8 +78,7 @@ function App() {
           </button>
 
           <h1 className="text-base font-bold text-gray-900 sm:text-xl">
-            <span className="hidden sm:inline">Dashboard Builder</span>
-            <span className="sm:hidden">Dashboard</span>
+            Dashboard
           </h1>
           <div className="hidden sm:block">
             <SaveStatusIndicator />
@@ -92,7 +91,7 @@ function App() {
           <button
             onClick={() => dispatch(undo())}
             disabled={!canUndo}
-            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:flex sm:px-2"
+            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent md:flex sm:px-2"
             title="Undo (Ctrl+Z)"
             aria-label="Undo"
           >
@@ -102,7 +101,7 @@ function App() {
           <button
             onClick={() => dispatch(redo())}
             disabled={!canRedo}
-            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:flex sm:px-2"
+            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent md:flex sm:px-2"
             title="Redo (Ctrl+Shift+Z)"
             aria-label="Redo"
           >
@@ -114,7 +113,7 @@ function App() {
           <ExportButton />
           <ImportButton />
 
-          <div className="mx-1 h-6 border-l border-gray-300 sm:mx-2" />
+          <div className="mx-1 h-6 border-l border-gray-300 lg:mx-2" />
 
           {/* Panel toggles - desktop only */}
           <button
@@ -143,7 +142,7 @@ function App() {
             <span className="hidden xl:inline">Inspector</span>
           </button>
 
-          <div className="mx-1 hidden h-6 border-l border-gray-300 sm:mx-2 sm:block" />
+          <div className="mx-1 hidden h-6 border-l border-gray-300 sm:mx-2 lg:block" />
 
           <button
             onClick={() => addMultipleTestWidgets(dispatch)}
@@ -151,7 +150,7 @@ function App() {
             title="Add test widgets"
           >
             <RiAddLine size={16} />
-            <span className="hidden md:inline">Add Default Widgets</span>
+            <span className="hidden lg:inline whitespace-nowrap">Add Default Widgets</span>
           </button>
 
           <button
@@ -160,7 +159,7 @@ function App() {
             title="Clear canvas"
           >
             <RiDeleteBin6Line size={18} />
-            <span className="hidden sm:inline">Clear</span>
+            <span className="hidden lg:inline">Clear</span>
           </button>
         </div>
       </header>
