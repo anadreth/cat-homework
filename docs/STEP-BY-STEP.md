@@ -109,14 +109,14 @@
 
 ---
 
-## Phase 12 — Undo/Redo Integration & Safeguards
+## Phase 10 — Undo/Redo Integration & Safeguards
 
 - [ ] Wire toolbar buttons to undo/redo (redux-undo)
 - [ ] Ensure autosave operates on present state; exclude history from persistence
 
 ---
 
-## Phase 13 — Performance Pass
+## Phase 11 — Performance Pass
 
 - [ ] Subscribe components via selector hooks (slice smallest needed data)
 - [ ] Throttle drag updates; commit only on stop events
@@ -124,9 +124,12 @@
 
 ---
 
-## Phase 14 — Documentation & Example Content
+## Phase 12 — Documentation & Example Content
 
 - [ ] Update README:
   - [ ] Architecture diagram
   - [ ] How to add a new widget type
   - [ ] Import/export format
+
+## Phase 13 - Unit tests
+- [ ] write unit test with vitest for import/export functionality, adding widgets to canvas, clearing canvas, editing widget properties, autosave functionality, undo/redo, drag/drop from palette,  
