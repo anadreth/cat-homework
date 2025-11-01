@@ -14,6 +14,7 @@ import { importDashboard, loadDashboard, resetDashboard } from "./store";
 import { addMultipleTestWidgets } from "@/utils/devTools";
 import { Canvas } from "./components/Canvas";
 import { Palette } from "./components/Palette";
+import { Inspector } from "./components/Inspector";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -64,14 +65,9 @@ function App() {
           <Canvas />
         </div>
 
-        {/* Right Inspector - TODO Phase 5 */}
+        {/* Right Inspector */}
         <aside className="w-80 border-l border-gray-200 bg-white p-4">
-          <h2 className="mb-4 text-sm font-semibold text-gray-700">
-            Inspector
-          </h2>
-          <p className="text-xs text-gray-500">
-            Coming in Phase 5: Edit widget properties
-          </p>
+          <Inspector />
         </aside>
       </main>
     </div>

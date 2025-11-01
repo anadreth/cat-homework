@@ -72,10 +72,8 @@
 
 ## Phase 5 — Inspector (Right Panel)
 
-- [ ] Build `Inspector`: reads selectedId → instance props + editorSchema
-- [ ] Use JSON-schema form lib to edit props; dispatch `updateWidgetProps`
-- [ ] Tabs: Properties, Data, Appearance (wire up later)
-
+- [x] Build `Inspector`: reads selectedId → instance props + editorSchema
+- [x] Use react-hook-form to edit props; dispatch `updateWidgetProps`
 ---
 
 ## Phase 6 — Autosave & Persistence

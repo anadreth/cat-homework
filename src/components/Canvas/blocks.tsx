@@ -17,6 +17,8 @@ import {
 } from "react";
 import isEqual from "react-fast-compare";
 import { createPortal } from "react-dom";
+import { useAppSelector } from "@/store/hooks";
+import { selectWidgetById } from "@/store";
 
 export const GridStackContext = createContext<{
   initialOptions: GridStackOptions;
@@ -340,27 +342,21 @@ export function GridStackRender(props: {
     <>
       {Array.from(_rawWidgetMetaMap.value.entries()).map(([id, meta]) => {
         const componentData = parseWeightMetaToComponentData(meta);
-
-        const WidgetComponent = props.componentMap[componentData.name];
-
         const widgetContainer = getWidgetContainer(id);
 
         if (!widgetContainer) {
           throw new Error(`Widget container not found for id: ${id}`);
         }
 
-        const widgetContent = <WidgetComponent {...componentData.props} />;
-
         return (
           <GridStackWidgetContext.Provider key={id} value={{ widget: { id } }}>
             {createPortal(
-              WrapperComponent ? (
-                <WrapperComponent widgetId={id} widgetType={componentData.name}>
-                  {widgetContent}
-                </WrapperComponent>
-              ) : (
-                widgetContent
-              ),
+              <LivePropsWidget
+                widgetId={id}
+                widgetType={componentData.name}
+                componentMap={props.componentMap}
+                WrapperComponent={WrapperComponent}
+              />,
               widgetContainer
             )}
           </GridStackWidgetContext.Provider>
@@ -384,4 +380,53 @@ export function useGridStackWidgetContext() {
     );
   }
   return context;
+}
+
+/**
+ * LivePropsWidget - Subscribes to Redux for live prop updates
+ *
+ * This component ensures widgets re-render when their props change in Redux,
+ * fixing the issue where _rawWidgetMetaMap had stale props.
+ */
+function LivePropsWidget({
+  widgetId,
+  widgetType,
+  componentMap,
+  WrapperComponent,
+}: {
+  widgetId: string;
+  widgetType: string;
+  componentMap: ComponentMap;
+  WrapperComponent?: ComponentType<{
+    widgetId: string;
+    widgetType: string;
+    children: React.ReactNode;
+  }>;
+}) {
+  // Subscribe to Redux for live prop updates
+  const widget = useAppSelector((state) => selectWidgetById(widgetId)(state));
+
+  const WidgetComponent = componentMap[widgetType];
+
+  if (!WidgetComponent) {
+    console.error(`[LivePropsWidget] Component not found for type: ${widgetType}`);
+    return null;
+  }
+
+  if (!widget) {
+    console.error(`[LivePropsWidget] Widget not found in Redux: ${widgetId}`);
+    return null;
+  }
+
+  const widgetContent = <WidgetComponent {...widget.props} />;
+
+  if (WrapperComponent) {
+    return (
+      <WrapperComponent widgetId={widgetId} widgetType={widgetType}>
+        {widgetContent}
+      </WrapperComponent>
+    );
+  }
+
+  return widgetContent;
 }
