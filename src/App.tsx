@@ -16,6 +16,8 @@ import { Canvas } from "./components/Canvas";
 import { Palette } from "./components/Palette";
 import { Inspector } from "./components/Inspector";
 import { SaveStatusIndicator } from "./components/SaveStatusIndicator";
+import { ExportButton } from "./components/ExportImport/ExportButton";
+import { ImportButton } from "./components/ExportImport/ImportButton";
 import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react";
 
 function App() {
@@ -41,6 +43,11 @@ function App() {
         </div>
 
         <div className="flex items-center gap-2">
+          <ExportButton />
+          <ImportButton />
+
+          <div className="mx-2 h-6 border-l border-gray-300" />
+
           <button
             onClick={() => addMultipleTestWidgets(dispatch)}
             className="flex items-center gap-1.5 rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"

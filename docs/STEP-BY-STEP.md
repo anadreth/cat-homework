@@ -86,9 +86,10 @@
 
 ## Phase 7 — Export / Import
 
-- [ ] Export dashboard JSON (`.dashboard.json`) with version, exportedAt
-- [ ] Import JSON: validate schema + version; id remap if needed; `importDashboard`
-- [ ] Per-widget export (`.widget.json`) with optional dataSnapshot
+- [x] Export dashboard JSON (`.dashboard.json`) with version, exportedAt
+- [x] Import JSON: validate schema + version with Zod; `importDashboard`
+- [x] Per-widget export (`.widget.json`) with widget metadata
+- [x] Fix widget import ID mismatch bug (ensure new IDs generated)
 
 ---
 
