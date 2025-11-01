@@ -88,11 +88,11 @@ function App() {
 
         {/* Right section */}
         <div className="flex items-center gap-1 sm:gap-2">
-          {/* Undo/Redo buttons */}
+          {/* Undo/Redo buttons - hidden on mobile */}
           <button
             onClick={() => dispatch(undo())}
             disabled={!canUndo}
-            className="rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:px-2"
+            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:flex sm:px-2"
             title="Undo (Ctrl+Z)"
             aria-label="Undo"
           >
@@ -102,14 +102,14 @@ function App() {
           <button
             onClick={() => dispatch(redo())}
             disabled={!canRedo}
-            className="rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:px-2"
+            className="hidden rounded border border-gray-300 p-1.5 text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent sm:flex sm:px-2"
             title="Redo (Ctrl+Shift+Z)"
             aria-label="Redo"
           >
             <RiArrowGoForwardLine size={18} />
           </button>
 
-          <div className="mx-1 h-6 border-l border-gray-300 sm:mx-2" />
+          <div className="mx-1 hidden h-6 border-l border-gray-300 sm:mx-2 sm:block" />
 
           <ExportButton />
           <ImportButton />
