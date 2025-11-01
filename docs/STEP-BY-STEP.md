@@ -60,13 +60,13 @@
 
 ## Phase 4 — Widget Registry & Renderer
 
-- [ ] Create `WIDGETS` registry: defaultSize, defaultProps, editorSchema, renderer
-- [ ] Implement `WidgetRenderer` to pick the right component from registry
-- [ ] Add minimal renderers:
-  - [ ] `ChartWidget`
-  - [ ] `TableWidget`
-  - [ ] `ListWidget`
-  - [ ] `TextWidget`
+- [x] Create `WIDGETS` registry: defaultSize, defaultProps, editorSchema, renderer
+- [x] Implement `WidgetRenderer` to pick the right component from registry
+- [x] Add minimal renderers:
+  - [x] `ChartWidget`
+  - [x] `TableWidget`
+  - [x] `ListWidget`
+  - [x] `TextWidget`
  
 ---
 

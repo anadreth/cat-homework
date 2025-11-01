@@ -12,6 +12,28 @@ import { ListWidget } from "@/components/List/widget";
 import { TextWidget } from "@/components/Text/widget";
 
 /**
+ * Editor field schema for widget properties
+ */
+export type EditorFieldSchema = {
+  key: string;
+  label: string;
+  type: "text" | "textarea" | "number" | "select" | "checkbox" | "json";
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  description?: string;
+};
+
+/**
+ * Editor schema for a widget type
+ */
+export type EditorSchema = {
+  sections: {
+    title: string;
+    fields: EditorFieldSchema[];
+  }[];
+};
+
+/**
  * Widget metadata for a specific widget type
  */
 export type WidgetMeta = {
@@ -26,6 +48,7 @@ export type WidgetMeta = {
   defaultPropsFactory: () => Record<string, any>; // Function that generates fresh props
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: ComponentType<any>;
+  editorSchema: EditorSchema;
 };
 
 /**
@@ -80,6 +103,39 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
       className: "h-full",
     }),
     component: AreaChartWidget,
+    editorSchema: {
+      sections: [
+        {
+          title: "Data",
+          fields: [
+            {
+              key: "data",
+              label: "Chart Data",
+              type: "json",
+              description: "Array of data objects for the chart",
+            },
+            {
+              key: "index",
+              label: "Index Field",
+              type: "text",
+              placeholder: "date",
+              description: "Field name to use as x-axis",
+            },
+          ],
+        },
+        {
+          title: "Appearance",
+          fields: [
+            {
+              key: "className",
+              label: "CSS Class",
+              type: "text",
+              placeholder: "h-full",
+            },
+          ],
+        },
+      ],
+    },
   },
   table: {
     type: "table",
@@ -97,6 +153,33 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
       caption: "Employee Directory",
     }),
     component: TableWidget,
+    editorSchema: {
+      sections: [
+        {
+          title: "Data",
+          fields: [
+            {
+              key: "caption",
+              label: "Table Caption",
+              type: "text",
+              placeholder: "Enter table title",
+            },
+            {
+              key: "data",
+              label: "Table Data",
+              type: "json",
+              description: "Array of data objects",
+            },
+            {
+              key: "columns",
+              label: "Column Configuration",
+              type: "json",
+              description: "Array of column definitions",
+            },
+          ],
+        },
+      ],
+    },
   },
   list: {
     type: "list",
@@ -108,6 +191,27 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
       items: generateSampleListItems(),
     }),
     component: ListWidget,
+    editorSchema: {
+      sections: [
+        {
+          title: "Content",
+          fields: [
+            {
+              key: "title",
+              label: "List Title",
+              type: "text",
+              placeholder: "Enter list title",
+            },
+            {
+              key: "items",
+              label: "List Items",
+              type: "json",
+              description: "Array of list item objects",
+            },
+          ],
+        },
+      ],
+    },
   },
   text: {
     type: "text",
@@ -120,6 +224,28 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
         "This is a text widget. You can add any content here.\n\nEdit this widget to customize the text.",
     }),
     component: TextWidget,
+    editorSchema: {
+      sections: [
+        {
+          title: "Content",
+          fields: [
+            {
+              key: "title",
+              label: "Title",
+              type: "text",
+              placeholder: "Enter title",
+            },
+            {
+              key: "content",
+              label: "Text Content",
+              type: "textarea",
+              placeholder: "Enter your text here...",
+              description: "Supports multiline text",
+            },
+          ],
+        },
+      ],
+    },
   },
 };
 
