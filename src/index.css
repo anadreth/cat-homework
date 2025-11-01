@@ -173,4 +173,38 @@
       transform: translateX(100%);
     }
   }
+
+  /* AppLoader animations */
+  --animate-spin-slow: spinSlow 3s linear infinite;
+  --animate-pulse-slow: pulseSlow 2s ease-in-out infinite;
+  --animate-grid-flow: gridFlow 20s linear infinite;
+
+  @keyframes spinSlow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+  }
+
+  @keyframes gridFlow {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 40px 40px;
+    }
+  }
 }
