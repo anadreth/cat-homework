@@ -49,7 +49,6 @@ function App() {
           >
             Clear Canvas
           </button>
-          <span className="text-sm text-gray-500">Phase 3: Palette</span>
         </div>
       </header>
 
