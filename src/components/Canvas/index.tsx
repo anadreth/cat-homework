@@ -16,14 +16,22 @@ import {
   useGridStackContext,
 } from "@/components/Canvas/blocks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { selectLayout, selectAllWidgets, moveResizeWidget } from "@/store";
+import {
+  selectLayout,
+  selectAllWidgets,
+  moveResizeWidget,
+  addWidget,
+} from "@/store";
+import { selectWidget } from "@/store/slices/selectionSlice";
 import {
   WIDGET_COMPONENT_MAP,
   getWidgetDefaultProps,
+  getWidgetMeta,
 } from "@/constants/widget-registry";
 import type { ComponentDataType } from "@/components/Canvas/blocks";
 import { GRID_COLUMNS, CELL_HEIGHT, VERTICAL_MARGIN } from "@/constants/grid";
 import { WidgetWrapper } from "@/components/WidgetWrapper";
+import type { WidgetType } from "@/store/types";
 
 /**
  * Grid options for canvas
@@ -34,8 +42,8 @@ const GRID_OPTIONS: GridStackOptions = {
   margin: VERTICAL_MARGIN,
   float: true,
   removable: false,
-  acceptWidgets: true,
-  animate: true,
+  acceptWidgets: ".palette-item", // Accept items with this class
+  animate: true, // Disable animation for instant feedback
   minRow: 1,
   maxRow: 0, // Infinite height
   resizable: {
@@ -138,6 +146,66 @@ function CanvasContent() {
   }, [gridStack, handleGridChange]);
 
   /**
+   * Handle external widget drops from palette
+   */
+  useEffect(() => {
+    if (!gridStack) {
+      return;
+    }
+
+    const handleDrop = (
+      _event: Event,
+      _previousWidget: GridStackWidget,
+      newWidget: GridStackWidget & { el?: HTMLElement }
+    ) => {
+      // Get widget type from the dropped element
+      const el = newWidget.el;
+      const widgetType = el?.getAttribute("data-widget-type") as WidgetType;
+
+      if (!widgetType) {
+        console.error("[Canvas] No widget type found on dropped element");
+        return;
+      }
+
+      // Get widget metadata and create widget with defaults
+      const meta = getWidgetMeta(widgetType);
+      const props = getWidgetDefaultProps(widgetType);
+
+      // Create widget in Redux with the dropped position
+      const action = dispatch(
+        addWidget({
+          type: widgetType,
+          layout: {
+            x: newWidget.x ?? 0,
+            y: newWidget.y ?? 0,
+            w: meta.defaultSize.w,
+            h: meta.defaultSize.h,
+          },
+          props,
+        })
+      );
+
+      // Auto-select the newly created widget
+      const newWidgetId = action.meta.id;
+      dispatch(selectWidget(newWidgetId));
+
+      // Remove the temporary element
+      setTimeout(() => {
+        if (el && el.parentElement) {
+          el.remove();
+        }
+      }, 0);
+    };
+
+    gridStack.on("dropped", handleDrop);
+
+    return () => {
+      console.log("[Canvas] Cleaning up drop handler");
+      gridStack.off("dropped");
+    };
+  }, [gridStack, dispatch]);
+
+  /**
    * Sync widgets to grid when Redux state changes
    */
   useEffect(() => {
@@ -177,7 +245,7 @@ function CanvasContent() {
   ]);
 
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <GridStackRenderProvider>
         <GridStackRender
           componentMap={WIDGET_COMPONENT_MAP}
@@ -186,10 +254,10 @@ function CanvasContent() {
       </GridStackRenderProvider>
 
       {layout.length === 0 && (
-        <div className="flex h-full items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="text-center text-gray-400">
             <p className="text-lg font-medium">Empty Canvas</p>
-            <p className="mt-2 text-sm">Click "Add Test Widgets" to begin</p>
+            <p className="mt-2 text-sm">Drag widgets from the palette</p>
           </div>
         </div>
       )}
@@ -237,7 +305,10 @@ export function Canvas() {
   }, []);
 
   return (
-    <div className="canvas h-full w-full overflow-auto bg-gray-50 p-4">
+    <div
+      className="canvas relative h-full w-full overflow-auto bg-gray-50 p-4"
+      style={{ minHeight: "100%" }}
+    >
       <GridStackProvider initialOptions={initialOptions}>
         <CanvasContent />
       </GridStackProvider>

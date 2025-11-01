@@ -10,8 +10,8 @@
  * are handled via listener middleware.
  */
 
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
 import type {
   CoreState,
   DashboardDoc,
@@ -19,7 +19,7 @@ import type {
   WidgetInstance,
   WidgetType,
   SerializableValue,
-} from '../types';
+} from "../types";
 
 /**
  * Create an empty dashboard document
@@ -27,7 +27,7 @@ import type {
 const createEmptyDashboard = (): DashboardDoc => ({
   version: 1,
   id: crypto.randomUUID(),
-  name: 'Untitled Dashboard',
+  name: "Untitled Dashboard",
   instances: {},
   layout: [],
   meta: {
@@ -47,42 +47,63 @@ const initialState: CoreState = {
  * Core slice
  */
 const coreSlice = createSlice({
-  name: 'core',
+  name: "core",
   initialState,
   reducers: {
     /**
      * Add a new widget to the dashboard
      */
-    addWidget: (
-      state,
-      action: PayloadAction<{
+    addWidget: {
+      reducer: (
+        state,
+        action: PayloadAction<{
+          id: string;
+          type: WidgetType;
+          layout: Omit<LayoutItem, "id">;
+          props?: Record<string, SerializableValue>;
+          createdAt: number;
+          updatedAt: number;
+        }>
+      ) => {
+        const { id, type, layout, props, createdAt, updatedAt } =
+          action.payload;
+
+        const instance: WidgetInstance = {
+          id,
+          type,
+          props: props || {},
+          createdAt,
+          updatedAt,
+        };
+
+        const layoutItem: LayoutItem = {
+          id,
+          ...layout,
+        };
+
+        state.dashboard.instances[id] = instance;
+        state.dashboard.layout.push(layoutItem);
+        state.dashboard.meta.updatedAt = updatedAt;
+      },
+      prepare: (payload: {
         type: WidgetType;
-        layout: Omit<LayoutItem, 'id'>;
+        layout: Omit<LayoutItem, "id">;
         props?: Record<string, SerializableValue>;
-      }>
-    ) => {
-      const id = uuidv4();
-      const now = Date.now();
-
-      // Create widget instance
-      const instance: WidgetInstance = {
-        id,
-        type: action.payload.type,
-        props: action.payload.props || {},
-        createdAt: now,
-        updatedAt: now,
-      };
-
-      // Create layout item
-      const layoutItem: LayoutItem = {
-        id,
-        ...action.payload.layout,
-      };
-
-      // Add to state
-      state.dashboard.instances[id] = instance;
-      state.dashboard.layout.push(layoutItem);
-      state.dashboard.meta.updatedAt = now;
+      }) => {
+        const id = uuidv4();
+        const now = Date.now();
+        return {
+          payload: {
+            id,
+            type: payload.type,
+            layout: payload.layout,
+            props: payload.props,
+            createdAt: now,
+            updatedAt: now,
+          },
+          meta: { id },
+        };
+      },
     },
 
     /**
@@ -262,10 +283,7 @@ export const {
 
 export default coreSlice.reducer;
 
-// Selectors
-// Note: These selectors work with the undoable state shape from redux-undo
-// State shape: { core: { present: CoreState, past: [], future: [] } }
-import type { RootState } from '../types';
+import type { RootState } from "../types";
 
 export const selectDashboard = (state: RootState) =>
   state.core.present.dashboard;

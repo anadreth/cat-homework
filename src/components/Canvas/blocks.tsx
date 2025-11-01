@@ -281,7 +281,12 @@ export function GridStackRenderProvider({ children }: PropsWithChildren) {
         [gridStack]
       )}
     >
-      <div ref={containerRef}>{gridStack ? children : null}</div>
+      <div
+        ref={containerRef}
+        className="grid-stack min-h-[calc(100vh-8rem)] min-w-full relative"
+      >
+        {gridStack ? children : null}
+      </div>
     </GridStackRenderContext.Provider>
   );
 }
@@ -324,7 +329,7 @@ export function GridStackRender(props: {
   wrapperComponent?: ComponentType<{
     widgetId: string;
     widgetType: string;
-    children: React.ReactNode
+    children: React.ReactNode;
   }>;
 }) {
   const { _rawWidgetMetaMap } = useGridStackContext();
@@ -350,10 +355,7 @@ export function GridStackRender(props: {
           <GridStackWidgetContext.Provider key={id} value={{ widget: { id } }}>
             {createPortal(
               WrapperComponent ? (
-                <WrapperComponent
-                  widgetId={id}
-                  widgetType={componentData.name}
-                >
+                <WrapperComponent widgetId={id} widgetType={componentData.name}>
                   {widgetContent}
                 </WrapperComponent>
               ) : (

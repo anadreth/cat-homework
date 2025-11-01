@@ -13,6 +13,7 @@ import { useAppDispatch } from "./store/hooks";
 import { importDashboard, loadDashboard, resetDashboard } from "./store";
 import { addMultipleTestWidgets } from "@/utils/devTools";
 import { Canvas } from "./components/Canvas";
+import { Palette } from "./components/Palette";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -48,20 +49,15 @@ function App() {
           >
             Clear Canvas
           </button>
-          <span className="text-sm text-gray-500">Phase 2: Canvas Grid</span>
+          <span className="text-sm text-gray-500">Phase 3: Palette</span>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex flex-1 overflow-hidden">
-        {/* Left Palette - TODO Phase 3 */}
+        {/* Left Palette */}
         <aside className="w-64 border-r border-gray-200 bg-white p-4">
-          <h2 className="mb-4 text-sm font-semibold text-gray-700">
-            Widget Palette
-          </h2>
-          <p className="text-xs text-gray-500">
-            Coming in Phase 3: Drag widgets to canvas
-          </p>
+          <Palette />
         </aside>
 
         {/* Center Canvas */}

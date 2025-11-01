@@ -52,9 +52,9 @@
 
 ## Phase 3 — Palette (Drag from Sidebar)
 
-- [ ] Build `Palette` with widget types (Table/Chart/List/Text)
-- [ ] Enable Gridstack external drops; show ghost size per widget default
-- [ ] On drop: create `WidgetInstance` with defaults + layout; auto-select
+- [x] Build `Palette` with widget types (Table/Chart/List/Text)
+- [x] Enable Gridstack external drops; show ghost size per widget default
+- [x] On drop: create `WidgetInstance` with defaults + layout; auto-select
 
 ---
 
