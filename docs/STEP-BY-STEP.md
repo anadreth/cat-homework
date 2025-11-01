@@ -44,8 +44,9 @@
 - [x] Map grid events → Redux:
   - [x] onAdded/external drop → `addWidget`
   - [x] drag/resize stop → `moveResizeWidget`
-  - [ ] delete via tile toolbar → `removeWidget`
-- [ ] Selection: click header selects tile (`selectionSlice.select(id)`)
+  - [x] delete via tile toolbar → `removeWidget`
+- [x] Selection: click header selects tile (`selectionSlice.select(id)`)
+- [x] Clear canvas button → `resetDashboard`
 
 ---
 

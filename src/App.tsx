@@ -10,7 +10,7 @@
 
 import { useEffect } from "react";
 import { useAppDispatch } from "./store/hooks";
-import { importDashboard, loadDashboard } from "./store";
+import { importDashboard, loadDashboard, resetDashboard } from "./store";
 import { addMultipleTestWidgets } from "@/utils/devTools";
 import { Canvas } from "./components/Canvas";
 
@@ -41,6 +41,12 @@ function App() {
             className="rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600"
           >
             Add Test Widgets
+          </button>
+          <button
+            onClick={() => dispatch(resetDashboard())}
+            className="rounded bg-red-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-600"
+          >
+            Clear Canvas
           </button>
           <span className="text-sm text-gray-500">Phase 2: Canvas Grid</span>
         </div>

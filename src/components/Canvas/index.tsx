@@ -23,6 +23,7 @@ import {
 } from "@/constants/widget-registry";
 import type { ComponentDataType } from "@/components/Canvas/blocks";
 import { GRID_COLUMNS, CELL_HEIGHT, VERTICAL_MARGIN } from "@/constants/grid";
+import { WidgetWrapper } from "@/components/WidgetWrapper";
 
 /**
  * Grid options for canvas
@@ -178,7 +179,10 @@ function CanvasContent() {
   return (
     <div className="h-full w-full">
       <GridStackRenderProvider>
-        <GridStackRender componentMap={WIDGET_COMPONENT_MAP} />
+        <GridStackRender
+          componentMap={WIDGET_COMPONENT_MAP}
+          wrapperComponent={WidgetWrapper}
+        />
       </GridStackRenderProvider>
 
       {layout.length === 0 && (

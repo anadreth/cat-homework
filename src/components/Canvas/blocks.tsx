@@ -319,9 +319,17 @@ function parseWeightMetaToComponentData(
   };
 }
 
-export function GridStackRender(props: { componentMap: ComponentMap }) {
+export function GridStackRender(props: {
+  componentMap: ComponentMap;
+  wrapperComponent?: ComponentType<{
+    widgetId: string;
+    widgetType: string;
+    children: React.ReactNode
+  }>;
+}) {
   const { _rawWidgetMetaMap } = useGridStackContext();
   const { getWidgetContainer } = useGridStackRenderContext();
+  const WrapperComponent = props.wrapperComponent;
 
   return (
     <>
@@ -336,10 +344,21 @@ export function GridStackRender(props: { componentMap: ComponentMap }) {
           throw new Error(`Widget container not found for id: ${id}`);
         }
 
+        const widgetContent = <WidgetComponent {...componentData.props} />;
+
         return (
           <GridStackWidgetContext.Provider key={id} value={{ widget: { id } }}>
             {createPortal(
-              <WidgetComponent {...componentData.props} />,
+              WrapperComponent ? (
+                <WrapperComponent
+                  widgetId={id}
+                  widgetType={componentData.name}
+                >
+                  {widgetContent}
+                </WrapperComponent>
+              ) : (
+                widgetContent
+              ),
               widgetContainer
             )}
           </GridStackWidgetContext.Provider>
