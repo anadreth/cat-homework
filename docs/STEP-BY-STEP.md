@@ -120,10 +120,17 @@
 
 ## Phase 11 — Documentation & Example Content
 
-- [ ] Update README:
-  - [ ] Architecture
-  - [ ] Guides
-  - [ ] etc...
+- [x] Update README:
+  - [x] Architecture overview
+  - [x] Quick start guide
+  - [x] Usage instructions (desktop & mobile)
+  - [x] Widget system documentation
+  - [x] Export/Import formats
+  - [x] Performance optimizations
+  - [x] Configuration options
+  - [x] Troubleshooting guide
+  - [x] Project structure
+  - [x] Development guidelines
 
 ## Phase 12 - Unit tests
 - [ ] write unit test with vitest for import/export functionality, adding widgets to canvas, clearing canvas, editing widget properties, autosave functionality, undo/redo, drag/drop from palette,  

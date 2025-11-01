@@ -1,75 +1,491 @@
-# React + TypeScript + Vite
+# Dashboard Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A production-ready, Retool-inspired dashboard builder built with React 19, TypeScript, Redux Toolkit, and Gridstack. Create customizable dashboards by dragging widgets onto a responsive grid canvas, editing properties in real-time, and exporting to multiple formats.
 
-Currently, two official plugins are available:
+![Dashboard Builder](https://img.shields.io/badge/React-19-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue) ![Redux](https://img.shields.io/badge/Redux-Toolkit-purple) ![License](https://img.shields.io/badge/license-MIT-green)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+### Core Functionality
+- **Drag-and-Drop Interface** - Intuitive widget placement from sidebar palette
+- **Real-time Editing** - Live property editing with instant visual feedback
+- **Responsive Grid System** - 12-column Gridstack-powered layout with resize/drag
+- **Widget Library** - Charts, Tables, Lists, and Text widgets
+- **Undo/Redo** - Full history management with 100-step limit
+- **Auto-save** - Debounced (700ms) persistence to LocalStorage
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Data Management
+- **Export Formats**:
+  - Dashboard JSON (`.dashboard.json`)
+  - Individual widget JSON (`.widget.json`)
+  - Charts as PNG/PDF
+  - Tables as CSV/XLSX
+  - Widget screenshots
 
-Note: This will impact Vite dev & build performances.
+- **Import Support**:
+  - Full dashboard restoration
+  - Individual widget import with ID regeneration
+  - Schema validation with Zod
 
-## Expanding the ESLint configuration
+### Mobile Experience
+- Touch-optimized interactions
+- Double-tap to add widgets
+- Collapsible panels (Palette & Inspector)
+- Mobile-specific menu with all features
+- Responsive toolbar
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Developer Experience
+- **Type-safe** - Strict TypeScript throughout
+- **Performance Optimized** - React.memo, useCallback, useMemo everywhere
+- **Clean Architecture** - Separation of concerns with Redux slices
+- **Extensible** - Widget registry pattern for easy additions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Quick Start
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd cat-homework
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Visit `http://localhost:5173` to see the application.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Build for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
+---
+
+## 📖 Architecture
+
+### Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| **React 19** | UI framework with React Compiler |
+| **TypeScript 5.9** | Type safety and developer experience |
+| **Redux Toolkit** | State management |
+| **redux-undo** | Time-travel debugging & undo/redo |
+| **Gridstack.js** | Drag-resize grid system |
+| **Tremor** | UI component library |
+| **react-hook-form** | Form state management |
+| **Zod** | Runtime schema validation |
+| **Tailwind CSS** | Utility-first styling |
+| **Vite** | Build tool and dev server |
+
+### State Management
+
+```
+store/
+├── index.ts          # Store configuration
+├── slices/
+│   ├── coreSlice.ts      # Widget instances & layout (with redux-undo)
+│   ├── selectionSlice.ts # Selected widget tracking
+│   └── uiSlice.ts        # Panel states & save status
+└── middleware/
+    └── autosave.ts       # Debounced LocalStorage persistence
+```
+
+**State Structure:**
+```typescript
+{
+  core: {
+    past: [],        // Undo history
+    present: {
+      dashboard: {
+        widgets: {},     // Widget instances by ID
+        layout: [],      // Position & size data
+        meta: {}         // Dashboard metadata
+      }
+    },
+    future: []       // Redo history
+  },
+  selection: {
+    selectedId: string | null
+  },
+  ui: {
+    paletteOpen: boolean,
+    inspectorOpen: boolean,
+    saveStatus: 'idle' | 'saving' | 'saved' | 'error'
+  }
+}
+```
+
+### Component Architecture
+
+```
+components/
+├── Canvas/              # Gridstack grid + Redux integration
+│   ├── index.tsx        # Canvas container
+│   └── blocks.tsx       # Grid providers & rendering
+├── Palette/             # Widget sidebar
+├── Inspector/           # Property editor panel
+│   └── PropertyEditor.tsx
+├── WidgetWrapper/       # Widget container with toolbar
+├── ExportImport/        # Export/import functionality
+├── MobileMenu/          # Mobile navigation
+└── [WidgetType]/
+    ├── widget.tsx       # Widget component
+    └── blocks.tsx       # Tremor UI components
+```
+
+### Data Flow
+
+```
+User Action → Redux Action → Reducer Updates State
+     ↓
+State Change → Component Re-render
+     ↓
+Autosave Middleware → LocalStorage (debounced)
+```
+
+---
+
+## 🎨 Widget System
+
+### Widget Registry
+
+All widgets are registered in `src/constants/widget-registry.ts`:
+
+```typescript
+export const WIDGET_REGISTRY = {
+  chart: {
+    name: 'Chart',
+    description: 'Area chart visualization',
+    defaultSize: { w: 6, h: 4 },
+    defaultProps: { /* ... */ },
+    editorSchema: { /* ... */ }
+  },
+  // ... more widgets
+}
+```
+
+### Adding a New Widget
+
+1. **Create Widget Component** (`src/components/MyWidget/widget.tsx`):
+```typescript
+import { memo } from "react";
+
+export type MyWidgetProps = {
+  title: string;
+  value: number;
+};
+
+export const MyWidget = memo((props: MyWidgetProps) => {
+  return <div>{props.title}: {props.value}</div>;
+});
+```
+
+2. **Register Widget**:
+```typescript
+// src/constants/widget-registry.ts
+import { MyWidget } from "@/components/MyWidget/widget";
+
+export const WIDGET_COMPONENT_MAP = {
+  mywidget: MyWidget,
+  // ... existing widgets
+};
+
+export const WIDGET_REGISTRY = {
+  mywidget: {
+    name: 'My Widget',
+    description: 'Custom widget description',
+    defaultSize: { w: 4, h: 3 },
+    defaultProps: {
+      title: 'Default Title',
+      value: 0
+    },
+    editorSchema: {
+      sections: [{
+        title: 'Settings',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'value', label: 'Value', type: 'number' }
+        ]
+      }]
+    }
+  }
+};
+```
+
+3. **Add Icon** (in Palette):
+```typescript
+// src/components/Palette/index.tsx
+const WIDGET_ICONS = {
+  mywidget: RiCustomIcon,
+  // ... existing icons
+};
+```
+
+---
+
+## 🔧 Configuration
+
+### Grid Settings
+
+Configure grid behavior in `src/constants/grid.ts`:
+
+```typescript
+export const GRID_COLUMNS = 12;      // 12-column grid
+export const CELL_HEIGHT = 60;       // Height per row (px)
+export const VERTICAL_MARGIN = 10;   // Gap between widgets (px)
+```
+
+### Autosave Configuration
+
+Adjust autosave behavior in `src/store/middleware/autosave.ts`:
+
+```typescript
+const STORAGE_KEY = "retool-dashboard";
+const DEBOUNCE_MS = 700;  // Milliseconds to wait before saving
+```
+
+### Undo/Redo History
+
+Modify history limit in `src/store/index.ts`:
+
+```typescript
+const undoableCore = undoable(coreSlice.reducer, {
+  limit: 100  // Maximum undo steps
+});
+```
+
+---
+
+## 📱 Usage Guide
+
+### Desktop
+
+1. **Add Widgets**: Drag from left palette onto canvas
+2. **Resize/Move**: Drag widget edges or drag header to reposition
+3. **Edit Properties**: Click widget header → Edit in right Inspector panel
+4. **Delete Widget**: Click delete icon in widget header
+5. **Undo/Redo**: Use toolbar buttons or Ctrl+Z / Ctrl+Shift+Z
+6. **Export**: Click Export button → Choose format
+7. **Import**: Click Import button → Select JSON file
+
+### Mobile
+
+1. **Open Menu**: Tap hamburger icon (top-left)
+2. **Add Widgets**: Double-tap widget in palette
+3. **Show Palette/Inspector**: Toggle via mobile menu
+4. **Edit**: Double-tap widget to open Inspector
+5. **Actions**: Access all features through mobile menu
+
+---
+
+## 🎯 Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Z` (⌘Z) | Undo |
+| `Ctrl+Shift+Z` (⌘⇧Z) | Redo |
+| `Double Click` | Add widget (Palette) / Edit widget (Canvas) |
+
+---
+
+## 🗂️ Export/Import Format
+
+### Dashboard JSON Structure
+
+```json
+{
+  "version": "1.0.0",
+  "exportedAt": "2025-11-01T...",
+  "widgets": {
+    "widget-id": {
+      "type": "chart",
+      "props": { /* ... */ }
+    }
+  },
+  "layout": [
+    {
+      "id": "widget-id",
+      "x": 0, "y": 0,
+      "w": 6, "h": 4,
+      "minW": 2, "minH": 2
+    }
+  ],
+  "meta": {
+    "name": "Dashboard Name",
+    "createdAt": "...",
+    "updatedAt": "..."
+  }
+}
+```
+
+### Widget JSON Structure
+
+```json
+{
+  "version": "1.0.0",
+  "exportedAt": "2025-11-01T...",
+  "type": "chart",
+  "props": { /* widget properties */ },
+  "layout": {
+    "w": 6, "h": 4,
+    "minW": 2, "minH": 2
+  }
+}
+```
+
+---
+
+## ⚡ Performance Optimizations
+
+### React Optimizations
+- **React.memo** on all presentational components
+- **useCallback** for event handlers
+- **useMemo** for expensive computations
+- **React Compiler** enabled for automatic optimizations
+
+### Redux Optimizations
+- **Normalized state** - Widgets stored by ID in object
+- **Selector memoization** - Minimal re-renders on state changes
+- **Middleware batching** - Debounced autosave prevents excessive writes
+
+### Gridstack Optimizations
+- **Stop events** - Updates only on drag/resize completion
+- **No live updates** - Reduces render cycles during interaction
+- **Memoized children** - Widget components don't re-render unnecessarily
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run tests (when implemented)
+npm run test
+
+# Type checking
+npm run build
+```
+
+---
+
+## 📁 Project Structure
+
+```
+cat-homework/
+├── src/
+│   ├── components/       # React components
+│   │   ├── Canvas/       # Grid canvas
+│   │   ├── Palette/      # Widget sidebar
+│   │   ├── Inspector/    # Property editor
+│   │   ├── [Widget]/     # Widget components
+│   │   └── ...
+│   ├── store/            # Redux store
+│   │   ├── slices/       # State slices
+│   │   └── middleware/   # Custom middleware
+│   ├── constants/        # Constants & config
+│   ├── utils/            # Utility functions
+│   ├── App.tsx           # Root component
+│   └── main.tsx          # Entry point
+├── docs/                 # Documentation
+│   └── STEP-BY-STEP.md   # Development roadmap
+├── public/               # Static assets
+└── package.json
+```
+
+---
+
+## 🛠️ Development
+
+### Code Style
+- **TypeScript Strict Mode** - No `any` types
+- **Functional Components** - Hooks only
+- **Small Components** - Max ~200 LOC per file
+- **Pure Functions** - No side effects in reducers
+- **Descriptive Names** - `verbNoun` for actions, `selectThing` for selectors
+
+### Best Practices
+- Keep reducers pure
+- Effects in middleware only
+- Memoize expensive operations
+- Use schema-driven forms
+- Validate with Zod on import
+
+---
+
+## 🐛 Troubleshooting
+
+### Widgets Not Dragging
+- Ensure Gridstack is initialized (check browser console)
+- Verify `.palette-item` class on draggable elements
+
+### Autosave Not Working
+- Check LocalStorage is enabled in browser
+- Verify 700ms debounce isn't being interrupted
+
+### Import Fails
+- Ensure JSON matches schema version
+- Check browser console for validation errors
+
+### Performance Issues
+- Limit widgets on canvas (<50 recommended)
+- Check React DevTools Profiler for render cycles
+
+---
+
+## 🔮 Future Enhancements
+
+### Planned Features (Not Yet Implemented)
+- **Responsive Breakpoints** - Separate layouts for mobile/tablet/desktop
+- **Unit Tests** - Vitest test suite for core functionality
+- **Widget Templates** - Pre-built dashboard templates
+- **Real-time Collaboration** - Multi-user editing
+- **API Integration** - Connect widgets to live data sources
+- **Custom Themes** - Dark mode and custom color schemes
+
+### Contributing
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Follow existing code style
+4. Add tests for new features
+5. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+---
+
+## 🙏 Acknowledgments
+
+- **Gridstack.js** - Grid layout engine
+- **Tremor** - Beautiful UI components
+- **Redux Toolkit** - Modern Redux best practices
+- **React Team** - React 19 and React Compiler
+
+---
+
+## 📞 Support
+
+For issues, questions, or contributions:
+- Open an issue on GitHub
+- Check `docs/STEP-BY-STEP.md` for development roadmap
+- Review `CLAUDE.md` for architecture guidelines
+
+---
+
+**Built with ❤️ using React 19, TypeScript, and Redux Toolkit**
