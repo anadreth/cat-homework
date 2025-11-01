@@ -132,5 +132,47 @@
   - [x] Project structure
   - [x] Development guidelines
 
-## Phase 12 - Unit tests
-- [ ] write unit test with vitest for import/export functionality, adding widgets to canvas, clearing canvas, editing widget properties, autosave functionality, undo/redo, drag/drop from palette,  
+## Phase 12 — Unit Tests
+
+- [x] Set up Vitest testing infrastructure
+  - [x] Configured vitest.config.ts with jsdom environment
+  - [x] Created test setup with browser API mocks
+  - [x] Built Redux testing utilities with undoable store
+  - [x] Added test scripts to package.json
+- [x] Import/Export Tests (`src/tests/import-export/`)
+  - [x] Dashboard export with correct structure
+  - [x] Version and timestamp validation
+  - [x] File download functionality
+  - [x] Dashboard import and state updates
+  - [x] LocalStorage integration
+  - [x] Error handling
+- [x] Widget Management Tests (`src/tests/widget-management/`)
+  - [x] Adding widgets to canvas
+  - [x] Removing widgets
+  - [x] Updating widget properties
+  - [x] Moving/resizing widgets
+  - [x] Duplicating widgets
+  - [x] Locking/unlocking widgets
+  - [x] Clearing dashboard
+- [x] Undo/Redo Tests (`src/tests/undo-redo/`)
+  - [x] Basic undo/redo operations
+  - [x] Multiple sequential operations
+  - [x] History limits (100 steps)
+  - [x] Excluded actions (import/reset)
+  - [x] State tracking (canUndo/canRedo)
+- [x] Autosave Tests (`src/tests/autosave/`)
+  - [x] Debounced save to LocalStorage
+  - [x] Save status tracking
+  - [x] Loading dashboard
+  - [x] Clearing dashboard
+  - [x] Error handling
+- [x] Redux Slices Tests (`src/tests/redux-slices/`)
+  - [x] Core slice selectors
+  - [x] Selection slice actions and selectors
+  - [x] UI slice actions and selectors
+  - [x] Cross-slice interactions
+- [x] Test Documentation
+  - [x] README.md for each test folder explaining approach
+  - [x] Coverage goals documented
+  - [x] Known limitations noted
+

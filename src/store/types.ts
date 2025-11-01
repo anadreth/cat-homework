@@ -19,8 +19,8 @@ export type WidgetType = 'chart' | 'table' | 'list' | 'text';
  * This is a pragmatic type that covers common widget props without
  * causing "excessively deep" TypeScript errors. It allows:
  * - Primitives: string, number, boolean, null
- * - Arrays of primitives
- * - Objects with primitive values or arrays of primitives
+ * - Arrays of primitives or objects
+ * - Objects with primitive values, arrays, or nested objects
  *
  * For more complex nested structures, TypeScript will infer compatibility.
  */
@@ -32,7 +32,26 @@ export type SerializableValue =
   | string[]
   | number[]
   | boolean[]
-  | { [key: string]: string | number | boolean | null | string[] | number[] | boolean[] };
+  | SerializableObject
+  | SerializableObject[]
+  | Array<string | number | boolean | null | SerializableObject>;
+
+/**
+ * Helper type for serializable objects
+ * Supports nested structures commonly used in widget data
+ */
+export type SerializableObject = {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | string[]
+    | number[]
+    | boolean[]
+    | SerializableObject
+    | SerializableObject[];
+};
 
 /**
  * Widget instance with configuration and data binding
