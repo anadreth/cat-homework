@@ -93,27 +93,7 @@
 
 ---
 
-## Phase 8 — UX Polish
-
-- [ ] Drag handle only on header; body stays interactive
-- [ ] Tile toolbar: Rename, Duplicate, Export, Delete, Lock (position/size)
-- [ ] Keyboard shortcuts:
-  - [ ] Delete to remove
-  - [ ] Arrows to nudge
-  - [ ] Shift for larger step
-- [ ] Empty state: onboarding hint ("Drag a widget here")
-
----
-
-## Phase 9 — Data Binding (v1)
-
-- [ ] Define `dataBinding` model (Static/REST/Custom)
-- [ ] Implement simple data service: resolves binding → returns normalized data; cache & debounce
-- [ ] Inspector "Data" tab to edit binding; pass `{props, data}` to renderer
-
----
-
-## Phase 10 — Visual/File Exports
+## Phase 8 — Visual/File Exports
 
 - [ ] Chart → PNG/SVG/PDF: prefer native chart export; fallback html2canvas + jsPDF
 - [ ] Table → CSV/XLSX (SheetJS)
@@ -123,10 +103,9 @@
 
 ---
 
-## Phase 11 — Constraints & Responsiveness
+## Phase 9 — Constraints & Responsiveness
 
-- [ ] Per-widget minW/minH/maxW/maxH pulled from registry → apply to grid
-- [ ] Breakpoints: store separate layouts per breakpoint or keep one canonical layout with packing rules
+- [ ] Breakpoints: store separate layouts per breakpoint - use toggle group to simulate different canvas widths for different screen sizes and these should be specifically and separately saved in localStorage, export, import
 
 ---
 
@@ -147,8 +126,7 @@
 
 ## Phase 14 — Documentation & Example Content
 
-- [ ] Seed example dashboard with 3 widgets
-- [ ] Add README:
+- [ ] Update README:
   - [ ] Architecture diagram
   - [ ] How to add a new widget type
   - [ ] Import/export format
