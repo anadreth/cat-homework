@@ -15,6 +15,8 @@ import { addMultipleTestWidgets } from "@/utils/devTools";
 import { Canvas } from "./components/Canvas";
 import { Palette } from "./components/Palette";
 import { Inspector } from "./components/Inspector";
+import { SaveStatusIndicator } from "./components/SaveStatusIndicator";
+import { RiAddLine, RiDeleteBin6Line } from "@remixicon/react";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -35,20 +37,25 @@ function App() {
       <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 shadow-sm">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold text-gray-900">Dashboard Builder</h1>
+          <SaveStatusIndicator />
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => addMultipleTestWidgets(dispatch)}
-            className="rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600"
+            className="flex items-center gap-1.5 rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            title="Add test widgets"
           >
-            Add Test Widgets
+            <RiAddLine size={16} />
+            <span>Add Default Widgets</span>
           </button>
           <button
             onClick={() => dispatch(resetDashboard())}
-            className="rounded bg-red-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-600"
+            className="flex items-center gap-1.5 rounded border border-gray-300 px-3 py-1.5 text-gray-600 hover:bg-gray-50 hover:text-red-600 text-sm font-medium"
+            title="Clear canvas"
           >
-            Clear Canvas
+            <RiDeleteBin6Line size={18} />
+            <span>Clear Canvas</span>
           </button>
         </div>
       </header>

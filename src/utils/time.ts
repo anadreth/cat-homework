@@ -33,23 +33,19 @@ export const toTimestamp = (date: Date): number => date.getTime();
  */
 export const formatRelativeTime = (timestamp: number): string => {
   const now = Date.now();
-  const diffMs = now - timestamp;
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHour = Math.floor(diffMin / 60);
-  const diffDay = Math.floor(diffHour / 24);
+  const diff = now - timestamp;
 
-  if (diffSec < 60) {
-    return 'just now';
-  } else if (diffMin < 60) {
-    return `${diffMin} minute${diffMin > 1 ? 's' : ''} ago`;
-  } else if (diffHour < 24) {
-    return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
-  } else if (diffDay < 7) {
-    return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
-  } else {
-    return toDate(timestamp).toLocaleDateString();
-  }
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
+  if (seconds < 10) return "just now";
+  if (seconds < 60) return `${seconds}s ago`;
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+
+  // Format as date for older saves
+  return new Date(timestamp).toLocaleDateString();
 };
 
 /**
@@ -61,9 +57,9 @@ export const formatRelativeTime = (timestamp: number): string => {
 export const formatDate = (
   timestamp: number,
   options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   }
 ): string => {
   return toDate(timestamp).toLocaleDateString(undefined, options);
@@ -78,11 +74,11 @@ export const formatDate = (
 export const formatDateTime = (
   timestamp: number,
   options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   }
 ): string => {
   return toDate(timestamp).toLocaleString(undefined, options);

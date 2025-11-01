@@ -78,9 +78,9 @@
 
 ## Phase 6 — Autosave & Persistence
 
-- [ ] Implement listener middleware to persist `{layout, instances, meta}` to LocalStorage (debounced 600–800ms)
-- [ ] On app load: hydrate from LocalStorage, else start with empty dashboard
-- [ ] Save status indicator (idle/saving/saved/error)
+- [x] Implement listener middleware to persist `{layout, instances, meta}` to LocalStorage (debounced 700ms)
+- [x] On app load: hydrate from LocalStorage, else start with empty dashboard
+- [x] Save status indicator (idle/saving/saved/error)
 
 ---
 
