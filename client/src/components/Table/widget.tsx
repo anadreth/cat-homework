@@ -9,8 +9,25 @@ import {
   TableRoot,
   TableRow,
 } from "@/components/Table/blocks";
+import { applyFilters, getAlignmentClass } from "@/lib/utils/table";
 
-type TextAlign = "left" | "center" | "right";
+export type TextAlign = "left" | "center" | "right";
+
+export type FilterOperator =
+  | "equals"
+  | "notEquals"
+  | "contains"
+  | "notContains"
+  | "greaterThan"
+  | "lessThan"
+  | "greaterThanOrEqual"
+  | "lessThanOrEqual";
+
+export type TableFilter = {
+  column: string;
+  operator: FilterOperator;
+  value: string | number;
+};
 
 export type TableColumn<
   TData extends Record<string, string | number>,
@@ -38,12 +55,7 @@ export type TableWidgetProps<
   idKey: TIdKey;
   caption?: string;
   footer?: FooterCell[];
-};
-
-const getAlignmentClass = (align?: TextAlign): string => {
-  if (!align || align === "left") return "";
-  if (align === "center") return "text-center";
-  return "text-right";
+  filters?: TableFilter[];
 };
 
 export const TableWidget = <
@@ -52,11 +64,12 @@ export const TableWidget = <
 >(
   props: TableWidgetProps<TData, TIdKey>
 ) => {
-  const { data = [], columns = [], idKey, caption, footer } = props;
+  const { data = [], columns = [], idKey, caption, footer, filters } = props;
+  const filteredData = applyFilters(data, filters);
 
   if (!columns || columns.length === 0) {
     return (
-      <div style={{ padding: '1rem', color: '#ef4444' }}>
+      <div style={{ padding: "1rem", color: "#ef4444" }}>
         <p>Error: Table widget requires columns configuration</p>
       </div>
     );
@@ -79,7 +92,7 @@ export const TableWidget = <
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {filteredData.map((row) => (
             <TableRow key={String(row[idKey])}>
               {columns.map((col) => (
                 <TableCell

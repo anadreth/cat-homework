@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useCallback, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { EditorSchema } from "@/constants/widget-registry";
 import type { SerializableValue } from "@/store/types";
 import { Input } from "@/components/Input/blocks";
 import { Label } from "@/components/Label/blocks";
+import { FilterEditor } from "@/components/FilterEditor";
 import { createValidationSchema } from "./validation";
 import {
   serializePropsForForm,
@@ -36,6 +37,7 @@ export function PropertyEditor({
     register,
     watch,
     reset,
+    control,
     formState: { errors },
     trigger,
   } = useForm({
@@ -43,6 +45,21 @@ export function PropertyEditor({
     resolver: zodResolver(validationSchema),
     mode: "onChange",
   });
+
+  const getAvailableColumns = useCallback((fieldKey: string): string[] => {
+    if (fieldKey === "filters") {
+      try {
+        const columnsValue = watch("columns");
+        const columns = typeof columnsValue === "string"
+          ? JSON.parse(columnsValue)
+          : columnsValue;
+        return columns?.map((col: any) => col.key) || [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }, [watch]);
 
   useEffect(() => {
     const serialized = serializePropsForForm(values, schema);
@@ -166,6 +183,21 @@ export function PropertyEditor({
                       </p>
                     )}
                   </>
+                )}
+
+                {field.type === "filters" && (
+                  <Controller
+                    name={field.key}
+                    control={control}
+                    render={({ field: controllerField }) => (
+                      <FilterEditor
+                        value={Array.isArray(controllerField.value) ? controllerField.value : []}
+                        onChange={controllerField.onChange}
+                        availableColumns={getAvailableColumns(field.key)}
+                        errors={errors[field.key] as any}
+                      />
+                    )}
+                  />
                 )}
 
                 {field.description && (

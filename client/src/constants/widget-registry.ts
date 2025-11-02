@@ -10,7 +10,7 @@ import { RiBarChartBoxLine, RiTableLine, RiListUnordered, RiText } from "@remixi
 export type EditorFieldSchema = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "select" | "checkbox" | "json";
+  type: "text" | "textarea" | "number" | "select" | "checkbox" | "json" | "filters";
   placeholder?: string;
   options?: { value: string; label: string }[];
   description?: string;
@@ -137,6 +137,7 @@ export const WIDGET_REGISTRY: WidgetRegistry = {
       ],
       idKey: "id",
       caption: "Employee Directory",
+      filters: [],
     }),
     component: TableWidget,
     editorSchema: {
@@ -161,6 +162,12 @@ export const WIDGET_REGISTRY: WidgetRegistry = {
               label: "Column Configuration",
               type: "json",
               description: "Array of column definitions",
+            },
+            {
+              key: "filters",
+              label: "Data Filters",
+              type: "filters",
+              description: "Filter table rows based on column values",
             },
           ],
         },

@@ -54,6 +54,30 @@ export function createValidationSchema(editorSchema: EditorSchema) {
           shape[field.key] = z.boolean();
           break;
 
+        case "filters":
+          shape[field.key] = z
+            .array(
+              z.object({
+                column: z.string().min(1, "Column is required"),
+                operator: z.enum([
+                  "equals",
+                  "notEquals",
+                  "contains",
+                  "notContains",
+                  "greaterThan",
+                  "lessThan",
+                  "greaterThanOrEqual",
+                  "lessThanOrEqual",
+                ]),
+                value: z.union([z.string(), z.number()]).refine(
+                  (val) => val !== "" && val !== null && val !== undefined,
+                  "Value is required"
+                ),
+              })
+            )
+            .optional() as any;
+          break;
+
         default:
           shape[field.key] = z.any();
       }
