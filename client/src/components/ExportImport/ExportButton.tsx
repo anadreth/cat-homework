@@ -91,12 +91,12 @@ export function ExportButton() {
         title="Export"
       >
         <RiDownloadLine size={16} />
-        <span>Export</span>
+        <span className="hidden lg:inline">Export</span>
         <RiArrowDownSLine size={16} className="text-gray-500" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-64 rounded-md border border-gray-200 bg-white shadow-lg">
+        <div className="absolute left-0 z-50 mt-2 w-64 rounded-md border border-gray-200 bg-white shadow-lg">
           <div className="py-1">
             {/* Dashboard Export */}
             <ExportMenuItem

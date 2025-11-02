@@ -31,6 +31,7 @@ import {
 import type { ComponentDataType } from "@/components/Canvas/blocks";
 import { GRID_COLUMNS, CELL_HEIGHT, VERTICAL_MARGIN } from "@/constants/grid";
 import { WidgetWrapper } from "@/components/WidgetWrapper";
+import { CanvasToolbar } from "@/components/CanvasToolbar";
 import type { WidgetType } from "@/store/types";
 
 /**
@@ -316,21 +317,27 @@ export function Canvas() {
   }, []);
 
   return (
-    <div
-      ref={canvasRef}
-      className="canvas relative h-full w-full overflow-x-auto overflow-y-auto bg-gray-50 p-4"
-      style={{ minHeight: "100%" }}
-    >
+    <div className="canvas relative h-full w-full overflow-hidden bg-gray-50">
+      {/* Canvas toolbar - hidden on mobile */}
+      <CanvasToolbar />
+
+      {/* Scrollable canvas area */}
       <div
-        className="mx-auto"
-        style={{
-          minWidth: "480px",
-          maxWidth: "1440px",
-        }}
+        ref={canvasRef}
+        className="h-full w-full overflow-x-auto overflow-y-auto p-4"
+        style={{ minHeight: "calc(100% - 57px)" }}
       >
-        <GridStackProvider initialOptions={initialOptions}>
-          <CanvasContent />
-        </GridStackProvider>
+        <div
+          className="mx-auto"
+          style={{
+            minWidth: "480px",
+            maxWidth: "1440px",
+          }}
+        >
+          <GridStackProvider initialOptions={initialOptions}>
+            <CanvasContent />
+          </GridStackProvider>
+        </div>
       </div>
     </div>
   );

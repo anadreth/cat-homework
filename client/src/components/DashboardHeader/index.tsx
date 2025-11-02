@@ -1,27 +1,18 @@
 /**
  * DashboardHeader Component
  *
- * Top toolbar for dashboard with navigation, actions, and panel toggles
+ * Simplified header with navigation and user controls
+ * Action buttons (undo/redo/export/import etc.) moved to CanvasToolbar
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { undo, redo, selectCanUndo, selectCanRedo, resetDashboard, selectUser, logout } from '@/store';
-import { togglePalette, toggleInspector, selectPaletteOpen, selectInspectorOpen } from '@/store/slices/uiSlice';
-import { addMultipleTestWidgets } from '@/utils/devTools';
+import { useAppDispatch } from '@/store/hooks';
+import { selectUser, logout } from '@/store';
 import { SaveStatusIndicator } from '@/components/SaveStatusIndicator';
-import { ExportButton } from '@/components/ExportImport/ExportButton';
-import { ImportButton } from '@/components/ExportImport/ImportButton';
-import { ToolbarButton, ToolbarDivider, ToolbarIconButton } from '@/components/Toolbar';
+import { ToolbarButton, ToolbarIconButton } from '@/components/Toolbar';
 import {
-  RiAddLine,
-  RiDeleteBin6Line,
-  RiLayoutLeftLine,
-  RiLayoutRightLine,
   RiMenuLine,
-  RiArrowGoBackLine,
-  RiArrowGoForwardLine,
   RiHomeLine,
   RiLogoutBoxLine,
 } from '@remixicon/react';
@@ -32,22 +23,18 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
   const dispatch = useAppDispatch();
-  const paletteOpen = useAppSelector(selectPaletteOpen);
-  const inspectorOpen = useAppSelector(selectInspectorOpen);
-  const canUndo = useAppSelector(selectCanUndo);
-  const canRedo = useAppSelector(selectCanRedo);
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const handleLogout = async () => {
     await dispatch(logout());
-    // Use replace() instead of href to prevent back button navigation
-    // This removes the current page from history, so pressing back won't return to dashboard
-    window.location.replace('/');
+    // Use replace: true to prevent back button navigation to dashboard
+    navigate('/', { replace: true });
   };
 
   return (
     <header className="flex items-center justify-between gap-2 border-b border-gray-200 bg-white px-2 py-2 shadow-sm sm:px-4 sm:py-3">
-      {/* Left section */}
+      {/* Left section - Navigation */}
       <div className="flex items-center gap-1 sm:gap-4">
         <ToolbarIconButton
           onClick={onMobileMenuOpen}
@@ -67,80 +54,10 @@ export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
         </div>
       </div>
 
-      {/* Right section */}
+      {/* Right section - User controls */}
       <div className="flex items-center gap-1 sm:gap-2">
-        {/* Undo/Redo - hidden on mobile */}
-        <ToolbarButton
-          onClick={() => dispatch(undo())}
-          icon={<RiArrowGoBackLine size={18} />}
-          title="Undo (Ctrl+Z)"
-          disabled={!canUndo}
-          hideOnMobile
-          className="md:flex sm:px-2"
-        />
-
-        <ToolbarButton
-          onClick={() => dispatch(redo())}
-          icon={<RiArrowGoForwardLine size={18} />}
-          title="Redo (Ctrl+Shift+Z)"
-          disabled={!canRedo}
-          hideOnMobile
-          className="md:flex sm:px-2"
-        />
-
-        <ToolbarDivider hideOnMobile />
-
-        <ExportButton />
-        <ImportButton />
-
-        <ToolbarDivider className="lg:mx-2" />
-
-        {/* Panel toggles - desktop only */}
-        <ToolbarButton
-          onClick={() => dispatch(togglePalette())}
-          icon={<RiLayoutLeftLine size={16} />}
-          label="Palette"
-          title="Toggle palette"
-          variant={paletteOpen ? 'primary' : 'default'}
-          hideOnMobile
-          className="lg:flex"
-        />
-
-        <ToolbarButton
-          onClick={() => dispatch(toggleInspector())}
-          icon={<RiLayoutRightLine size={16} />}
-          label="Inspector"
-          title="Toggle inspector"
-          variant={inspectorOpen ? 'primary' : 'default'}
-          hideOnMobile
-          className="lg:flex"
-        />
-
-        <ToolbarDivider className="sm:mx-2 lg:block" />
-
-        <ToolbarButton
-          onClick={() => addMultipleTestWidgets(dispatch)}
-          icon={<RiAddLine size={16} />}
-          label="Add Default Widgets"
-          title="Add test widgets"
-          hideOnMobile
-          className="sm:flex sm:px-3"
-        />
-
-        <ToolbarButton
-          onClick={() => dispatch(resetDashboard())}
-          icon={<RiDeleteBin6Line size={18} />}
-          label="Clear"
-          title="Clear canvas"
-          variant="danger"
-          className="sm:px-3"
-        />
-
-        {/* User info & logout */}
         {user && (
           <>
-            <ToolbarDivider className="sm:mx-2" />
-
             {/* User avatar and name - hidden on mobile */}
             <div className="hidden items-center gap-2 px-2 sm:flex">
               {user.picture && (

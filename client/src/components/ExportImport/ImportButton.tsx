@@ -28,7 +28,7 @@ export function ImportButton() {
         title="Import dashboard or widget"
       >
         <RiUploadLine size={16} />
-        <span>Import</span>
+        <span className="hidden lg:inline">Import</span>
       </button>
     </>
   );

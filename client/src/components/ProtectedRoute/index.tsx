@@ -9,34 +9,18 @@
  * - Renders children if authenticated
  */
 
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, useLocation } from 'react-router-dom';
-import { selectIsAuthenticated, selectIsLoading, fetchUserProfile } from '@/store';
+import { Navigate } from 'react-router-dom';
+import { selectIsAuthenticated, selectIsLoading } from '@/store';
 import { AppLoader } from '@/components/AppLoader';
-import { useAppDispatch } from '@/store/hooks';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isLoading = useSelector(selectIsLoading);
-
-  // Re-validate authentication whenever location changes
-  // This catches edge cases where:
-  // 1. User presses browser back button after logout
-  // 2. Redux state is stale
-  // 3. Cookies expired while app was idle
-  useEffect(() => {
-    if (!isLoading) {
-      console.log('[ProtectedRoute] Location changed, re-validating auth...');
-      dispatch(fetchUserProfile());
-    }
-  }, [location.pathname, dispatch, isLoading]);
 
   // Show loader while checking authentication
   if (isLoading) {

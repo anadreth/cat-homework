@@ -2,9 +2,11 @@
  * MobileMenu - Mobile-only navigation menu
  *
  * Provides access to all dashboard actions on mobile devices
- * including panel toggles, export/import, and canvas actions
+ * including panel toggles, export/import, canvas actions, and logout
  */
 
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   togglePalette,
@@ -12,7 +14,7 @@ import {
   selectPaletteOpen,
   selectInspectorOpen,
 } from "@/store/slices/uiSlice";
-import { resetDashboard, selectCanUndo, selectCanRedo } from "@/store";
+import { resetDashboard, selectCanUndo, selectCanRedo, selectUser, logout } from "@/store";
 import { addMultipleTestWidgets } from "@/utils/devTools";
 import {
   RiLayoutLeftLine,
@@ -24,6 +26,7 @@ import {
   RiCloseLine,
   RiArrowGoBackLine,
   RiArrowGoForwardLine,
+  RiLogoutBoxLine,
 } from "@remixicon/react";
 
 interface MobileMenuProps {
@@ -44,10 +47,12 @@ export function MobileMenu({
   onRedo,
 }: MobileMenuProps) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const paletteOpen = useAppSelector(selectPaletteOpen);
   const inspectorOpen = useAppSelector(selectInspectorOpen);
   const canUndo = useAppSelector(selectCanUndo);
   const canRedo = useAppSelector(selectCanRedo);
+  const user = useSelector(selectUser);
 
   const handleTogglePalette = () => {
     dispatch(togglePalette());
@@ -89,6 +94,12 @@ export function MobileMenu({
   const handleRedo = () => {
     onRedo();
     onClose();
+  };
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    // Use replace: true to prevent back button navigation to dashboard
+    navigate('/', { replace: true });
   };
 
   if (!isOpen) return null;
@@ -200,7 +211,7 @@ export function MobileMenu({
           </div>
 
           {/* Danger Zone */}
-          <div>
+          <div className="mb-2 border-b border-gray-200 pb-2">
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Danger Zone
             </p>
@@ -212,6 +223,39 @@ export function MobileMenu({
               <span className="font-medium">Clear Canvas</span>
             </button>
           </div>
+
+          {/* Account */}
+          {user && (
+            <div>
+              <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
+                Account
+              </p>
+              {/* User info */}
+              <div className="flex items-center gap-3 px-3 py-2">
+                {user.picture && (
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="h-8 w-8 rounded-full"
+                  />
+                )}
+                <div className="flex-1 overflow-hidden">
+                  <p className="truncate text-sm font-medium text-gray-900">
+                    {user.name}
+                  </p>
+                  <p className="truncate text-xs text-gray-500">{user.email}</p>
+                </div>
+              </div>
+              {/* Logout button */}
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
+              >
+                <RiLogoutBoxLine size={20} />
+                <span className="font-medium">Logout</span>
+              </button>
+            </div>
+          )}
         </nav>
       </div>
     </>

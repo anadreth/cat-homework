@@ -4,9 +4,12 @@
  * Main hero section with title, description, and CTA buttons
  */
 
+import { useNavigate } from "react-router-dom";
 import { RiArrowRightLine } from "@remixicon/react";
 
 export function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <div className="text-center">
       {/* Badge */}
@@ -37,7 +40,7 @@ export function HeroSection() {
       {/* CTA Buttons */}
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
         <button
-          onClick={() => (window.location.href = "/dashboard")}
+          onClick={() => navigate('/dashboard')}
           className="cursor-pointer group inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
         >
           Start Building
