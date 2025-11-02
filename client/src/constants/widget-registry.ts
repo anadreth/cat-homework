@@ -1,10 +1,10 @@
 import type { ComponentType } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { WidgetType } from "@/store/types";
-import { AreaChartWidget } from "@/components/AreaChart/widget";
-import { TableWidget } from "@/components/Table/widget";
-import { ListWidget } from "@/components/List/widget";
-import { TextWidget } from "@/components/Text/widget";
+import { AreaChartWidget, type AreaChartWidgetProps } from "@/components/AreaChart/widget";
+import { TableWidget, type TableWidgetProps } from "@/components/Table/widget";
+import { ListWidget, type ListWidgetProps } from "@/components/List/widget";
+import { TextWidget, type TextWidgetProps } from "@/components/Text/widget";
 
 export type EditorFieldSchema = {
   key: string;
@@ -22,18 +22,22 @@ export type EditorSchema = {
   }[];
 };
 
-export type WidgetMeta = {
+export type WidgetProps =
+  | AreaChartWidgetProps<Record<string, string | number>, string, string>
+  | TableWidgetProps<Record<string, string | number>, string>
+  | ListWidgetProps
+  | TextWidgetProps;
+
+export type WidgetMeta<TProps extends WidgetProps = WidgetProps> = {
   type: WidgetType;
   name: string;
   description: string;
   defaultSize: {
-    w: number; // Width in columns (1-12)
-    h: number; // Height in rows
+    w: number;
+    h: number;
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  defaultPropsFactory: () => Record<string, any>; // Function that generates fresh props
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: ComponentType<any>;
+  defaultPropsFactory: () => TProps;
+  component: ComponentType<TProps>;
   editorSchema: EditorSchema;
 };
 
@@ -64,7 +68,14 @@ const generateSampleListItems = () => [
   { id: uuidv4(), label: "Update documentation", description: "API endpoints" },
 ];
 
-export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
+type WidgetRegistry = {
+  chart: WidgetMeta<AreaChartWidgetProps<Record<string, string | number>, string, string>>;
+  table: WidgetMeta<TableWidgetProps<Record<string, string | number>, string>>;
+  list: WidgetMeta<ListWidgetProps>;
+  text: WidgetMeta<TextWidgetProps>;
+};
+
+export const WIDGET_REGISTRY: WidgetRegistry = {
   chart: {
     type: "chart",
     name: "Area Chart",
@@ -230,4 +241,4 @@ export const WIDGET_COMPONENT_MAP = {
   text: TextWidget,
 } as const;
 
-export type ComponentMap = Record<string, ComponentType<any>>;
+export type ComponentMap = Record<WidgetType, ComponentType<WidgetProps>>;
