@@ -1,10 +1,3 @@
-/**
- * PropertyEditor - Form for editing widget properties
- *
- * Dynamically generates form fields based on editor schema
- * Uses react-hook-form for form state management with Zod validation
- */
-
 import { useEffect, useMemo, useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +27,6 @@ export function PropertyEditor({
     [schema]
   );
 
-  // Serialize initial values (convert JSON objects to strings)
   const defaultValues = useMemo(
     () => serializePropsForForm(values, schema),
     [values, schema]
@@ -49,15 +41,15 @@ export function PropertyEditor({
   } = useForm({
     defaultValues,
     resolver: zodResolver(validationSchema),
-    mode: "onChange", // Validate on every change
+    mode: "onChange",
   });
 
-  // Reset form when widget selection changes
   useEffect(() => {
     const serialized = serializePropsForForm(values, schema);
     reset(serialized);
   }, [values, schema, reset]);
 
+  //TODO pull into useDebounce hook + usePropertyEditorForm
   const debounceTimerRef = useRef<number | null>(null);
   const debouncedOnChange = useCallback(
     async (formValues: Record<string, SerializableValue | string>) => {
@@ -91,6 +83,7 @@ export function PropertyEditor({
     };
   }, [watch, debouncedOnChange]);
 
+  //TODO refactor into field components with FormProvider and useFormContext
   return (
     <div className="space-y-6">
       {schema.sections.map((section) => (

@@ -1,21 +1,10 @@
-/**
- * DashboardHeader Component
- *
- * Simplified header with navigation and user controls
- * Action buttons (undo/redo/export/import etc.) moved to CanvasToolbar
- */
-
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '@/store/hooks';
-import { selectUser, logout } from '@/store';
-import { SaveStatusIndicator } from '@/components/SaveStatusIndicator';
-import { ToolbarButton, ToolbarIconButton } from '@/components/Toolbar';
-import {
-  RiMenuLine,
-  RiHomeLine,
-  RiLogoutBoxLine,
-} from '@remixicon/react';
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/store/hooks";
+import { selectUser, logout } from "@/store";
+import { SaveStatusIndicator } from "@/components/SaveStatusIndicator";
+import { ToolbarButton, ToolbarIconButton } from "@/components/Toolbar";
+import { RiMenuLine, RiHomeLine, RiLogoutBoxLine } from "@remixicon/react";
 
 interface DashboardHeaderProps {
   onMobileMenuOpen: () => void;
@@ -29,12 +18,11 @@ export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
   const handleLogout = async () => {
     await dispatch(logout());
     // Use replace: true to prevent back button navigation to dashboard
-    navigate('/', { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (
     <header className="flex items-center justify-between gap-2 border-b border-gray-200 bg-white px-2 py-2 shadow-sm sm:px-4 sm:py-3">
-      {/* Left section - Navigation */}
       <div className="flex items-center gap-1 sm:gap-4">
         <ToolbarIconButton
           onClick={onMobileMenuOpen}
@@ -43,22 +31,26 @@ export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
           hideOnDesktop
         />
 
-        <Link to="/" className="rounded p-1.5 text-gray-600 hover:bg-gray-100" title="Go to home">
+        <Link
+          to="/"
+          className="rounded p-1.5 text-gray-600 hover:bg-gray-100"
+          title="Go to home"
+        >
           <RiHomeLine size={20} />
         </Link>
 
-        <h1 className="text-base font-bold text-gray-900 sm:text-xl">Dashboard</h1>
+        <h1 className="text-base font-bold text-gray-900 sm:text-xl">
+          Dashboard
+        </h1>
 
         <div className="hidden sm:block">
           <SaveStatusIndicator />
         </div>
       </div>
 
-      {/* Right section - User controls */}
       <div className="flex items-center gap-1 sm:gap-2">
         {user && (
           <>
-            {/* User avatar and name - hidden on mobile */}
             <div className="hidden items-center gap-2 px-2 sm:flex">
               {user.picture && (
                 <img

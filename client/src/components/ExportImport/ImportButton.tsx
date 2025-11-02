@@ -1,10 +1,3 @@
-/**
- * ImportButton - Import dashboard or widget from JSON file
- *
- * Handles file upload, validation, and importing into Redux
- * Refactored to use useImport hook for reusable logic
- */
-
 import { useImport } from "@/hooks/useImport";
 import { RiUploadLine } from "@remixicon/react";
 

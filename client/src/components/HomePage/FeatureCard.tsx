@@ -1,9 +1,3 @@
-/**
- * FeatureCard Component
- *
- * Reusable card component for displaying feature information
- */
-
 import type { Feature } from "@/constants/features";
 
 interface FeatureCardProps {

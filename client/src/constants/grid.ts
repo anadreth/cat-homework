@@ -1,3 +1,5 @@
+import type { GridStackOptions } from "gridstack";
+
 export const GRID_COLUMNS = 12;
 export const CELL_HEIGHT = 60;
 export const VERTICAL_MARGIN = 10;
@@ -40,3 +42,19 @@ export const GRID_CONSTRAINTS = {
   MAX_WIDTH: GRID_COLUMNS,
   MAX_HEIGHT: 100,
 } as const;
+
+export const GRID_OPTIONS: GridStackOptions = {
+  column: GRID_COLUMNS,
+  cellHeight: CELL_HEIGHT,
+  margin: VERTICAL_MARGIN,
+  float: true,
+  removable: false,
+  acceptWidgets: ".palette-item", // Accept items with this class
+  animate: true, // Disable animation for instant feedback
+  minRow: 1,
+  maxRow: 0, // Infinite height
+  resizable: {
+    handles: "e, se, s, sw, w",
+  },
+  children: [], // Will be populated from Redux
+};

@@ -1,30 +1,9 @@
-/**
- * Validation schemas for widget properties using Zod
- *
- * This module is responsible for generating Zod validation schemas
- * from editor field definitions. It validates form input but does NOT
- * handle data transformation - see utils/formSerialization.ts for that.
- */
-
 import { z } from "zod";
 import type { EditorSchema } from "@/constants/widget-registry";
+import type { SerializableValue } from "@/store/types";
 
-/**
- * Create a Zod schema from editor field schema
- *
- * Generates validation rules based on field types:
- * - text: string with length limits
- * - textarea: string with larger length limits
- * - number: positive numbers
- * - json: validates JSON syntax (as string)
- * - select: non-empty string
- * - checkbox: boolean
- *
- * @param editorSchema - Widget editor schema from registry
- * @returns Zod object schema for react-hook-form validation
- */
 export function createValidationSchema(editorSchema: EditorSchema) {
-  const shape: Record<string, z.ZodTypeAny> = {};
+  const shape: Record<string, z.ZodType<SerializableValue>> = {};
 
   editorSchema.sections.forEach((section) => {
     section.fields.forEach((field) => {
@@ -51,7 +30,6 @@ export function createValidationSchema(editorSchema: EditorSchema) {
           break;
 
         case "json":
-          // For JSON fields, we validate the string can be parsed as JSON
           shape[field.key] = z
             .string()
             .min(1, "JSON data is required")

@@ -1,10 +1,3 @@
-/**
- * ExportMenuItem - Reusable menu item for export dropdown
- *
- * Single Responsibility: Renders a single menu item with icon, label, and optional description
- * DRY: Eliminates repeated button markup in ExportButton
- */
-
 import { type ReactNode } from "react";
 
 export interface ExportMenuItemProps {

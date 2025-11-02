@@ -1,10 +1,3 @@
-/**
- * PageHeader Component
- *
- * Homepage header with logo and auth-aware CTA button
- * Shows "Go to Dashboard" if authenticated, "Sign In" otherwise
- */
-
 import { Link } from "react-router-dom";
 import { RiLayoutGridLine } from "@remixicon/react";
 import { initiateLogin } from "@/lib/auth/service";

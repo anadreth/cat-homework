@@ -1,11 +1,3 @@
-/**
- * ExportButton - Export dashboard or selected widget to various formats
- *
- * Provides a dropdown menu with export options:
- * - Export Dashboard JSON
- * - Export Current Widget (JSON/PNG/PDF/CSV/XLSX based on widget type)
- */
-
 import { useState, useRef, useEffect } from "react";
 import { useExport } from "@/hooks/useExport";
 import { ExportMenuItem } from "./ExportMenuItem";
@@ -107,7 +99,6 @@ export function ExportButton() {
               iconColor="text-gray-500"
             />
 
-            {/* Widget Exports */}
             {selectedWidget && (
               <>
                 <div className="my-1 border-t border-gray-200" />

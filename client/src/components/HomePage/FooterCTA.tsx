@@ -1,9 +1,3 @@
-/**
- * FooterCTA Component
- *
- * Call-to-action section at the bottom of the homepage
- */
-
 import { Link } from "react-router-dom";
 import { RiArrowRightLine } from "@remixicon/react";
 

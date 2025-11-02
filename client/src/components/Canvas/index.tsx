@@ -1,12 +1,3 @@
-/**
- * Canvas - Grid canvas with Redux integration
- *
- * This component bridges Gridstack and Redux:
- * - Syncs Gridstack state to Redux
- * - Syncs Redux state to Gridstack
- * - Handles widget lifecycle (add/remove/update)
- */
-
 import { useEffect, useMemo, useCallback, useRef } from "react";
 import type { GridStackOptions, GridStackWidget } from "gridstack";
 import {
@@ -23,38 +14,15 @@ import {
   addWidget,
 } from "@/store";
 import { selectWidget } from "@/store/slices/selectionSlice";
-import {
-  WIDGET_COMPONENT_MAP,
-} from "@/constants/widget-registry";
+import { WIDGET_COMPONENT_MAP } from "@/constants/widget-registry";
 import type { ComponentDataType } from "@/components/Canvas/blocks";
-import { GRID_COLUMNS, CELL_HEIGHT, VERTICAL_MARGIN } from "@/constants/grid";
+import { GRID_OPTIONS } from "@/constants/grid";
 import { WidgetWrapper } from "@/components/WidgetWrapper";
 import { CanvasToolbar } from "@/components/CanvasToolbar";
 import type { WidgetType } from "@/store/types";
 import { getWidgetDefaultProps, getWidgetMeta } from "@/lib/utils/widgets";
 
-/**
- * Grid options for canvas
- */
-const GRID_OPTIONS: GridStackOptions = {
-  column: GRID_COLUMNS,
-  cellHeight: CELL_HEIGHT,
-  margin: VERTICAL_MARGIN,
-  float: true,
-  removable: false,
-  acceptWidgets: ".palette-item", // Accept items with this class
-  animate: true, // Disable animation for instant feedback
-  minRow: 1,
-  maxRow: 0, // Infinite height
-  resizable: {
-    handles: "e, se, s, sw, w",
-  },
-  children: [], // Will be populated from Redux
-};
-
-/**
- * Canvas content - connects Gridstack to Redux
- */
+// Canvas content - connects Gridstack to Redux
 function CanvasContent() {
   const dispatch = useAppDispatch();
   const {
@@ -66,9 +34,7 @@ function CanvasContent() {
   const layout = useAppSelector(selectLayout);
   const widgets = useAppSelector(selectAllWidgets);
 
-  /**
-   * Convert Redux layout to Gridstack widgets
-   */
+  // Convert Redux layout to Gridstack widgets
   const gridstackWidgets = useMemo(() => {
     return layout.map((layoutItem): GridStackWidget => {
       const widget = widgets[layoutItem.id];
@@ -98,9 +64,7 @@ function CanvasContent() {
     });
   }, [layout, widgets]);
 
-  /**
-   * Sync Gridstack changes back to Redux
-   */
+  // Sync Gridstack changes back to Redux
   const handleGridChange = useCallback(() => {
     if (!gridStack) return;
 
@@ -145,9 +109,8 @@ function CanvasContent() {
     };
   }, [gridStack, handleGridChange]);
 
-  /**
-   * Handle external widget drops from palette
-   */
+  // Handle external widget drops from palette
+
   useEffect(() => {
     if (!gridStack) {
       return;
@@ -158,7 +121,6 @@ function CanvasContent() {
       _previousWidget: GridStackWidget,
       newWidget: GridStackWidget & { el?: HTMLElement }
     ) => {
-      // Get widget type from the dropped element
       const el = newWidget.el;
       const widgetType = el?.getAttribute("data-widget-type") as WidgetType;
 
@@ -167,11 +129,9 @@ function CanvasContent() {
         return;
       }
 
-      // Get widget metadata and create widget with defaults
       const meta = getWidgetMeta(widgetType);
       const props = getWidgetDefaultProps(widgetType);
 
-      // Create widget in Redux with the dropped position
       const action = dispatch(
         addWidget({
           type: widgetType,
@@ -185,11 +145,9 @@ function CanvasContent() {
         })
       );
 
-      // Auto-select the newly created widget
       const newWidgetId = action.meta.id;
       dispatch(selectWidget(newWidgetId));
 
-      // Remove the temporary element
       setTimeout(() => {
         if (el && el.parentElement) {
           el.remove();
@@ -205,9 +163,8 @@ function CanvasContent() {
     };
   }, [gridStack, dispatch]);
 
-  /**
-   * Sync widgets to grid when Redux state changes
-   */
+  //  Sync widgets to grid when Redux state changes
+
   useEffect(() => {
     if (!gridStack) return;
 
@@ -265,17 +222,13 @@ function CanvasContent() {
   );
 }
 
-/**
- *  Canvas - Main component
- */
 export function Canvas() {
   const layout = useAppSelector(selectLayout);
   const widgets = useAppSelector(selectAllWidgets);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Reset scroll position when canvas is cleared
-   */
+  // Reset scroll position when canvas is cleared
+
   useEffect(() => {
     if (layout.length === 0 && canvasRef.current) {
       canvasRef.current.scrollTop = 0;
@@ -317,10 +270,8 @@ export function Canvas() {
 
   return (
     <div className="canvas relative h-full w-full overflow-hidden bg-gray-50">
-      {/* Canvas toolbar - hidden on mobile */}
       <CanvasToolbar />
 
-      {/* Scrollable canvas area */}
       <div
         ref={canvasRef}
         className="h-full w-full overflow-x-auto overflow-y-auto p-4"

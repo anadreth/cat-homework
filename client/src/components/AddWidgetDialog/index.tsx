@@ -6,18 +6,18 @@
  * On click, adds widget to center of viewport and closes dialog
  */
 
-import { useAppDispatch } from '@/store/hooks';
-import { addWidget } from '@/store';
-import { selectWidget } from '@/store/slices/selectionSlice';
-import { WIDGET_REGISTRY } from '@/constants/widget-registry';
-import { Modal } from '@/components/Modal';
-import type { WidgetType } from '@/store/types';
+import { useAppDispatch } from "@/store/hooks";
+import { addWidget } from "@/store";
+import { selectWidget } from "@/store/slices/selectionSlice";
+import { WIDGET_REGISTRY } from "@/constants/widget-registry";
+import { Modal } from "@/components/Modal";
+import type { WidgetType } from "@/store/types";
 import {
   RiTableLine,
   RiListCheck,
   RiText,
   RiBarChartBoxLine,
-} from '@remixicon/react';
+} from "@remixicon/react";
 
 interface AddWidgetDialogProps {
   isOpen: boolean;
@@ -30,24 +30,24 @@ const WIDGET_OPTIONS: Array<{
   color: string;
 }> = [
   {
-    type: 'chart',
+    type: "chart",
     icon: <RiBarChartBoxLine size={32} />,
-    color: 'from-blue-500 to-blue-600',
+    color: "from-blue-500 to-blue-600",
   },
   {
-    type: 'table',
+    type: "table",
     icon: <RiTableLine size={32} />,
-    color: 'from-purple-500 to-purple-600',
+    color: "from-purple-500 to-purple-600",
   },
   {
-    type: 'list',
+    type: "list",
     icon: <RiListCheck size={32} />,
-    color: 'from-green-500 to-green-600',
+    color: "from-green-500 to-green-600",
   },
   {
-    type: 'text',
+    type: "text",
     icon: <RiText size={32} />,
-    color: 'from-orange-500 to-orange-600',
+    color: "from-orange-500 to-orange-600",
   },
 ];
 
@@ -99,9 +99,7 @@ export function AddWidgetDialog({ isOpen, onClose }: AddWidgetDialogProps) {
               </div>
               <div className="text-center">
                 <p className="font-semibold text-gray-900">{meta.name}</p>
-                <p className="mt-1 text-xs text-gray-500">
-                  {meta.description}
-                </p>
+                <p className="mt-1 text-xs text-gray-500">{meta.description}</p>
               </div>
             </button>
           );

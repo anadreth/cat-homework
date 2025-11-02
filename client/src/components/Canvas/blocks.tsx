@@ -382,12 +382,6 @@ export function useGridStackWidgetContext() {
   return context;
 }
 
-/**
- * LivePropsWidget - Subscribes to Redux for live prop updates
- *
- * This component ensures widgets re-render when their props change in Redux,
- * fixing the issue where _rawWidgetMetaMap had stale props.
- */
 function LivePropsWidget({
   widgetId,
   widgetType,
