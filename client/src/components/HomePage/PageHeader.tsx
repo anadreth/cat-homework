@@ -1,13 +1,23 @@
 /**
  * PageHeader Component
  *
- * Homepage header with logo and CTA button
+ * Homepage header with logo and auth-aware CTA button
+ * Shows "Go to Dashboard" if authenticated, "Sign In" otherwise
  */
 
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RiLayoutGridLine } from "@remixicon/react";
+import { selectIsAuthenticated } from "@/store";
+import { initiateLogin } from "@/services/authService";
 
 export function PageHeader() {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
+  const handleLogin = () => {
+    initiateLogin();
+  };
+
   return (
     <header className="border-b border-gray-200 bg-white/80 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
@@ -20,12 +30,21 @@ export function PageHeader() {
               Dashboard Builder
             </h1>
           </div>
-          <Link
-            to="/dashboard"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-          >
-            Go to Dashboard
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              to="/dashboard"
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              Go to Dashboard
+            </Link>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="cursor-pointer rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </header>

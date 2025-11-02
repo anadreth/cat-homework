@@ -5,8 +5,9 @@
  */
 
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { undo, redo, selectCanUndo, selectCanRedo, resetDashboard } from '@/store';
+import { undo, redo, selectCanUndo, selectCanRedo, resetDashboard, selectUser, logout } from '@/store';
 import { togglePalette, toggleInspector, selectPaletteOpen, selectInspectorOpen } from '@/store/slices/uiSlice';
 import { addMultipleTestWidgets } from '@/utils/devTools';
 import { SaveStatusIndicator } from '@/components/SaveStatusIndicator';
@@ -22,6 +23,7 @@ import {
   RiArrowGoBackLine,
   RiArrowGoForwardLine,
   RiHomeLine,
+  RiLogoutBoxLine,
 } from '@remixicon/react';
 
 interface DashboardHeaderProps {
@@ -34,6 +36,14 @@ export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
   const inspectorOpen = useAppSelector(selectInspectorOpen);
   const canUndo = useAppSelector(selectCanUndo);
   const canRedo = useAppSelector(selectCanRedo);
+  const user = useSelector(selectUser);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    // Use replace() instead of href to prevent back button navigation
+    // This removes the current page from history, so pressing back won't return to dashboard
+    window.location.replace('/');
+  };
 
   return (
     <header className="flex items-center justify-between gap-2 border-b border-gray-200 bg-white px-2 py-2 shadow-sm sm:px-4 sm:py-3">
@@ -125,6 +135,35 @@ export function DashboardHeader({ onMobileMenuOpen }: DashboardHeaderProps) {
           variant="danger"
           className="sm:px-3"
         />
+
+        {/* User info & logout */}
+        {user && (
+          <>
+            <ToolbarDivider className="sm:mx-2" />
+
+            {/* User avatar and name - hidden on mobile */}
+            <div className="hidden items-center gap-2 px-2 sm:flex">
+              {user.picture && (
+                <img
+                  src={user.picture}
+                  alt={user.name}
+                  className="h-7 w-7 rounded-full"
+                />
+              )}
+              <span className="hidden text-sm font-medium text-gray-700 lg:inline">
+                {user.name}
+              </span>
+            </div>
+
+            <ToolbarButton
+              onClick={handleLogout}
+              icon={<RiLogoutBoxLine size={18} />}
+              label="Logout"
+              title="Sign out"
+              className="sm:px-3"
+            />
+          </>
+        )}
       </div>
     </header>
   );

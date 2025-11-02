@@ -4,7 +4,6 @@
  * Main hero section with title, description, and CTA buttons
  */
 
-import { Link } from "react-router-dom";
 import { RiArrowRightLine } from "@remixicon/react";
 
 export function HeroSection() {
@@ -37,18 +36,18 @@ export function HeroSection() {
 
       {/* CTA Buttons */}
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <Link
-          to="/dashboard"
-          className="group inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+        <button
+          onClick={() => (window.location.href = "/dashboard")}
+          className="cursor-pointer group inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
         >
           Start Building
           <RiArrowRightLine
             size={20}
             className="transition-transform group-hover:translate-x-1"
           />
-        </Link>
+        </button>
         <a
-          href="https://github.com/anthropics/claude-code"
+          href="https://github.com/anadreth/cat-homework"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-lg border-2 border-gray-300 bg-white px-8 py-4 text-lg font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50"
