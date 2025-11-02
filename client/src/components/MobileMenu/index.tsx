@@ -5,6 +5,7 @@
  * including panel toggles, export/import, canvas actions, and logout
  */
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -15,7 +16,7 @@ import {
   selectInspectorOpen,
 } from "@/store/slices/uiSlice";
 import { resetDashboard, selectCanUndo, selectCanRedo, selectUser, logout } from "@/store";
-import { addMultipleTestWidgets } from "@/utils/devTools";
+import { AddWidgetDialog } from "@/components/AddWidgetDialog";
 import {
   RiLayoutLeftLine,
   RiLayoutRightLine,
@@ -53,6 +54,7 @@ export function MobileMenu({
   const canUndo = useAppSelector(selectCanUndo);
   const canRedo = useAppSelector(selectCanRedo);
   const user = useSelector(selectUser);
+  const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
 
   const handleTogglePalette = () => {
     dispatch(togglePalette());
@@ -64,8 +66,8 @@ export function MobileMenu({
     onClose();
   };
 
-  const handleAddDefaults = () => {
-    addMultipleTestWidgets(dispatch);
+  const handleAddWidget = () => {
+    setIsAddWidgetDialogOpen(true);
     onClose();
   };
 
@@ -202,11 +204,11 @@ export function MobileMenu({
             </button>
 
             <button
-              onClick={handleAddDefaults}
+              onClick={handleAddWidget}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
             >
               <RiAddLine size={20} />
-              <span className="font-medium">Add Default Widgets</span>
+              <span className="font-medium">Add Widget</span>
             </button>
           </div>
 
@@ -258,6 +260,12 @@ export function MobileMenu({
           )}
         </nav>
       </div>
+
+      {/* Add Widget Dialog */}
+      <AddWidgetDialog
+        isOpen={isAddWidgetDialogOpen}
+        onClose={() => setIsAddWidgetDialogOpen(false)}
+      />
     </>
   );
 }

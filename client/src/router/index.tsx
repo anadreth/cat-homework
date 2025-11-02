@@ -11,14 +11,15 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLoader } from "@/components/AppLoader";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const HomePage = lazy(() =>
   import("@/pages/HomePage").then((module) => ({ default: module.HomePage }))
 );
 
 const CallbackPage = lazy(() =>
-  import("@/pages/CallbackPage").then((module) => ({ default: module.CallbackPage }))
+  import("@/pages/CallbackPage").then((module) => ({
+    default: module.CallbackPage,
+  }))
 );
 
 const DashboardPage = lazy(() =>
@@ -48,9 +49,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Suspense fallback={<AppLoader />}>
-        <ProtectedRoute>
-          <DashboardPage />
-        </ProtectedRoute>
+        <DashboardPage />
       </Suspense>
     ),
   },
