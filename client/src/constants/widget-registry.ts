@@ -1,8 +1,3 @@
-/**
- * Widget Registry
- * Central registry for all widget types with metadata and components
- */
-
 import type { ComponentType } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { WidgetType } from "@/store/types";
@@ -11,9 +6,6 @@ import { TableWidget } from "@/components/Table/widget";
 import { ListWidget } from "@/components/List/widget";
 import { TextWidget } from "@/components/Text/widget";
 
-/**
- * Editor field schema for widget properties
- */
 export type EditorFieldSchema = {
   key: string;
   label: string;
@@ -23,9 +15,6 @@ export type EditorFieldSchema = {
   description?: string;
 };
 
-/**
- * Editor schema for a widget type
- */
 export type EditorSchema = {
   sections: {
     title: string;
@@ -33,9 +22,6 @@ export type EditorSchema = {
   }[];
 };
 
-/**
- * Widget metadata for a specific widget type
- */
 export type WidgetMeta = {
   type: WidgetType;
   name: string;
@@ -51,9 +37,6 @@ export type WidgetMeta = {
   editorSchema: EditorSchema;
 };
 
-/**
- * Generate sample data for chart widget (with unique references)
- */
 const generateSampleChartData = () => [
   { date: "Jan", revenue: 2500, profit: 1200 },
   { date: "Feb", revenue: 3200, profit: 1500 },
@@ -63,9 +46,6 @@ const generateSampleChartData = () => [
   { date: "Jun", revenue: 3800, profit: 1900 },
 ];
 
-/**
- * Generate sample data for table widget (with unique IDs)
- */
 const generateSampleTableData = () => [
   { id: uuidv4(), name: "Alice Johnson", role: "Engineer", salary: 95000 },
   { id: uuidv4(), name: "Bob Smith", role: "Designer", salary: 85000 },
@@ -73,9 +53,6 @@ const generateSampleTableData = () => [
   { id: uuidv4(), name: "David Brown", role: "Engineer", salary: 92000 },
 ];
 
-/**
- * Generate sample data for list widget (with unique IDs)
- */
 const generateSampleListItems = () => [
   {
     id: uuidv4(),
@@ -87,9 +64,6 @@ const generateSampleListItems = () => [
   { id: uuidv4(), label: "Update documentation", description: "API endpoints" },
 ];
 
-/**
- * Widget Registry - Central source of truth for all widget types
- */
 export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
   chart: {
     type: "chart",
@@ -249,27 +223,6 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMeta> = {
   },
 };
 
-/**
- * Get widget metadata by type
- * Returns metadata with fresh default props generated on-demand
- */
-export function getWidgetMeta(type: WidgetType): WidgetMeta {
-  return WIDGET_REGISTRY[type];
-}
-
-/**
- * Get fresh default props for a widget type
- * Calls the factory function to generate unique data
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getWidgetDefaultProps(type: WidgetType): Record<string, any> {
-  return WIDGET_REGISTRY[type].defaultPropsFactory();
-}
-
-/**
- * Component map for rendering widgets
- * Maps widget names to their components for Gridstack rendering
- */
 export const WIDGET_COMPONENT_MAP = {
   chart: AreaChartWidget,
   table: TableWidget,
@@ -277,8 +230,4 @@ export const WIDGET_COMPONENT_MAP = {
   text: TextWidget,
 } as const;
 
-/**
- * Type for component map
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ComponentMap = Record<string, ComponentType<any>>;

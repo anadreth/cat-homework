@@ -1,16 +1,5 @@
-/**
- * Export Utilities
- *
- * Handles exporting dashboards and widgets to JSON files
- * with proper versioning and timestamps.
- */
-
 import type { DashboardDoc, WidgetInstance, LayoutItem } from "@/store/types";
 
-/**
- * Format timestamp for filenames
- * Returns format: YYYY-MM-DD-HHmmss
- */
 function formatTimestampForFilename(): string {
   const now = new Date();
   const year = now.getFullYear();
@@ -23,14 +12,6 @@ function formatTimestampForFilename(): string {
   return `${year}-${month}-${day}-${hours}${minutes}${seconds}`;
 }
 
-/**
- * Export dashboard to JSON file
- *
- * Adds exportedAt timestamp and triggers browser download
- *
- * @param dashboard - Complete dashboard document from Redux
- * @param filename - Optional custom filename (defaults to dashboard-{name}-{timestamp}.json)
- */
 export function exportDashboardJSON(
   dashboard: DashboardDoc,
   filename?: string
@@ -64,29 +45,15 @@ export function exportDashboardJSON(
   }
 }
 
-/**
- * Widget export document structure
- */
 export type WidgetExportDoc = {
-  version: number; // Schema version
-  widgetType: string; // Widget type for validation
-  widget: WidgetInstance; // Complete widget instance
-  layout: LayoutItem; // Widget layout/positioning
-  exportedAt: number; // Export timestamp
-  exportedFrom?: string; // Optional dashboard name/ID
+  version: number;
+  widgetType: string;
+  widget: WidgetInstance;
+  layout: LayoutItem;
+  exportedAt: number;
+  exportedFrom?: string;
 };
 
-/**
- * Export single widget to JSON file
- *
- * Creates a portable widget template that can be imported
- * into any dashboard.
- *
- * @param widget - Widget instance from Redux
- * @param layout - Widget layout item
- * @param dashboardName - Optional source dashboard name
- * @param filename - Optional custom filename
- */
 export function exportWidgetJSON(
   widget: WidgetInstance,
   layout: LayoutItem,
@@ -124,12 +91,6 @@ export function exportWidgetJSON(
   }
 }
 
-/**
- * Format file size in bytes to human-readable format
- *
- * @param bytes - File size in bytes
- * @returns Formatted string (e.g., "1.5 KB", "2.3 MB")
- */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return "0 Bytes";
 
@@ -137,5 +98,5 @@ export function formatFileSize(bytes: number): string {
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return Math.round(bytes / Math.pow(k, i) * 10) / 10 + " " + sizes[i];
+  return Math.round((bytes / Math.pow(k, i)) * 10) / 10 + " " + sizes[i];
 }

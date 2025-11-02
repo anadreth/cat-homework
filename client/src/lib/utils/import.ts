@@ -1,31 +1,13 @@
-/**
- * Import Validation Utilities
- *
- * Validates and processes dashboard/widget JSON imports
- * using Zod schemas for type safety.
- */
-
 import { z } from "zod";
 import type { DashboardDoc } from "@/store/types";
 import type { WidgetExportDoc } from "./export";
 import { WIDGET_REGISTRY } from "@/constants/widget-registry";
+import { CURRENT_VERSION } from "@/constants/validation";
 
-/**
- * Current schema version
- * Increment this when making breaking changes to the data model
- */
-export const CURRENT_VERSION = 1;
-
-/**
- * Validation result types
- */
 export type ValidationResult<T> =
   | { success: true; data: T }
   | { success: false; error: string };
 
-/**
- * Zod schema for widget instance
- */
 const WidgetInstanceSchema = z.object({
   id: z.string().uuid(),
   type: z.enum(["chart", "table", "list", "text"] as const),
@@ -35,9 +17,6 @@ const WidgetInstanceSchema = z.object({
   updatedAt: z.number(),
 });
 
-/**
- * Zod schema for dashboard validation
- */
 const DashboardSchema = z.object({
   version: z.number().min(1, "Invalid version number"),
   id: z.string().uuid("Invalid dashboard ID format"),
@@ -67,9 +46,6 @@ const DashboardSchema = z.object({
   }),
 });
 
-/**
- * Zod schema for widget export validation
- */
 const WidgetExportSchema = z.object({
   version: z.number().min(1),
   widgetType: z.enum(["chart", "table", "list", "text"] as const),
@@ -92,12 +68,6 @@ const WidgetExportSchema = z.object({
   exportedFrom: z.string().optional(),
 });
 
-/**
- * Validate dashboard JSON import
- *
- * @param json - Raw JSON string from uploaded file
- * @returns Validation result with parsed dashboard or error message
- */
 export function validateDashboardImport(
   json: string
 ): ValidationResult<DashboardDoc> {
@@ -147,12 +117,6 @@ export function validateDashboardImport(
   }
 }
 
-/**
- * Validate widget JSON import
- *
- * @param json - Raw JSON string from uploaded file
- * @returns Validation result with parsed widget or error message
- */
 export function validateWidgetImport(
   json: string
 ): ValidationResult<WidgetExportDoc> {
@@ -194,12 +158,6 @@ export function validateWidgetImport(
   }
 }
 
-/**
- * Read and parse JSON file from file input
- *
- * @param file - File object from input[type="file"]
- * @returns Promise resolving to file contents as string
- */
 export function readJSONFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     if (!file.name.endsWith(".json")) {

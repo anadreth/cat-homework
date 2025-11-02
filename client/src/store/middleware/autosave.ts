@@ -23,9 +23,10 @@ import {
   toggleWidgetLock,
 } from "../slices/coreSlice";
 import { markSaving, markSaved, markError } from "../slices/uiSlice";
-
-const STORAGE_KEY = "retool-dashboard";
-const DEBOUNCE_MS = 700;
+import {
+  AUTOSAVE_DEBOUNCE_MS,
+  AUTOSAVE_STORAGE_KEY,
+} from "@/constants/autosave";
 
 /**
  * Create listener middleware instance
@@ -38,7 +39,6 @@ export const autosaveMiddleware = createListenerMiddleware();
  */
 autosaveMiddleware.startListening({
   predicate: (action) => {
-    // Listen to all core slice actions
     const isCoreAction = isAnyOf(
       addWidget,
       updateWidgetProps,
@@ -52,7 +52,6 @@ autosaveMiddleware.startListening({
       resetDashboard
     )(action);
 
-    // Also listen to undo/redo actions
     const isUndoRedo = action.type === "UNDO" || action.type === "REDO";
 
     return isCoreAction || isUndoRedo;
@@ -61,13 +60,13 @@ autosaveMiddleware.startListening({
     listenerApi.cancelActiveListeners();
     listenerApi.dispatch(markSaving());
 
-    await listenerApi.delay(DEBOUNCE_MS);
+    await listenerApi.delay(AUTOSAVE_DEBOUNCE_MS);
 
     try {
       const state = listenerApi.getState() as RootState;
       const dashboard = state.core.present.dashboard;
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dashboard));
+      localStorage.setItem(AUTOSAVE_STORAGE_KEY, JSON.stringify(dashboard));
       listenerApi.dispatch(markSaved());
     } catch (error) {
       console.error("[Autosave] Failed to save dashboard:", error);
@@ -82,7 +81,7 @@ autosaveMiddleware.startListening({
  */
 export const loadDashboard = () => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(AUTOSAVE_STORAGE_KEY);
     if (stored) {
       return JSON.parse(stored);
     }
@@ -97,7 +96,7 @@ export const loadDashboard = () => {
  */
 export const clearDashboard = () => {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(AUTOSAVE_STORAGE_KEY);
   } catch (error) {
     console.error("[Autosave] Failed to clear dashboard:", error);
   }

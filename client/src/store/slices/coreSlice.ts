@@ -157,11 +157,7 @@ const coreSlice = createSlice({
      */
     removeWidget: (state, action: PayloadAction<string>) => {
       const id = action.payload;
-
-      // Remove from instances
       delete state.dashboard.instances[id];
-
-      // Remove from layout
       state.dashboard.layout = state.dashboard.layout.filter(
         (item) => item.id !== id
       );
@@ -232,7 +228,6 @@ const coreSlice = createSlice({
       const newId = crypto.randomUUID();
       const now = Date.now();
 
-      // Create duplicate instance
       const newInstance: WidgetInstance = {
         ...sourceInstance,
         id: newId,
@@ -240,7 +235,6 @@ const coreSlice = createSlice({
         updatedAt: now,
       };
 
-      // Create duplicate layout item (offset slightly)
       const newLayout: LayoutItem = {
         ...sourceLayout,
         id: newId,

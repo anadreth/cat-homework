@@ -1,15 +1,3 @@
-/**
- * Core type definitions for the dashboard builder
- *
- * These types define the shape of our dashboard data model:
- * - WidgetInstance: Individual widget configuration
- * - LayoutItem: Grid positioning for a widget
- * - DashboardDoc: Complete dashboard document for persistence
- */
-
-/**
- * Supported widget types
- */
 export type WidgetType = 'chart' | 'table' | 'list' | 'text';
 
 /**

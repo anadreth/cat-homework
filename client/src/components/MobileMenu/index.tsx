@@ -108,15 +108,12 @@ export function MobileMenu({
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className="fixed inset-0 z-[1000] bg-black/50 lg:hidden"
         onClick={onClose}
       />
 
-      {/* Menu */}
       <div className="fixed inset-y-0 left-0 z-[1001] w-64 bg-white shadow-xl lg:hidden">
-        {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-200 p-4">
           <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
           <button
@@ -128,9 +125,7 @@ export function MobileMenu({
           </button>
         </div>
 
-        {/* Menu Items */}
         <nav className="flex flex-col p-2">
-          {/* Panel Toggles */}
           <div className="mb-2 border-b border-gray-200 pb-2">
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Panels

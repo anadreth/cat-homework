@@ -1,69 +1,52 @@
-/**
- * CallbackPage Component
- *
- * Handles OAuth2 callback from Auth0
- * - Extracts authorization code and state from URL
- * - Calls authService.handleCallback() to exchange code for tokens
- * - Fetches user profile and redirects to dashboard
- * - Shows loading state during processing
- * - Handles errors gracefully
- */
-
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchUserProfile } from '@/store';
-import { AppLoader } from '@/components/AppLoader';
-import { useAppDispatch } from '@/store/hooks';
-import { handleCallback } from '@/services/authService';
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { fetchUserProfile } from "@/store";
+import { AppLoader } from "@/components/AppLoader";
+import { useAppDispatch } from "@/store/hooks";
+import { handleCallback } from "@/lib/auth/service";
 
 export function CallbackPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const processCallback = async () => {
       try {
-        console.log('[CallbackPage] Processing OAuth callback...');
+        console.log("[CallbackPage] Processing OAuth callback...");
 
-        // Extract authorization code and state from URL
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
-        const state = params.get('state');
+        const code = searchParams.get("code");
+        const state = searchParams.get("state");
 
         if (!code || !state) {
-          throw new Error('Missing authorization code or state');
+          throw new Error("Missing authorization code or state");
         }
 
-        // Exchange code for tokens (stored in HttpOnly cookies)
         await handleCallback(code, state);
-
-        console.log('[CallbackPage] Token exchange successful, fetching user profile...');
-
-        // Fetch user profile and store in Redux
-        await dispatch(fetchUserProfile()).unwrap();
-
-        console.log('[CallbackPage] Login complete, redirecting to dashboard...');
-
-        // Redirect to dashboard
-        navigate('/dashboard', { replace: true });
-      } catch (err) {
-        console.error('[CallbackPage] OAuth callback error:', err);
-        setError(
-          err instanceof Error ? err.message : 'Authentication failed'
+        console.log(
+          "[CallbackPage] Token exchange successful, fetching user profile..."
         );
 
-        // Redirect to home page after 3 seconds
+        await dispatch(fetchUserProfile()).unwrap();
+        console.log(
+          "[CallbackPage] Login complete, redirecting to dashboard..."
+        );
+
+        navigate("/dashboard", { replace: true });
+      } catch (err) {
+        console.error("[CallbackPage] OAuth callback error:", err);
+        setError(err instanceof Error ? err.message : "Authentication failed");
+
         setTimeout(() => {
-          navigate('/', { replace: true });
+          navigate("/", { replace: true });
         }, 3000);
       }
     };
 
     processCallback();
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, searchParams]);
 
-  // Error state
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -88,9 +71,7 @@ export function CallbackPage() {
               Authentication Failed
             </h2>
           </div>
-          <p className="mb-4 text-center text-sm text-gray-600">
-            {error}
-          </p>
+          <p className="mb-4 text-center text-sm text-gray-600">{error}</p>
           <p className="text-center text-xs text-gray-500">
             Redirecting to home page...
           </p>
@@ -99,7 +80,6 @@ export function CallbackPage() {
     );
   }
 
-  // Loading state
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">

@@ -1,15 +1,3 @@
-/**
- * Application Router
- *
- * Defines all application routes:
- * - / (HomePage): Landing page with login
- * - /callback (CallbackPage): OAuth callback handler
- * - /dashboard (DashboardPage): Protected dashboard builder
- * - * (404): Redirects to home page
- *
- * All lazy-loaded routes share a single Suspense boundary at the router level
- */
-
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { AppLoader } from "@/components/AppLoader";
@@ -30,7 +18,6 @@ const DashboardPage = lazy(() =>
   }))
 );
 
-// Root layout with shared Suspense boundary for all routes
 function RootLayout() {
   return (
     <Suspense fallback={<AppLoader />}>

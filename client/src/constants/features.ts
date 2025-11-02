@@ -1,9 +1,3 @@
-/**
- * Features Data
- *
- * Constant data for homepage features showcase
- */
-
 import {
   RiDragMoveLine,
   RiBarChartBoxLine,

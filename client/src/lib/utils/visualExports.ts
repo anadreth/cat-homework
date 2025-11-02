@@ -1,22 +1,7 @@
-/**
- * Visual Export Utilities
- *
- * Handles exporting widgets to various visual formats:
- * - PNG/PDF screenshots via html2canvas-pro (supports oklch colors)
- * - CSV/XLSX for table data via SheetJS
- * - Native chart exports where available
- */
-
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 
-/**
- * Export DOM element to PNG
- *
- * @param element - DOM element to capture
- * @param filename - Output filename (without extension)
- */
 export async function exportToPNG(
   element: HTMLElement,
   filename: string
@@ -24,7 +9,7 @@ export async function exportToPNG(
   try {
     const canvas = await html2canvas(element, {
       backgroundColor: "#ffffff",
-      scale: 2, // Higher resolution
+      scale: 2,
       logging: false,
       useCORS: true,
       allowTaint: true,
@@ -55,12 +40,6 @@ export async function exportToPNG(
   }
 }
 
-/**
- * Export DOM element to PDF
- *
- * @param element - DOM element to capture
- * @param filename - Output filename (without extension)
- */
 export async function exportToPDF(
   element: HTMLElement,
   filename: string
@@ -89,12 +68,6 @@ export async function exportToPDF(
   }
 }
 
-/**
- * Export table data to CSV
- *
- * @param data - Array of objects representing table rows
- * @param filename - Output filename (without extension)
- */
 export function exportToCSV(
   data: Record<string, unknown>[],
   filename: string
@@ -120,13 +93,6 @@ export function exportToCSV(
   }
 }
 
-/**
- * Export table data to XLSX
- *
- * @param data - Array of objects representing table rows
- * @param filename - Output filename (without extension)
- * @param sheetName - Optional sheet name (defaults to "Sheet1")
- */
 export function exportToXLSX(
   data: Record<string, unknown>[],
   filename: string,
@@ -147,15 +113,6 @@ export function exportToXLSX(
   }
 }
 
-/**
- * Export widget to appropriate format based on type
- *
- * @param widgetId - Widget ID to locate DOM element
- * @param widgetType - Widget type to determine export method
- * @param format - Export format (png, pdf, csv, xlsx)
- * @param data - Optional data for CSV/XLSX exports
- * @param filename - Base filename (without extension)
- */
 export async function exportWidget(
   widgetId: string,
   widgetType: string,
@@ -167,7 +124,6 @@ export async function exportWidget(
 
   try {
     if (format === "csv" || format === "xlsx") {
-      // Data exports (CSV/XLSX)
       if (!data) {
         throw new Error("Data is required for CSV/XLSX export");
       }
@@ -178,7 +134,6 @@ export async function exportWidget(
         exportToXLSX(data, baseFilename);
       }
     } else {
-      // Visual exports (PNG/PDF)
       const gridItem = document.querySelector(
         `[gs-id="${widgetId}"]`
       ) as HTMLElement;
@@ -209,18 +164,15 @@ export async function exportWidget(
   }
 }
 
-/**
- * Get available export formats for a widget type
- *
- * @param widgetType - Widget type
- * @returns Array of available export formats
- */
 export function getAvailableExportFormats(
   widgetType: string
 ): Array<"json" | "png" | "pdf" | "csv" | "xlsx"> {
-  const formats: Array<"json" | "png" | "pdf" | "csv" | "xlsx"> = ["json", "png", "pdf"];
+  const formats: Array<"json" | "png" | "pdf" | "csv" | "xlsx"> = [
+    "json",
+    "png",
+    "pdf",
+  ];
 
-  // Add data export formats for table widgets
   if (widgetType === "table") {
     formats.push("csv", "xlsx");
   }

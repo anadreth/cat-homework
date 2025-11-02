@@ -1,10 +1,3 @@
-/**
- * useExport Hook
- *
- * Custom hook that handles export business logic for dashboard and widgets
- * Component-level UI state (dropdown open/close) should remain in the component
- */
-
 import { useAppSelector } from "@/store/hooks";
 import { selectDashboard, selectWidgetById, selectLayout } from "@/store";
 import { selectSelectedId } from "@/store/slices/selectionSlice";
@@ -58,7 +51,10 @@ export function useExport(onExportComplete?: () => void) {
 
     try {
       let data: Record<string, unknown>[] | undefined;
-      if ((format === "csv" || format === "xlsx") && selectedWidget.type === "table") {
+      if (
+        (format === "csv" || format === "xlsx") &&
+        selectedWidget.type === "table"
+      ) {
         const tableData = selectedWidget.props.data;
         if (
           Array.isArray(tableData) &&
@@ -80,7 +76,9 @@ export function useExport(onExportComplete?: () => void) {
       );
       onExportComplete?.();
     } catch (error) {
-      alert(`Failed to export widget as ${format.toUpperCase()}. Please try again.`);
+      alert(
+        `Failed to export widget as ${format.toUpperCase()}. Please try again.`
+      );
       console.error(error);
     }
   };
