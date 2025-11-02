@@ -1,29 +1,15 @@
-/**
- * Type-safe List Widget
- * Displays items in a list format with optional title
- */
-
-/**
- * List item with label and optional description
- */
 export type ListItem = {
   id: string;
   label: string;
   description?: string;
 };
 
-/**
- * Type-safe props for ListWidget
- */
 export type ListWidgetProps = {
   title?: string;
   items: ListItem[];
   className?: string;
 };
 
-/**
- * List Widget component
- */
 export const ListWidget = (props: ListWidgetProps) => {
   const { title, items = [], className = "" } = props;
 

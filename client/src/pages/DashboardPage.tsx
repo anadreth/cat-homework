@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { undo, redo } from "@/store";
 import {
   togglePalette,
   toggleInspector,
@@ -8,8 +7,6 @@ import {
   selectInspectorOpen,
 } from "@/store/slices/uiSlice";
 import { useDashboardLoader } from "@/hooks/useDashboardLoader";
-import { useImport } from "@/hooks/useImport";
-import { useExport } from "@/hooks/useExport";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { Canvas } from "@/components/Canvas";
 import { Palette } from "@/components/Palette";
@@ -24,21 +21,8 @@ export function DashboardPage() {
 
   useDashboardLoader();
 
-  const { fileInputRef, handleFileSelect, handleImportClick } = useImport();
-  const { handleExportDashboard } = useExport();
-
   return (
     <div className="app-container flex h-screen w-screen flex-col overflow-hidden bg-gray-100">
-      {/* Hidden file input for import functionality, for MobileMenu props TODO: refactor */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".json,application/json"
-        onChange={handleFileSelect}
-        className="hidden"
-        aria-label="Import JSON file"
-      />
-
       <DashboardHeader onMobileMenuOpen={() => setMobileMenuOpen(true)} />
 
       <main className="flex flex-1 overflow-hidden">
@@ -68,14 +52,9 @@ export function DashboardPage() {
           }}
         />
       )}
-      {/* TODO import/export/redo/undo logic inside */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        onExport={handleExportDashboard}
-        onImport={handleImportClick}
-        onUndo={() => dispatch(undo())}
-        onRedo={() => dispatch(redo())}
       />
     </div>
   );

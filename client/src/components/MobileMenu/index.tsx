@@ -8,7 +8,17 @@ import {
   selectPaletteOpen,
   selectInspectorOpen,
 } from "@/store/slices/uiSlice";
-import { resetDashboard, selectCanUndo, selectCanRedo, selectUser, logout } from "@/store";
+import {
+  resetDashboard,
+  selectCanUndo,
+  selectCanRedo,
+  selectUser,
+  logout,
+  undo,
+  redo,
+} from "@/store";
+import { useImport } from "@/hooks/useImport";
+import { useExport } from "@/hooks/useExport";
 import { AddWidgetDialog } from "@/components/AddWidgetDialog";
 import {
   RiLayoutLeftLine,
@@ -22,24 +32,49 @@ import {
   RiArrowGoForwardLine,
   RiLogoutBoxLine,
 } from "@remixicon/react";
+import type { RemixiconComponentType } from "@remixicon/react";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onExport: () => void;
-  onImport: () => void;
-  onUndo: () => void;
-  onRedo: () => void;
 }
 
-export function MobileMenu({
-  isOpen,
-  onClose,
-  onExport,
-  onImport,
-  onUndo,
-  onRedo,
-}: MobileMenuProps) {
+interface MenuButtonProps {
+  icon: RemixiconComponentType;
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  variant?: "default" | "danger";
+}
+
+function MenuButton({
+  icon: Icon,
+  label,
+  onClick,
+  disabled = false,
+  variant = "default",
+}: MenuButtonProps) {
+  const baseClasses =
+    "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
+  const variantClasses =
+    variant === "danger"
+      ? "text-red-600 hover:bg-red-50"
+      : "text-gray-700 hover:bg-gray-100";
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} ${variantClasses}`}
+    >
+      <Icon size={20} />
+      <span className="font-medium">{label}</span>
+    </button>
+  );
+}
+
+//TODO can refactor and modularize more
+export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const paletteOpen = useAppSelector(selectPaletteOpen);
@@ -48,6 +83,9 @@ export function MobileMenu({
   const canRedo = useAppSelector(selectCanRedo);
   const user = useSelector(selectUser);
   const [isAddWidgetDialogOpen, setIsAddWidgetDialogOpen] = useState(false);
+
+  const { fileInputRef, handleFileSelect, handleImportClick } = useImport();
+  const { handleExportDashboard } = useExport();
 
   const handleTogglePalette = () => {
     dispatch(togglePalette());
@@ -72,35 +110,44 @@ export function MobileMenu({
   };
 
   const handleExport = () => {
-    onExport();
+    handleExportDashboard();
     onClose();
   };
 
   const handleImport = () => {
-    onImport();
+    handleImportClick();
     onClose();
   };
 
   const handleUndo = () => {
-    onUndo();
+    dispatch(undo());
     onClose();
   };
 
   const handleRedo = () => {
-    onRedo();
+    dispatch(redo());
     onClose();
   };
 
   const handleLogout = async () => {
     await dispatch(logout());
     // Use replace: true to prevent back button navigation to dashboard
-    navigate('/', { replace: true });
+    navigate("/", { replace: true });
   };
 
   if (!isOpen) return null;
 
   return (
     <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json,application/json"
+        onChange={handleFileSelect}
+        className="hidden"
+        aria-label="Import JSON file"
+      />
+
       <div
         className="fixed inset-0 z-[1000] bg-black/50 lg:hidden"
         onClick={onClose}
@@ -156,60 +203,45 @@ export function MobileMenu({
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Actions
             </p>
-            <button
+            <MenuButton
+              icon={RiArrowGoBackLine}
+              label="Undo"
               onClick={handleUndo}
               disabled={!canUndo}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
-            >
-              <RiArrowGoBackLine size={20} />
-              <span className="font-medium">Undo</span>
-            </button>
-
-            <button
+            />
+            <MenuButton
+              icon={RiArrowGoForwardLine}
+              label="Redo"
               onClick={handleRedo}
               disabled={!canRedo}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
-            >
-              <RiArrowGoForwardLine size={20} />
-              <span className="font-medium">Redo</span>
-            </button>
-
-            <button
+            />
+            <MenuButton
+              icon={RiDownloadLine}
+              label="Export Dashboard"
               onClick={handleExport}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
-            >
-              <RiDownloadLine size={20} />
-              <span className="font-medium">Export Dashboard</span>
-            </button>
-
-            <button
+            />
+            <MenuButton
+              icon={RiUploadLine}
+              label="Import Dashboard"
               onClick={handleImport}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
-            >
-              <RiUploadLine size={20} />
-              <span className="font-medium">Import Dashboard</span>
-            </button>
-
-            <button
+            />
+            <MenuButton
+              icon={RiAddLine}
+              label="Add Widget"
               onClick={handleAddWidget}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
-            >
-              <RiAddLine size={20} />
-              <span className="font-medium">Add Widget</span>
-            </button>
+            />
           </div>
 
           <div className="mb-2 border-b border-gray-200 pb-2">
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Danger Zone
             </p>
-            <button
+            <MenuButton
+              icon={RiDeleteBin6Line}
+              label="Clear Canvas"
               onClick={handleClear}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-red-600 transition-colors hover:bg-red-50"
-            >
-              <RiDeleteBin6Line size={20} />
-              <span className="font-medium">Clear Canvas</span>
-            </button>
+              variant="danger"
+            />
           </div>
 
           {user && (
@@ -232,13 +264,11 @@ export function MobileMenu({
                   <p className="truncate text-xs text-gray-500">{user.email}</p>
                 </div>
               </div>
-              <button
+              <MenuButton
+                icon={RiLogoutBoxLine}
+                label="Logout"
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
-              >
-                <RiLogoutBoxLine size={20} />
-                <span className="font-medium">Logout</span>
-              </button>
+              />
             </div>
           )}
         </nav>
