@@ -232,7 +232,7 @@ export const VERTICAL_MARGIN = 10;   // Gap between widgets (px)
 Adjust autosave behavior in `src/store/middleware/autosave.ts`:
 
 ```typescript
-const STORAGE_KEY = "retool-dashboard";
+const STORAGE_KEY = "cat-dashboard";
 const DEBOUNCE_MS = 700;  // Milliseconds to wait before saving
 ```
 

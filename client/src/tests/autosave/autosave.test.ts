@@ -7,8 +7,9 @@ import {
   importDashboard,
 } from '@/store/slices/coreSlice';
 import { loadDashboard, clearDashboard } from '@/store/middleware/autosave';
+import { AUTOSAVE_STORAGE_KEY } from '@/constants/autosave';
 
-const STORAGE_KEY = 'retool-dashboard';
+const STORAGE_KEY = AUTOSAVE_STORAGE_KEY;
 const DEBOUNCE_MS = 700;
 
 describe('Autosave Functionality', () => {

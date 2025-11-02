@@ -23,7 +23,7 @@ export function HeroSection() {
       </h2>
 
       <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-600 sm:text-xl">
-        A powerful, Retool-style dashboard builder with drag-and-drop widgets,
+        A powerful dashboard builder with drag-and-drop widgets,
         real-time updates, and LocalStorage persistence. Start building your
         perfect dashboard in seconds.
       </p>

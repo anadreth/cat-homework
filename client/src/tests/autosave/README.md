@@ -168,7 +168,7 @@ autosaveMiddleware.startListening({
 - **Listener Middleware:** Redux Toolkit's async middleware for side effects
 - **cancelActiveListeners:** Cancels previous pending save when new action arrives
 - **markSaving/markSaved:** Updates UI status indicators
-- **STORAGE_KEY:** `"retool-dashboard"`
+- **STORAGE_KEY:** `"cat-dashboard"`
 - **DEBOUNCE_MS:** `700` milliseconds
 
 ## Test Utilities Used
@@ -222,7 +222,7 @@ console.log('Save count:', setItemSpy.mock.calls.length);
 
 **Inspecting Saved Data:**
 ```typescript
-const saved = localStorage.getItem('retool-dashboard');
+const saved = localStorage.getItem('cat-dashboard');
 const parsed = JSON.parse(saved!);
 console.log('Saved widgets:', Object.keys(parsed.instances));
 ```
