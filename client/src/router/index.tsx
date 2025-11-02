@@ -6,10 +6,12 @@
  * - /callback (CallbackPage): OAuth callback handler
  * - /dashboard (DashboardPage): Protected dashboard builder
  * - * (404): Redirects to home page
+ *
+ * All lazy-loaded routes share a single Suspense boundary at the router level
  */
 
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { AppLoader } from "@/components/AppLoader";
 
 const HomePage = lazy(() =>
@@ -28,38 +30,36 @@ const DashboardPage = lazy(() =>
   }))
 );
 
+// Root layout with shared Suspense boundary for all routes
+function RootLayout() {
+  return (
+    <Suspense fallback={<AppLoader />}>
+      <Outlet />
+    </Suspense>
+  );
+}
+
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: (
-      <Suspense fallback={<AppLoader />}>
-        <HomePage />
-      </Suspense>
-    ),
-  },
-  {
-    path: "/callback",
-    element: (
-      <Suspense fallback={<AppLoader />}>
-        <CallbackPage />
-      </Suspense>
-    ),
-  },
-  {
-    path: "/dashboard",
-    element: (
-      <Suspense fallback={<AppLoader />}>
-        <DashboardPage />
-      </Suspense>
-    ),
-  },
-  {
-    path: "*",
-    element: (
-      <Suspense fallback={<AppLoader />}>
-        <HomePage />
-      </Suspense>
-    ),
+    element: <RootLayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/callback",
+        element: <CallbackPage />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "*",
+        element: <HomePage />,
+      },
+    ],
   },
 ]);
 

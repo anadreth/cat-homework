@@ -12,7 +12,7 @@ import {
   readJSONFile,
   validateDashboardImport,
   validateWidgetImport,
-} from '@/utils/import';
+} from '@/lib/utils/import';
 
 export function useImport() {
   const fileInputRef = useRef<HTMLInputElement>(null);

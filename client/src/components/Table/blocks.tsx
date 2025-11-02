@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { cx } from "@/utils/common";
+import { cx } from "@/lib/utils/common";
 
 const TableRoot = React.forwardRef<
   HTMLDivElement,

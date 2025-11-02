@@ -16,7 +16,7 @@ import { createValidationSchema } from "./validation";
 import {
   serializePropsForForm,
   deserializePropsFromForm,
-} from "@/utils/formSerialization";
+} from "@/lib/utils/formSerialization";
 
 export interface PropertyEditorProps {
   schema: EditorSchema;

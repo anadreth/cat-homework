@@ -8,8 +8,8 @@ import {
   RiCheckLine,
   RiExpandUpDownLine,
 } from "@remixicon/react";
-import { cx } from "@/utils/common";
-import { focusInput, hasErrorInput } from "@/utils/input";
+import { cx } from "@/lib/utils/common";
+import { focusInput, hasErrorInput } from "@/lib/utils/input";
 
 const Select = SelectPrimitives.Root;
 Select.displayName = "Select";

@@ -5,7 +5,7 @@
  * Supports variants, icons, disabled state, and responsive behavior
  */
 
-import { cx } from '@/utils/common';
+import { cx } from '@/lib/utils/common';
 import { type ReactNode } from 'react';
 
 interface ToolbarButtonProps {

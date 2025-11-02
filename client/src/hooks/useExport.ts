@@ -8,8 +8,8 @@
 import { useAppSelector } from "@/store/hooks";
 import { selectDashboard, selectWidgetById, selectLayout } from "@/store";
 import { selectSelectedId } from "@/store/slices/selectionSlice";
-import { exportDashboardJSON, exportWidgetJSON } from "@/utils/export";
-import { exportWidget } from "@/utils/visualExports";
+import { exportDashboardJSON, exportWidgetJSON } from "@/lib/utils/export";
+import { exportWidget } from "@/lib/utils/visualExports";
 
 export function useExport(onExportComplete?: () => void) {
   const dashboard = useAppSelector(selectDashboard);

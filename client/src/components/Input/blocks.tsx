@@ -3,8 +3,8 @@
 import React from "react";
 import { RiEyeFill, RiEyeOffFill, RiSearchLine } from "@remixicon/react";
 import { tv, type VariantProps } from "tailwind-variants";
-import { focusInput, focusRing, hasErrorInput } from "@/utils/input";
-import { cx } from "@/utils/common";
+import { focusInput, focusRing, hasErrorInput } from "@/lib/utils/input";
+import { cx } from "@/lib/utils/common";
 
 const inputStyles = tv({
   base: [

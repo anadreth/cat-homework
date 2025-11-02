@@ -25,8 +25,8 @@ import {
   getYAxisDomain,
   hasOnlyOneValueForKey,
   type AvailableChartColorsKeys,
-} from "@/utils/chartUtils";
-import { cx } from "@/utils/common";
+} from "@/lib/utils/chartUtils";
+import { cx } from "@/lib/utils/common";
 
 //#region Legend
 

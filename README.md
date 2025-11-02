@@ -1,6 +1,6 @@
 # Dashboard Builder
 
-A production-ready, full-stack dashboard builder inspired by Retool. Build customizable, interactive dashboards with drag-and-drop widgets, real-time editing, secure authentication, and multi-format exports.
+ Build customizable, interactive dashboards with drag-and-drop widgets, real-time editing, secure authentication, and multi-format exports.
 
 ![React](https://img.shields.io/badge/React-19-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue) ![Redux](https://img.shields.io/badge/Redux-Toolkit-purple) ![Express](https://img.shields.io/badge/Express-4.x-green) ![Auth0](https://img.shields.io/badge/Auth0-OAuth2-orange) ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@ A production-ready, full-stack dashboard builder inspired by Retool. Build custo
 
 ## Overview
 
-Dashboard Builder is a comprehensive web application that enables users to create, customize, and share interactive dashboards through an intuitive drag-and-drop interface. The project combines a modern React frontend with a secure Express backend, offering enterprise-grade authentication and a rich widget ecosystem.
+Dashboard Builder is a comprehensive web application that enables users to create, customize, and share interactive dashboards through an intuitive drag-and-drop interface. The project combines a modern React frontend with a Express backend.
 
 ### Key Highlights
 
@@ -16,9 +16,6 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 - **Real-time Editing** - Edit widget properties with instant visual feedback
 - **Secure Authentication** - OAuth2 + PKCE flow with Auth0 integration
 - **Multi-format Export** - Save dashboards as JSON, export widgets as PNG/PDF/CSV/XLSX
-- **Mobile Optimized** - Touch-friendly interface with responsive design
-- **Type-safe** - Full TypeScript coverage across frontend and backend
-- **Production Ready** - Comprehensive test suite, error handling, and optimizations
 
 ---
 
@@ -50,25 +47,21 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 - **HttpOnly Cookies** - Secure token storage (access_token, refresh_token)
 - **Middleware** - CORS, Cookie Parser, Error Handling
 
-**Auth0 Identity Provider**
-- OAuth2 / OIDC authentication
-- Enterprise-grade security
-
 ### Tech Stack
 
 #### Frontend (`/client`)
 | Technology | Purpose |
 |------------|---------|
-| **React 19** | UI framework with React Compiler for automatic optimizations |
-| **TypeScript 5.9** | Type safety and enhanced developer experience |
+| **React** | UI framework with React Compiler for automatic optimizations |
+| **TypeScript** | Type safety and enhanced developer experience |
 | **Redux Toolkit** | Centralized state management with slices |
 | **redux-undo** | Time-travel debugging, undo/redo functionality |
-| **React Router v7** | Client-side routing and navigation |
+| **React Router** | Client-side routing and navigation |
 | **Gridstack.js** | Drag-and-drop grid system with resize support |
 | **Tremor** | Beautiful, accessible UI components |
 | **react-hook-form** | Performant form state management |
 | **Zod** | Runtime schema validation for imports |
-| **Tailwind CSS 4** | Utility-first styling framework |
+| **Tailwind CSS** | Utility-first styling framework |
 | **Recharts** | Composable charting library |
 | **Vitest** | Fast unit testing framework |
 | **Vite** | Next-generation build tool and dev server |
@@ -76,7 +69,7 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 #### Backend (`/server`)
 | Technology | Purpose |
 |------------|---------|
-| **Express 4** | Web application framework |
+| **Express** | Web application framework |
 | **TypeScript** | Type-safe server-side code |
 | **Auth0** | Identity provider (OAuth2 + PKCE) |
 | **Axios** | HTTP client for Auth0 API calls |
@@ -112,7 +105,6 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 
 #### Undo/Redo System
 - **100-step History** - Track up to 100 widget changes
-- **Keyboard Shortcuts** - `Ctrl+Z` (undo), `Ctrl+Shift+Z` (redo)
 - **Toolbar Buttons** - Desktop toolbar with undo/redo buttons
 - **Granular Tracking** - Each action (add, delete, move, edit) creates history entry
 
@@ -120,7 +112,6 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 - **Debounced Persistence** - Save to LocalStorage after 700ms of inactivity
 - **Save Status Indicator** - Visual feedback (Saving... / Saved / Error)
 - **Automatic Recovery** - Restore dashboard on page reload
-- **Version Control** - Versioned schema for backward compatibility
 
 ### Export & Import
 
@@ -147,47 +138,10 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 
 #### OAuth2 + PKCE Flow
 - **Auth0 Integration** - Enterprise-grade identity provider
-- **PKCE Security** - Proof Key for Code Exchange prevents CSRF attacks
+- **PKCE Security** - Proof Key for Code Exchange
 - **HttpOnly Cookies** - Tokens stored securely in cookies (not accessible via JS)
 - **Automatic Refresh** - Silent token refresh before expiration
 - **Session Restoration** - Auto-login on page reload if session valid
-
-#### Protected Routes
-- **Route Guards** - Redirect unauthenticated users to home page
-- **Auth Re-validation** - Check auth status on navigation
-- **User Profile** - Display user name, email, avatar in header
-- **Logout** - Clear cookies and redirect to home page
-
-### Mobile Experience
-
-#### Responsive Design
-- **Collapsible Panels** - Palette and Inspector collapse on mobile
-- **Mobile Menu** - Hamburger menu with all features (undo, redo, export, import, logout)
-- **Touch Optimized** - Touch-friendly drag interactions
-- **Viewport Adaptive** - Layout adjusts to screen size
-
-#### Mobile-specific Features
-- **Double-tap to Add** - Tap widget in palette to add to canvas
-- **Double-tap to Edit** - Tap widget on canvas to open inspector
-- **Panel Toggles** - Show/hide palette and inspector via menu
-- **Bottom Action Bar** - Accessible actions on small screens
-
-### Developer Experience
-
-#### Code Quality
-- **TypeScript Strict Mode** - No `any` types, full type coverage
-- **ESLint** - Code linting with React and TypeScript rules
-- **Component Size** - Max ~200 LOC per file for maintainability
-- **Pure Reducers** - No side effects in Redux reducers
-- **Middleware Pattern** - Side effects isolated in listener middleware
-
-#### Performance Optimizations
-- **React.memo** - Memoized presentational components
-- **useCallback/useMemo** - Cached callbacks and computed values
-- **React Compiler** - Automatic optimization of render cycles
-- **Selector Memoization** - Redux selectors prevent unnecessary re-renders
-- **Debounced Autosave** - Batch writes to LocalStorage
-- **Lazy Loading** - Code splitting for smaller initial bundle
 
 #### Testing
 - **129 Passing Tests** - Comprehensive test suite with Vitest
@@ -289,8 +243,8 @@ Client runs on `http://localhost:5173`
 #### Access Application
 
 1. Navigate to `http://localhost:5173`
-2. Click **"Sign In"** or **"Start Building"**
-3. Authenticate via Auth0
+2. Click **"Sign In"** or **"Go to Dashboard"**
+3. Authenticate via Auth0 (showcase - optional)
 4. Build your dashboard!
 
 ### Testing
@@ -312,30 +266,6 @@ npm run test:coverage
 # Type checking only
 npm run build
 ```
-
-### Production Build
-
-#### Client Build
-```bash
-cd client
-npm run build
-npm run preview
-```
-
-#### Server Build
-```bash
-cd server
-npm run build
-npm start
-```
-
-**Update `.env` for production:**
-```env
-NODE_ENV=production
-APP_URL_PROD=https://yourdomain.com
-COOKIE_DOMAIN_PROD=.yourdomain.com
-```
-
 ---
 
 ## Project Structure
@@ -383,12 +313,9 @@ cat-homework/
 │   │   │   └── autosave/
 │   │   ├── App.tsx             # Root component
 │   │   └── main.tsx            # Entry point
-│   ├── public/                 # Static assets
 │   ├── package.json
 │   ├── tsconfig.json
-│   ├── vite.config.ts
-│   ├── tailwind.config.ts
-│   └── CLAUDE.md               # Architecture guidelines
+│   ├── vite.config.ts            # Architecture guidelines
 │
 ├── server/                     # Express backend
 │   ├── src/
@@ -426,32 +353,11 @@ cat-homework/
 3. **Position** - Drag widget header to move, drag edges to resize
 4. **Edit Properties** - Click widget then edit in right Inspector panel
 5. **Delete** - Click delete icon (x) in widget header
-6. **Undo/Redo** - Use toolbar buttons or `Ctrl+Z` / `Ctrl+Shift+Z`
+6. **Undo/Redo** - Use toolbar buttons
 7. **Export** - Click Export dropdown then select format
 8. **Import** - Click Import then choose JSON file
 9. **Auto-save** - Dashboard saves automatically to LocalStorage
 10. **Logout** - Click user avatar then Logout
-
-### Mobile Workflow
-
-1. **Sign In** - Tap "Sign In" button on home page
-2. **Open Menu** - Tap hamburger icon in top-left corner
-3. **Show Palette** - Toggle "Widget Palette" in menu
-4. **Add Widget** - Tap "Add Widget" in menu then select from grid
-5. **Move/Resize** - Touch and drag widget (touch-optimized)
-6. **Edit** - Tap widget then Inspector opens automatically
-7. **Actions** - Access all features via mobile menu
-8. **Logout** - Open menu then scroll to Account then tap Logout
-
-### Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Z` / `Cmd+Z` | Undo last action |
-| `Ctrl+Shift+Z` / `Cmd+Shift+Z` | Redo action |
-| `Escape` | Close dialog/modal |
-| `Double Click` (Palette) | Add widget to canvas |
-| `Double Click` (Canvas) | Edit widget properties |
 
 ---
 
@@ -500,17 +406,6 @@ PORT=3000  # Change server port
 
 ### Authentication Endpoints
 
-#### `GET /auth/login`
-Initiates Auth0 OAuth2 + PKCE flow
-
-**Query Parameters:**
-- `redirect` (optional) - Post-login redirect URL
-
-**Response:**
-Redirects to Auth0 login page
-
----
-
 #### `GET /auth/callback`
 Handles Auth0 callback after successful login
 
@@ -524,7 +419,7 @@ Handles Auth0 callback after successful login
 
 ---
 
-#### `GET /auth/profile`
+#### `GET /auth/me`
 Fetches authenticated user profile
 
 **Headers:**
@@ -563,85 +458,6 @@ Refreshes access token using refresh token
 
 ---
 
-## Data Formats
-
-### Dashboard JSON
-
-```json
-{
-  "version": "1.0.0",
-  "exportedAt": "2025-11-02T12:00:00.000Z",
-  "widgets": {
-    "widget-abc123": {
-      "type": "chart",
-      "props": {
-        "title": "Sales Chart",
-        "data": [],
-        "categories": ["Month"],
-        "index": "month"
-      }
-    },
-    "widget-def456": {
-      "type": "table",
-      "props": {
-        "title": "User Table",
-        "columns": [],
-        "data": []
-      }
-    }
-  },
-  "layout": [
-    {
-      "id": "widget-abc123",
-      "x": 0,
-      "y": 0,
-      "w": 6,
-      "h": 4,
-      "minW": 2,
-      "minH": 2
-    },
-    {
-      "id": "widget-def456",
-      "x": 6,
-      "y": 0,
-      "w": 6,
-      "h": 4,
-      "minW": 3,
-      "minH": 3
-    }
-  ],
-  "meta": {
-    "name": "My Dashboard",
-    "createdAt": "2025-11-01T10:00:00.000Z",
-    "updatedAt": "2025-11-02T12:00:00.000Z"
-  }
-}
-```
-
-### Widget JSON
-
-```json
-{
-  "version": "1.0.0",
-  "exportedAt": "2025-11-02T12:00:00.000Z",
-  "type": "chart",
-  "props": {
-    "title": "Sales Chart",
-    "data": [],
-    "categories": ["Month"],
-    "index": "month"
-  },
-  "layout": {
-    "w": 6,
-    "h": 4,
-    "minW": 2,
-    "minH": 2
-  }
-}
-```
-
----
-
 ## Troubleshooting
 
 ### Authentication Issues
@@ -660,7 +476,6 @@ Refreshes access token using refresh token
 **Problem:** Widgets not dragging
 - **Solution:** Check browser console for Gridstack errors
 - **Solution:** Verify `.palette-item` class on draggable elements
-- **Solution:** Ensure Gridstack is initialized (check React DevTools)
 
 **Problem:** Widget properties not saving
 - **Solution:** Check Redux DevTools for action dispatches
@@ -685,108 +500,3 @@ Refreshes access token using refresh token
 - **Solution:** Limit widgets on canvas (<50 recommended)
 - **Solution:** Check React DevTools Profiler for excessive renders
 - **Solution:** Clear undo/redo history (export then clear then import)
-
----
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/my-feature`)
-3. **Follow code style**:
-   - TypeScript strict mode (no `any`)
-   - ESLint compliant
-   - Max ~200 LOC per file
-   - Pure functions for reducers
-4. **Add tests** for new features
-5. **Update documentation** as needed
-6. **Commit with descriptive messages**
-7. **Submit a pull request**
-
-### Development Workflow
-
-```bash
-# Create feature branch
-git checkout -b feature/new-widget
-
-# Make changes
-# ... code ...
-
-# Run tests
-cd client && npm test
-
-# Type check
-npm run build
-
-# Commit changes
-git add .
-git commit -m "Add new widget type"
-
-# Push to fork
-git push origin feature/new-widget
-
-# Open PR on GitHub
-```
-
----
-
-## Roadmap
-
-### Current Version (v1.0.0)
-
-- [x] OAuth2 + PKCE authentication
-- [x] Drag-and-drop dashboard builder
-- [x] 4 widget types (Chart, Table, List, Text)
-- [x] Undo/Redo with 100-step history
-- [x] Auto-save to LocalStorage
-- [x] Multi-format export (JSON, PNG, PDF, CSV, XLSX)
-- [x] Mobile-responsive design
-- [x] 129 passing tests
-
-### Planned Features (v2.0.0)
-
-- [ ] **Real-time Collaboration** - Multi-user editing with WebSockets
-- [ ] **Cloud Persistence** - Save dashboards to database
-- [ ] **Widget Templates** - Pre-built dashboard templates
-- [ ] **API Integration** - Connect widgets to live data sources
-- [ ] **Custom Themes** - Dark mode and custom color schemes
-- [ ] **Responsive Breakpoints** - Different layouts per device
-- [ ] **Widget Marketplace** - Community-contributed widgets
-- [ ] **Role-based Access** - Share dashboards with permissions
-- [ ] **Scheduled Exports** - Automated report generation
-- [ ] **Audit Logs** - Track changes and user actions
-
----
-
-## License
-
-MIT License - See [LICENSE](LICENSE) file for details
-
----
-
-## Acknowledgments
-
-- **Gridstack.js** - Powerful grid layout engine
-- **Tremor** - Beautiful, accessible React components
-- **Redux Toolkit** - Modern Redux best practices
-- **Auth0** - Enterprise-grade authentication
-- **React Team** - React 19 and React Compiler
-- **Vitest** - Fast and reliable testing framework
-
----
-
-## Support
-
-For issues, questions, or contributions:
-
-- **Report Issues**: [GitHub Issues](https://github.com/your-repo/issues)
-- **Documentation**:
-  - `/client/CLAUDE.md` - Architecture guidelines
-  - `/docs/STEP-BY-STEP.md` - Development roadmap
-- **Discord**: Join our community (link TBD)
-- **Email**: support@example.com
-
----
-
-**Built with love using React 19, TypeScript, Redux Toolkit, and Auth0**

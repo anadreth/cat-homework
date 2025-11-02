@@ -15,7 +15,7 @@ import {
   RiErrorWarningLine,
   RiLoader4Line,
 } from "@remixicon/react";
-import { formatRelativeTime } from "@/utils/time";
+import { formatRelativeTime } from "@/lib/utils/time";
 
 export function SaveStatusIndicator() {
   const saveStatus = useAppSelector(selectSaveStatus);

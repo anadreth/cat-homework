@@ -1,6 +1,6 @@
 # Dashboard Builder
 
-A production-ready, Retool-inspired dashboard builder built with React 19, TypeScript, Redux Toolkit, and Gridstack. Create customizable dashboards by dragging widgets onto a responsive grid canvas, editing properties in real-time, and exporting to multiple formats.
+A dashboard builder built with React 19, TypeScript, Redux Toolkit, and Gridstack. Create customizable dashboards by dragging widgets onto a responsive grid canvas, editing properties in real-time, and exporting to multiple formats.
 
 ![Dashboard Builder](https://img.shields.io/badge/React-19-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue) ![Redux](https://img.shields.io/badge/Redux-Toolkit-purple) ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -27,19 +27,6 @@ A production-ready, Retool-inspired dashboard builder built with React 19, TypeS
   - Individual widget import with ID regeneration
   - Schema validation with Zod
 
-### Mobile Experience
-- Touch-optimized interactions
-- Double-tap to add widgets
-- Collapsible panels (Palette & Inspector)
-- Mobile-specific menu with all features
-- Responsive toolbar
-
-### Developer Experience
-- **Type-safe** - Strict TypeScript throughout
-- **Performance Optimized** - React.memo, useCallback, useMemo everywhere
-- **Clean Architecture** - Separation of concerns with Redux slices
-- **Extensible** - Widget registry pattern for easy additions
-
 ---
 
 ## 🚀 Quick Start
@@ -64,13 +51,6 @@ npm run dev
 
 Visit `http://localhost:5173` to see the application.
 
-### Build for Production
-
-```bash
-npm run build
-npm run preview
-```
-
 ---
 
 ## 📖 Architecture
@@ -79,8 +59,8 @@ npm run preview
 
 | Technology | Purpose |
 |------------|---------|
-| **React 19** | UI framework with React Compiler |
-| **TypeScript 5.9** | Type safety and developer experience |
+| **React** | UI framework with React Compiler |
+| **TypeScript** | Type safety and developer experience |
 | **Redux Toolkit** | State management |
 | **redux-undo** | Time-travel debugging & undo/redo |
 | **Gridstack.js** | Drag-resize grid system |
@@ -181,16 +161,15 @@ export const WIDGET_REGISTRY = {
 
 1. **Create Widget Component** (`src/components/MyWidget/widget.tsx`):
 ```typescript
-import { memo } from "react";
 
 export type MyWidgetProps = {
   title: string;
   value: number;
 };
 
-export const MyWidget = memo((props: MyWidgetProps) => {
+export const MyWidget = (props: MyWidgetProps) => {
   return <div>{props.title}: {props.value}</div>;
-});
+}a
 ```
 
 2. **Register Widget**:
@@ -281,91 +260,6 @@ const undoableCore = undoable(coreSlice.reducer, {
 6. **Export**: Click Export button → Choose format
 7. **Import**: Click Import button → Select JSON file
 
-### Mobile
-
-1. **Open Menu**: Tap hamburger icon (top-left)
-2. **Add Widgets**: Double-tap widget in palette
-3. **Show Palette/Inspector**: Toggle via mobile menu
-4. **Edit**: Double-tap widget to open Inspector
-5. **Actions**: Access all features through mobile menu
-
----
-
-## 🎯 Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Z` (⌘Z) | Undo |
-| `Ctrl+Shift+Z` (⌘⇧Z) | Redo |
-| `Double Click` | Add widget (Palette) / Edit widget (Canvas) |
-
----
-
-## 🗂️ Export/Import Format
-
-### Dashboard JSON Structure
-
-```json
-{
-  "version": "1.0.0",
-  "exportedAt": "2025-11-01T...",
-  "widgets": {
-    "widget-id": {
-      "type": "chart",
-      "props": { /* ... */ }
-    }
-  },
-  "layout": [
-    {
-      "id": "widget-id",
-      "x": 0, "y": 0,
-      "w": 6, "h": 4,
-      "minW": 2, "minH": 2
-    }
-  ],
-  "meta": {
-    "name": "Dashboard Name",
-    "createdAt": "...",
-    "updatedAt": "..."
-  }
-}
-```
-
-### Widget JSON Structure
-
-```json
-{
-  "version": "1.0.0",
-  "exportedAt": "2025-11-01T...",
-  "type": "chart",
-  "props": { /* widget properties */ },
-  "layout": {
-    "w": 6, "h": 4,
-    "minW": 2, "minH": 2
-  }
-}
-```
-
----
-
-## ⚡ Performance Optimizations
-
-### React Optimizations
-- **React.memo** on all presentational components
-- **useCallback** for event handlers
-- **useMemo** for expensive computations
-- **React Compiler** enabled for automatic optimizations
-
-### Redux Optimizations
-- **Normalized state** - Widgets stored by ID in object
-- **Selector memoization** - Minimal re-renders on state changes
-- **Middleware batching** - Debounced autosave prevents excessive writes
-
-### Gridstack Optimizations
-- **Stop events** - Updates only on drag/resize completion
-- **No live updates** - Reduces render cycles during interaction
-- **Memoized children** - Widget components don't re-render unnecessarily
-
 ---
 
 ## 🧪 Testing
@@ -398,29 +292,8 @@ cat-homework/
 │   ├── utils/            # Utility functions
 │   ├── App.tsx           # Root component
 │   └── main.tsx          # Entry point
-├── docs/                 # Documentation
-│   └── STEP-BY-STEP.md   # Development roadmap
-├── public/               # Static assets
 └── package.json
 ```
-
----
-
-## 🛠️ Development
-
-### Code Style
-- **TypeScript Strict Mode** - No `any` types
-- **Functional Components** - Hooks only
-- **Small Components** - Max ~200 LOC per file
-- **Pure Functions** - No side effects in reducers
-- **Descriptive Names** - `verbNoun` for actions, `selectThing` for selectors
-
-### Best Practices
-- Keep reducers pure
-- Effects in middleware only
-- Memoize expensive operations
-- Use schema-driven forms
-- Validate with Zod on import
 
 ---
 
@@ -453,39 +326,3 @@ cat-homework/
 - **Real-time Collaboration** - Multi-user editing
 - **API Integration** - Connect widgets to live data sources
 - **Custom Themes** - Dark mode and custom color schemes
-
-### Contributing
-Contributions are welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Follow existing code style
-4. Add tests for new features
-5. Submit a pull request
-
----
-
-## 📄 License
-
-MIT License - See LICENSE file for details
-
----
-
-## 🙏 Acknowledgments
-
-- **Gridstack.js** - Grid layout engine
-- **Tremor** - Beautiful UI components
-- **Redux Toolkit** - Modern Redux best practices
-- **React Team** - React 19 and React Compiler
-
----
-
-## 📞 Support
-
-For issues, questions, or contributions:
-- Open an issue on GitHub
-- Check `docs/STEP-BY-STEP.md` for development roadmap
-- Review `CLAUDE.md` for architecture guidelines
-
----
-
-**Built with ❤️ using React 19, TypeScript, and Redux Toolkit**

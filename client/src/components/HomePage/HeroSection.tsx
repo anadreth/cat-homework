@@ -43,7 +43,7 @@ export function HeroSection() {
           onClick={() => navigate('/dashboard')}
           className="cursor-pointer group inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
         >
-          Start Building
+          Go to Dashboard
           <RiArrowRightLine
             size={20}
             className="transition-transform group-hover:translate-x-1"

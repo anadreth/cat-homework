@@ -4,7 +4,7 @@
  * Visual separator for toolbar sections
  */
 
-import { cx } from "@/utils/common";
+import { cx } from "@/lib/utils/common";
 
 interface ToolbarDividerProps {
   hideOnMobile?: boolean;
