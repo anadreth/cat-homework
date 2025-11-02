@@ -3,12 +3,16 @@
  *
  * Express server with Auth0 OAuth2 + PKCE authentication
  *
- * Phase 13: Basic server setup (placeholder)
- * Phase 14: Auth routes implementation (next phase)
+ * Phase 13: Basic server setup ✓
+ * Phase 14: Auth routes implementation ✓
  */
 
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import { corsMiddleware } from './middleware/cors';
+import { errorHandler } from './middleware/errorHandler';
+import authRoutes from './routes/auth';
 
 // Load environment variables
 dotenv.config();
@@ -16,30 +20,31 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware (will be expanded in Phase 14)
-app.use(express.json());
+// Middleware
+app.use(corsMiddleware);        // CORS with credentials
+app.use(express.json());         // Parse JSON bodies
+app.use(cookieParser());         // Parse cookies
 
 // Health check endpoint
 app.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
     message: 'Dashboard Builder Backend is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
-// Placeholder for auth routes (Phase 14)
-app.all('/api/auth/*', (_req, res) => {
-  res.status(501).json({
-    error: 'Auth routes not implemented yet',
-    message: 'See Phase 14 in AUTH_IMPLEMENTATION.md'
-  });
-});
+// Auth routes
+app.use('/api/auth', authRoutes);
 
 // 404 handler
 app.use((_req, res) => {
   res.status(404).json({ error: 'Not Found' });
 });
+
+// Global error handler (must be last)
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
@@ -47,13 +52,20 @@ app.listen(PORT, () => {
 ╔═══════════════════════════════════════════════════════════╗
 ║  Dashboard Builder - Backend Server                       ║
 ║  Phase 13: Environment Setup ✓                            ║
+║  Phase 14: Auth Routes ✓                                  ║
 ╠═══════════════════════════════════════════════════════════╣
-║  Server running on: http://localhost:${PORT}                 ║
-║  Health check:      http://localhost:${PORT}/health          ║
-║  Environment:       ${process.env.NODE_ENV || 'development'}                   ║
+║  Server:      http://localhost:${PORT}                         ║
+║  Health:      http://localhost:${PORT}/health                  ║
+║  Environment: ${process.env.NODE_ENV || 'development'}                           ║
 ╠═══════════════════════════════════════════════════════════╣
-║  Next: Implement Phase 14 (Auth Routes)                   ║
-║  See: /docs/AUTH_IMPLEMENTATION.md                        ║
+║  API Endpoints:                                            ║
+║  POST /api/auth/callback - Exchange code for tokens       ║
+║  POST /api/auth/refresh  - Refresh access token           ║
+║  POST /api/auth/logout   - Clear cookies                  ║
+║  GET  /api/me            - Get user profile               ║
+╠═══════════════════════════════════════════════════════════╣
+║  Next: Configure Auth0 (Phase 18)                         ║
+║  Then: Implement Frontend (Phase 15-17)                   ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
 });
