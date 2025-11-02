@@ -7,7 +7,7 @@
 
 import { Link } from "react-router-dom";
 import { RiLayoutGridLine } from "@remixicon/react";
-import { initiateLogin } from "@/services/authService";
+import { initiateLogin } from "@/lib/auth/service";
 
 export function PageHeader() {
   const handleLogin = () => {

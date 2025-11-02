@@ -1,20 +1,9 @@
-/**
- * Type-safe Text Widget
- * Displays text content with optional title and formatting
- */
-
-/**
- * Type-safe props for TextWidget
- */
 export type TextWidgetProps = {
   title?: string;
   content: string;
   className?: string;
 };
 
-/**
- * Text Widget component
- */
 export const TextWidget = (props: TextWidgetProps) => {
   const { title, content = "No content provided", className = "" } = props;
 

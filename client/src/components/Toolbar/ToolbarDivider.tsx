@@ -1,9 +1,3 @@
-/**
- * ToolbarDivider Component
- *
- * Visual separator for toolbar sections
- */
-
 import { cx } from "@/lib/utils/common";
 
 interface ToolbarDividerProps {

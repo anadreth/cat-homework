@@ -8,9 +8,10 @@
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { selectSelectedId } from "@/store/slices/selectionSlice";
 import { selectWidgetById, updateWidgetProps } from "@/store";
-import { getWidgetMeta } from "@/constants/widget-registry";
+
 import { PropertyEditor } from "./PropertyEditor";
 import type { SerializableValue } from "@/store/types";
+import { getWidgetMeta } from "@/lib/utils/widgets";
 
 export function Inspector() {
   const selectedId = useAppSelector(selectSelectedId);

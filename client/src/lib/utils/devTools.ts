@@ -1,10 +1,7 @@
 import type { AppDispatch } from "@/store";
 import { addWidget } from "@/store";
 import type { WidgetType } from "@/store/types";
-import {
-  getWidgetMeta,
-  getWidgetDefaultProps,
-} from "@/constants/widget-registry";
+import { getWidgetDefaultProps, getWidgetMeta } from "./widgets";
 
 export const addTestWidget = (dispatch: AppDispatch, type: WidgetType) => {
   const meta = getWidgetMeta(type);

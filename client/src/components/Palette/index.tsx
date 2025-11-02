@@ -1,57 +1,29 @@
-/**
- * Palette - Draggable widget sidebar
- *
- * Provides draggable widget items that can be dropped onto the canvas.
- * Uses Gridstack external drag-and-drop functionality.
- */
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { GridStack } from "gridstack";
-import { WIDGET_REGISTRY, getWidgetDefaultProps } from "@/constants/widget-registry";
+import {
+  WIDGET_COLORS,
+  WIDGET_ICONS,
+  WIDGET_REGISTRY,
+} from "@/constants/widget-registry";
 import type { WidgetType } from "@/store/types";
 import { useAppDispatch } from "@/store/hooks";
 import { addWidget } from "@/store";
-import {
-  RiBarChartBoxLine,
-  RiTableLine,
-  RiListUnordered,
-  RiText,
-} from "@remixicon/react";
 
-/**
- * Icon map for widget types
- */
-const WIDGET_ICONS: Record<WidgetType, typeof RiBarChartBoxLine> = {
-  chart: RiBarChartBoxLine,
-  table: RiTableLine,
-  list: RiListUnordered,
-  text: RiText,
-};
+import { getWidgetDefaultProps } from "@/lib/utils/widgets";
 
-/**
- * Color map for widget types
- */
-const WIDGET_COLORS: Record<WidgetType, string> = {
-  chart: "bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200",
-  table: "bg-green-100 text-green-700 border-green-300 hover:bg-green-200",
-  list: "bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200",
-  text: "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200",
-};
+const widgetTypes = Object.keys(WIDGET_REGISTRY) as WidgetType[];
 
-/**
- * Palette component
- */
 export function Palette() {
   const paletteRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const [lastTap, setLastTap] = useState<{ type: WidgetType | null; time: number }>({
+  const lastTapRef = useRef<{
+    type: WidgetType | null;
+    time: number;
+  }>({
     type: null,
     time: 0,
   });
 
-  /**
-   * Initialize Gridstack draggable on palette items
-   */
   useEffect(() => {
     if (!paletteRef.current) return;
 
@@ -65,9 +37,6 @@ export function Palette() {
     });
   }, []);
 
-  /**
-   * Add widget to canvas
-   */
   const addWidgetToCanvas = (type: WidgetType) => {
     const meta = WIDGET_REGISTRY[type];
     const props = getWidgetDefaultProps(type);
@@ -86,32 +55,21 @@ export function Palette() {
     );
   };
 
-  /**
-   * Handle double-click to add widget (desktop)
-   */
   const handleDoubleClick = (type: WidgetType) => {
     addWidgetToCanvas(type);
   };
 
-  /**
-   * Handle touch for mobile double-tap detection
-   */
   const handleTouchEnd = (type: WidgetType) => {
     const now = Date.now();
-    const timeSinceLastTap = now - lastTap.time;
+    const timeSinceLastTap = now - lastTapRef.current.time;
 
-    // Double-tap detected (within 300ms and same widget type)
-    if (timeSinceLastTap < 300 && lastTap.type === type) {
+    if (timeSinceLastTap < 300 && lastTapRef.current.type === type) {
       addWidgetToCanvas(type);
-      // Reset to prevent triple-tap from adding multiple widgets
-      setLastTap({ type: null, time: 0 });
+      lastTapRef.current = { type: null, time: 0 };
     } else {
-      // First tap or different widget - record it
-      setLastTap({ type, time: now });
+      lastTapRef.current = { type, time: now };
     }
   };
-
-  const widgetTypes = Object.keys(WIDGET_REGISTRY) as WidgetType[];
 
   return (
     <div ref={paletteRef} className="flex h-full flex-col">

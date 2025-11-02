@@ -5,6 +5,7 @@ import { AreaChartWidget, type AreaChartWidgetProps } from "@/components/AreaCha
 import { TableWidget, type TableWidgetProps } from "@/components/Table/widget";
 import { ListWidget, type ListWidgetProps } from "@/components/List/widget";
 import { TextWidget, type TextWidgetProps } from "@/components/Text/widget";
+import { RiBarChartBoxLine, RiTableLine, RiListUnordered, RiText } from "@remixicon/react";
 
 export type EditorFieldSchema = {
   key: string;
@@ -240,5 +241,19 @@ export const WIDGET_COMPONENT_MAP = {
   list: ListWidget,
   text: TextWidget,
 } as const;
+
+export const WIDGET_ICONS: Record<WidgetType, typeof RiBarChartBoxLine> = {
+  chart: RiBarChartBoxLine,
+  table: RiTableLine,
+  list: RiListUnordered,
+  text: RiText,
+};
+
+export const WIDGET_COLORS: Record<WidgetType, string> = {
+  chart: "bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200",
+  table: "bg-green-100 text-green-700 border-green-300 hover:bg-green-200",
+  list: "bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200",
+  text: "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200",
+};
 
 export type ComponentMap = Record<WidgetType, ComponentType<WidgetProps>>;

@@ -1,10 +1,3 @@
-/**
- * MobileMenu - Mobile-only navigation menu
- *
- * Provides access to all dashboard actions on mobile devices
- * including panel toggles, export/import, canvas actions, and logout
- */
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -159,7 +152,6 @@ export function MobileMenu({
             </button>
           </div>
 
-          {/* Actions */}
           <div className="mb-2 border-b border-gray-200 pb-2">
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Actions
@@ -207,7 +199,6 @@ export function MobileMenu({
             </button>
           </div>
 
-          {/* Danger Zone */}
           <div className="mb-2 border-b border-gray-200 pb-2">
             <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
               Danger Zone
@@ -221,13 +212,11 @@ export function MobileMenu({
             </button>
           </div>
 
-          {/* Account */}
           {user && (
             <div>
               <p className="px-3 py-2 text-xs font-semibold uppercase text-gray-500">
                 Account
               </p>
-              {/* User info */}
               <div className="flex items-center gap-3 px-3 py-2">
                 {user.picture && (
                   <img
@@ -243,7 +232,6 @@ export function MobileMenu({
                   <p className="truncate text-xs text-gray-500">{user.email}</p>
                 </div>
               </div>
-              {/* Logout button */}
               <button
                 onClick={handleLogout}
                 className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-gray-700 transition-colors hover:bg-gray-100"
@@ -256,7 +244,6 @@ export function MobileMenu({
         </nav>
       </div>
 
-      {/* Add Widget Dialog */}
       <AddWidgetDialog
         isOpen={isAddWidgetDialogOpen}
         onClose={() => setIsAddWidgetDialogOpen(false)}

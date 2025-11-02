@@ -25,14 +25,13 @@ import {
 import { selectWidget } from "@/store/slices/selectionSlice";
 import {
   WIDGET_COMPONENT_MAP,
-  getWidgetDefaultProps,
-  getWidgetMeta,
 } from "@/constants/widget-registry";
 import type { ComponentDataType } from "@/components/Canvas/blocks";
 import { GRID_COLUMNS, CELL_HEIGHT, VERTICAL_MARGIN } from "@/constants/grid";
 import { WidgetWrapper } from "@/components/WidgetWrapper";
 import { CanvasToolbar } from "@/components/CanvasToolbar";
 import type { WidgetType } from "@/store/types";
+import { getWidgetDefaultProps, getWidgetMeta } from "@/lib/utils/widgets";
 
 /**
  * Grid options for canvas

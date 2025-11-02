@@ -1,9 +1,3 @@
-/**
- * ToolbarIconButton Component
- *
- * Simple icon-only button for toolbar
- */
-
 import { cx } from '@/lib/utils/common';
 import { type ReactNode } from 'react';
 

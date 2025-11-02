@@ -1,10 +1,3 @@
-/**
- * ToolbarButton Component
- *
- * Reusable button for toolbar actions
- * Supports variants, icons, disabled state, and responsive behavior
- */
-
 import { cx } from '@/lib/utils/common';
 import { type ReactNode } from 'react';
 

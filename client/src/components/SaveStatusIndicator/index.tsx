@@ -1,13 +1,3 @@
-/**
- * SaveStatusIndicator - Visual feedback for autosave status
- *
- * Displays current save status with icon and text:
- * - idle: Hidden (all saved)
- * - saving: Spinner animation
- * - saved: Checkmark with timestamp
- * - error: Error icon
- */
-
 import { useAppSelector } from "@/store/hooks";
 import { selectSaveStatus, selectLastSaved } from "@/store";
 import {
