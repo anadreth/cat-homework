@@ -4,8 +4,10 @@ import undoable, { excludeAction } from "redux-undo";
 import coreReducer from "./slices/coreSlice";
 import selectionReducer from "./slices/selectionSlice";
 import uiReducer from "./slices/uiSlice";
+import authReducer from "./slices/authSlice";
 
 import { autosaveMiddleware } from "./middleware/autosave";
+import { authListenerMiddleware } from "./middleware/authListener";
 
 import type { RootState } from "./types";
 
@@ -31,6 +33,7 @@ export const store = configureStore({
     core: undoableCoreReducer,
     selection: selectionReducer,
     ui: uiReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -39,7 +42,9 @@ export const store = configureStore({
         // (timestamps are numbers, not serializable Date objects)
         ignoredPaths: ["core.present.dashboard.meta"],
       },
-    }).prepend(autosaveMiddleware.middleware),
+    })
+      .prepend(autosaveMiddleware.middleware)
+      .prepend(authListenerMiddleware.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
@@ -107,3 +112,14 @@ export {
   clearDashboard,
   exportDashboardToFile,
 } from "./middleware/autosave";
+
+export {
+  fetchUserProfile,
+  logout,
+  clearError,
+  selectUser,
+  selectIsAuthenticated,
+  selectIsLoading,
+  selectAuthError,
+} from "./slices/authSlice";
+export type { User } from "./slices/authSlice";

@@ -6,8 +6,10 @@ import undoable, { excludeAction, type StateWithHistory } from 'redux-undo';
 import coreReducer from '@/store/slices/coreSlice';
 import selectionReducer from '@/store/slices/selectionSlice';
 import uiReducer from '@/store/slices/uiSlice';
+import authReducer from '@/store/slices/authSlice';
 import { autosaveMiddleware } from '@/store/middleware/autosave';
-import type { DashboardDoc, RootState, CoreState, SelectionState, UIState } from '@/store/types';
+import { authListenerMiddleware } from '@/store/middleware/authListener';
+import type { DashboardDoc, RootState, CoreState, SelectionState, UIState, AuthState } from '@/store/types';
 
 /**
  * Create a test store with optional preloaded state
@@ -36,12 +38,14 @@ export function setupStore(preloadedState?: Partial<RootState>) {
   >;
   type SelectionReducerType = Reducer<SelectionState, UnknownAction, SelectionState | undefined>;
   type UIReducerType = Reducer<UIState, UnknownAction, UIState | undefined>;
+  type AuthReducerType = Reducer<AuthState, UnknownAction, AuthState | undefined>;
 
   return configureStore({
     reducer: {
       core: undoableCore as CoreReducerType,
       selection: selectionReducer as SelectionReducerType,
       ui: uiReducer as UIReducerType,
+      auth: authReducer as AuthReducerType,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -49,7 +53,9 @@ export function setupStore(preloadedState?: Partial<RootState>) {
         serializableCheck: {
           ignoredPaths: ['core.present.dashboard.meta'],
         },
-      }).prepend(autosaveMiddleware.middleware),
+      })
+        .prepend(autosaveMiddleware.middleware)
+        .prepend(authListenerMiddleware.middleware),
   });
 }
 

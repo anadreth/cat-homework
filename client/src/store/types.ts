@@ -157,6 +157,22 @@ export type UIState = {
 };
 
 /**
+ * Auth state (from authSlice)
+ * Defined here for RootState but actual interface is in authSlice.ts
+ */
+export type AuthState = {
+  user: {
+    sub: string;
+    email: string;
+    name: string;
+    picture?: string;
+  } | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  error: string | null;
+};
+
+/**
  * Root Redux state shape
  */
 export type RootState = {
@@ -167,4 +183,5 @@ export type RootState = {
   };
   selection: SelectionState;
   ui: UIState;
+  auth: AuthState;
 };
