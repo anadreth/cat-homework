@@ -19,6 +19,7 @@ import type {
   WidgetInstance,
   WidgetType,
   SerializableValue,
+  RootState
 } from "../types";
 
 /**
@@ -276,8 +277,6 @@ export const {
 } = coreSlice.actions;
 
 export default coreSlice.reducer;
-
-import type { RootState } from "../types";
 
 export const selectDashboard = (state: RootState) =>
   state.core.present.dashboard;

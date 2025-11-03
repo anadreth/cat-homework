@@ -249,6 +249,9 @@ export const WIDGET_COMPONENT_MAP = {
   text: TextWidget,
 } as const;
 
+// Derive type from implementation - single source of truth
+export type WidgetComponentMap = typeof WIDGET_COMPONENT_MAP;
+
 export const WIDGET_ICONS: Record<WidgetType, typeof RiBarChartBoxLine> = {
   chart: RiBarChartBoxLine,
   table: RiTableLine,
@@ -263,4 +266,5 @@ export const WIDGET_COLORS: Record<WidgetType, string> = {
   text: "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200",
 };
 
-export type ComponentMap = Record<WidgetType, ComponentType<WidgetProps>>;
+// Legacy type alias for backwards compatibility
+export type ComponentMap = WidgetComponentMap;

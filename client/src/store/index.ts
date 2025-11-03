@@ -8,6 +8,7 @@ import authReducer from "./slices/authSlice";
 
 import { autosaveMiddleware } from "./middleware/autosave";
 import { authListenerMiddleware } from "./middleware/authListener";
+import { gridStackSyncMiddleware } from "./middleware/gridStackSync";
 
 import type { RootState } from "./types";
 
@@ -36,13 +37,8 @@ export const store = configureStore({
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        // Ignore these paths in serializable check
-        // (timestamps are numbers, not serializable Date objects)
-        ignoredPaths: ["core.present.dashboard.meta"],
-      },
-    })
+    getDefaultMiddleware()
+      .prepend(gridStackSyncMiddleware.middleware)
       .prepend(autosaveMiddleware.middleware)
       .prepend(authListenerMiddleware.middleware),
 });
