@@ -46,20 +46,24 @@ export function PropertyEditor({
     mode: "onChange",
   });
 
-  const getAvailableColumns = useCallback((fieldKey: string): string[] => {
-    if (fieldKey === "filters") {
-      try {
-        const columnsValue = watch("columns");
-        const columns = typeof columnsValue === "string"
-          ? JSON.parse(columnsValue)
-          : columnsValue;
-        return columns?.map((col: any) => col.key) || [];
-      } catch {
-        return [];
+  const getAvailableColumns = useCallback(
+    (fieldKey: string): string[] => {
+      if (fieldKey === "filters") {
+        try {
+          const columnsValue = watch("columns");
+          const columns =
+            typeof columnsValue === "string"
+              ? JSON.parse(columnsValue)
+              : columnsValue;
+          return columns?.map((col: { key: string }) => col.key) || [];
+        } catch {
+          return [];
+        }
       }
-    }
-    return [];
-  }, [watch]);
+      return [];
+    },
+    [watch]
+  );
 
   useEffect(() => {
     const serialized = serializePropsForForm(values, schema);
@@ -83,7 +87,7 @@ export function PropertyEditor({
         }
       }, 300);
     },
-    [onChange, schema, trigger, errors]
+    [onChange, schema, trigger]
   );
 
   useEffect(() => {
@@ -191,7 +195,11 @@ export function PropertyEditor({
                     control={control}
                     render={({ field: controllerField }) => (
                       <FilterEditor
-                        value={Array.isArray(controllerField.value) ? controllerField.value : []}
+                        value={
+                          Array.isArray(controllerField.value)
+                            ? controllerField.value
+                            : []
+                        }
                         onChange={controllerField.onChange}
                         availableColumns={getAvailableColumns(field.key)}
                         errors={errors[field.key]}

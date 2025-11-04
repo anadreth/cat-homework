@@ -2,15 +2,21 @@ import { Button } from "@/components/Button/blocks";
 import { RiAddLine } from "@remixicon/react";
 import type { TableFilter } from "@/components/Table/widget";
 import { FilterRow } from "./FilterRow";
+import type { FieldErrors } from "react-hook-form";
 
 export interface FilterEditorProps {
   value: TableFilter[];
   onChange: (filters: TableFilter[]) => void;
   availableColumns: string[];
-  errors?: any;
+  errors?: FieldErrors<Record<string, unknown>>;
 }
 
-export function FilterEditor({ value = [], onChange, availableColumns, errors }: FilterEditorProps) {
+export function FilterEditor({
+  value = [],
+  onChange,
+  availableColumns,
+  errors,
+}: FilterEditorProps) {
   const filters = value;
 
   const handleAddFilter = () => {
@@ -46,7 +52,9 @@ export function FilterEditor({ value = [], onChange, availableColumns, errors }:
       {filters.length === 0 ? (
         <div className="rounded-md border border-dashed border-gray-300 p-4 text-center">
           <p className="text-sm text-gray-500">No filters applied</p>
-          <p className="mt-1 text-xs text-gray-400">Click "Add Filter" to create a filter</p>
+          <p className="mt-1 text-xs text-gray-400">
+            Click "Add Filter" to create a filter
+          </p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -55,7 +63,9 @@ export function FilterEditor({ value = [], onChange, availableColumns, errors }:
               key={index}
               filter={filter}
               availableColumns={availableColumns}
-              onChange={(updatedFilter) => handleFilterChange(index, updatedFilter)}
+              onChange={(updatedFilter) =>
+                handleFilterChange(index, updatedFilter)
+              }
               onRemove={() => handleRemoveFilter(index)}
               errors={getFilterErrors(index)}
             />

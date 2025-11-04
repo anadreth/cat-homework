@@ -167,7 +167,7 @@ gridStackSyncMiddleware.startListening({
 
 gridStackSyncMiddleware.startListening({
   type: "core/resetDashboard",
-  effect: async (_action) => {
+  effect: async () => {
     const gridStack = getGridStack();
     if (!gridStack) return;
 

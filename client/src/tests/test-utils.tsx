@@ -194,5 +194,4 @@ export function createMockDashboard(): DashboardDoc {
 export const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export * from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";

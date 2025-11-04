@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from "react";
-import type { GridStack } from "gridstack";
+import type { GridStack, GridStackNode } from "gridstack";
 import { useAppDispatch } from "@/store/hooks";
 import { moveResizeWidget, addWidget, selectWidget } from "@/store";
 import { getWidgetMeta, getWidgetDefaultProps } from "@/lib/utils/widgets";
@@ -43,8 +43,11 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
   );
 
   const handleDrop = useCallback(
-    (_event: Event, _previousWidget: any, newWidget: any) => {
-      // Extract widget type from the dragged element's data
+    (
+      _event: Event,
+      _previousWidget: GridStackNode,
+      newWidget: GridStackNode
+    ) => {
       const widgetType = newWidget.el?.getAttribute(
         "data-widget-type"
       ) as WidgetType;

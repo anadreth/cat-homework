@@ -18,7 +18,7 @@ export const authListenerMiddleware = createListenerMiddleware();
  */
 authListenerMiddleware.startListening({
   actionCreator: fetchUserProfile.rejected,
-  effect: async (action, _listenerApi) => {
+  effect: async (action) => {
     // If rejection was due to 401 (not authenticated)
     if (action.payload === "Not authenticated") {
       console.log(

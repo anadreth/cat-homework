@@ -1,9 +1,8 @@
 import { z } from "zod";
 import type { EditorSchema } from "@/constants/widget-registry";
-import type { SerializableValue } from "@/store/types";
 
 export function createValidationSchema(editorSchema: EditorSchema) {
-  const shape: Record<string, z.ZodType<SerializableValue>> = {};
+  const shape: Record<string, z.ZodType> = {};
 
   editorSchema.sections.forEach((section) => {
     section.fields.forEach((field) => {
@@ -69,17 +68,19 @@ export function createValidationSchema(editorSchema: EditorSchema) {
                   "greaterThanOrEqual",
                   "lessThanOrEqual",
                 ]),
-                value: z.union([z.string(), z.number()]).refine(
-                  (val) => val !== "" && val !== null && val !== undefined,
-                  "Value is required"
-                ),
+                value: z
+                  .union([z.string(), z.number()])
+                  .refine(
+                    (val) => val !== "" && val !== null && val !== undefined,
+                    "Value is required"
+                  ),
               })
             )
-            .optional() as any;
+            .optional();
           break;
 
         default:
-          shape[field.key] = z.any();
+          throw new Error(`Unknown field type: ${field.type}`);
       }
     });
   });
