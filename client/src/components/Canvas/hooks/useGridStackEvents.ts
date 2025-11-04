@@ -2,9 +2,9 @@ import { useEffect, useCallback } from "react";
 import type { GridStack } from "gridstack";
 import { useAppDispatch } from "@/store/hooks";
 import { moveResizeWidget, addWidget, selectWidget } from "@/store";
-import { extractLayoutFromElement } from "../utils/gridStackHelpers";
 import { getWidgetMeta, getWidgetDefaultProps } from "@/lib/utils/widgets";
 import type { WidgetType } from "@/store/types";
+import { extractLayoutFromElement } from "@/lib/utils/gridstack";
 
 interface UseGridStackEventsProps {
   gridStack: GridStack | null;
@@ -13,10 +13,6 @@ interface UseGridStackEventsProps {
 export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
   const dispatch = useAppDispatch();
 
-  /**
-   * Handle drag/resize stop events
-   * Updates Redux with new position/size
-   */
   const handleGridChange = useCallback(
     (event: Event) => {
       const target = event.target as HTMLElement;
@@ -24,7 +20,7 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
 
       if (!widgetId) return;
 
-      const layout = extractLayoutFromElement(target as any);
+      const layout = extractLayoutFromElement(target);
 
       if (
         layout.x !== undefined &&
@@ -46,10 +42,6 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
     [dispatch]
   );
 
-  /**
-   * Handle widget drop from palette
-   * Creates new widget in Redux
-   */
   const handleDrop = useCallback(
     (_event: Event, _previousWidget: any, newWidget: any) => {
       // Extract widget type from the dragged element's data
@@ -65,7 +57,6 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
       const meta = getWidgetMeta(widgetType);
       const props = getWidgetDefaultProps(widgetType);
 
-      // Dispatch addWidget action - middleware will handle adding to GridStack
       const action = dispatch(
         addWidget({
           type: widgetType,
@@ -79,11 +70,8 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
         })
       );
 
-      // Auto-select the newly created widget
       const newWidgetId = action.meta.id;
       dispatch(selectWidget(newWidgetId));
-
-      // Remove the temporary dragged element from the palette
 
       if (newWidget.el && newWidget.el.parentElement) {
         newWidget.el.remove();
@@ -92,20 +80,13 @@ export function useGridStackEvents({ gridStack }: UseGridStackEventsProps) {
     [dispatch]
   );
 
-  /**
-   * Attach event listeners to GridStack
-   */
   useEffect(() => {
     if (!gridStack) return;
 
-    // Listen to drag/resize stop events
-    gridStack.on("dragstop", handleGridChange );
+    gridStack.on("dragstop", handleGridChange);
     gridStack.on("resizestop", handleGridChange);
-
-    // Listen to drop events (from palette)
     gridStack.on("dropped", handleDrop);
 
-    // Cleanup
     return () => {
       gridStack.off("dragstop");
       gridStack.off("resizestop");

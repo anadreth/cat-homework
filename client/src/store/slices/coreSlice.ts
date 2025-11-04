@@ -19,7 +19,7 @@ import type {
   WidgetInstance,
   WidgetType,
   SerializableValue,
-  RootState
+  RootState,
 } from "../types";
 
 /**
@@ -289,6 +289,9 @@ export const selectWidgetById = (id: string) => (state: RootState) =>
 
 export const selectLayout = (state: RootState) =>
   state.core.present.dashboard.layout;
+
+export const selectIsLayoutEmpty = (state: RootState) =>
+  state.core.present.dashboard.layout.length === 0;
 
 export const selectLayoutItemById = (id: string) => (state: RootState) =>
   state.core.present.dashboard.layout.find((item) => item.id === id);

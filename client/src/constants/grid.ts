@@ -58,3 +58,6 @@ export const GRID_OPTIONS: GridStackOptions = {
   },
   children: [], // Will be populated from Redux
 };
+
+export const GRID_MAX_W = 1440;
+export const GRID_MIN_W = 480;

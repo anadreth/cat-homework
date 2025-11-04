@@ -1,9 +1,9 @@
-import { Fragment, type ComponentType } from "react";
-import { createPortal } from "react-dom";
-import { useAppSelector } from "@/store/hooks";
-import { selectWidgetById, selectLayout, selectAllWidgets } from "@/store";
 import type { WidgetComponentMap } from "@/constants/widget-registry";
-import type { WidgetType } from "@/store/types";
+import { selectLayout, selectAllWidgets } from "@/store";
+import { useAppSelector } from "@/store/hooks";
+import { type ComponentType, Fragment } from "react";
+import { createPortal } from "react-dom";
+import { Widget } from "./Widget";
 
 export function GridStackRender(props: {
   componentMap: WidgetComponentMap;
@@ -34,7 +34,7 @@ export function GridStackRender(props: {
         return (
           <Fragment key={layoutItem.id}>
             {createPortal(
-              <LivePropsWidget
+              <Widget
                 widgetId={layoutItem.id}
                 widgetType={instance.type}
                 componentMap={props.componentMap}
@@ -47,47 +47,4 @@ export function GridStackRender(props: {
       })}
     </>
   );
-}
-
-function LivePropsWidget({
-  widgetId,
-  widgetType,
-  componentMap,
-  WrapperComponent,
-}: {
-  widgetId: string;
-  widgetType: WidgetType;
-  componentMap: WidgetComponentMap;
-  WrapperComponent?: ComponentType<{
-    widgetId: string;
-    widgetType: string;
-    children: React.ReactNode;
-  }>;
-}) {
-  const widget = useAppSelector((state) => selectWidgetById(widgetId)(state));
-
-  const WidgetComponent = componentMap[widgetType] as ComponentType<any>;
-
-  if (!WidgetComponent) {
-    console.error(
-      `[LivePropsWidget] Component not found for type: ${widgetType}`
-    );
-    return null;
-  }
-
-  if (!widget) {
-    return null;
-  }
-
-  const widgetContent = <WidgetComponent {...widget.props} />;
-
-  if (WrapperComponent) {
-    return (
-      <WrapperComponent widgetId={widgetId} widgetType={widgetType}>
-        {widgetContent}
-      </WrapperComponent>
-    );
-  }
-
-  return widgetContent;
 }

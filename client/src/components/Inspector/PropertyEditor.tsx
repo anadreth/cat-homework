@@ -194,7 +194,7 @@ export function PropertyEditor({
                         value={Array.isArray(controllerField.value) ? controllerField.value : []}
                         onChange={controllerField.onChange}
                         availableColumns={getAvailableColumns(field.key)}
-                        errors={errors[field.key] as any}
+                        errors={errors[field.key]}
                       />
                     )}
                   />
