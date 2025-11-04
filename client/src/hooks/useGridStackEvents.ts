@@ -3,8 +3,8 @@ import type { GridStack, GridStackNode } from "gridstack";
 import { useAppDispatch } from "@/store/hooks";
 import { moveResizeWidget, addWidget, selectWidget } from "@/store";
 import { getWidgetMeta, getWidgetDefaultProps } from "@/lib/utils/widgets";
-import type { WidgetType } from "@/store/types";
 import { extractLayoutFromElement } from "@/lib/utils/gridstack";
+import type { WidgetType } from "@/constants/widget-registry";
 
 interface UseGridStackEventsProps {
   gridStack: GridStack | null;

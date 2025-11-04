@@ -44,7 +44,6 @@ export function AddWidgetDialog({ isOpen, onClose }: AddWidgetDialogProps) {
     const meta = WIDGET_REGISTRY[type];
     const props = meta.defaultPropsFactory();
 
-    // Add widget to center of viewport (approximate)
     const action = dispatch(
       addWidget({
         type,
