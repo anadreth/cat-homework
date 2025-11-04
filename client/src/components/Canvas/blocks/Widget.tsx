@@ -1,48 +1,25 @@
-import type { WidgetComponentMap } from "@/constants/widget-registry";
+import { WidgetWrapper } from "@/components/WidgetWrapper";
+import { WIDGET_COMPONENT_MAP } from "@/constants/widget-registry";
 import { selectWidgetById } from "@/store";
 import { useAppSelector } from "@/store/hooks";
 import type { WidgetType } from "@/store/types";
-import type { ComponentType } from "react";
 
-export function Widget({
+export function Widget<T extends WidgetType>({
   widgetId,
   widgetType,
-  componentMap,
-  WrapperComponent,
 }: {
   widgetId: string;
-  widgetType: WidgetType;
-  componentMap: WidgetComponentMap;
-  WrapperComponent?: ComponentType<{
-    widgetId: string;
-    widgetType: string;
-    children: React.ReactNode;
-  }>;
+  widgetType: T;
 }) {
   const widget = useAppSelector((state) => selectWidgetById(widgetId)(state));
 
-  const WidgetComponent = componentMap[widgetType] as ComponentType<any>;
+  if (!widget) return null;
 
-  if (!WidgetComponent) {
-    console.error(
-      `[LivePropsWidget] Component not found for type: ${widgetType}`
-    );
-    return null;
-  }
+  const Comp = WIDGET_COMPONENT_MAP[widgetType] as React.FC<unknown>;
 
-  if (!widget) {
-    return null;
-  }
-
-  const widgetContent = <WidgetComponent {...widget.props} />;
-
-  if (WrapperComponent) {
-    return (
-      <WrapperComponent widgetId={widgetId} widgetType={widgetType}>
-        {widgetContent}
-      </WrapperComponent>
-    );
-  }
-
-  return widgetContent;
+  return (
+    <WidgetWrapper widgetId={widgetId} widgetType={widgetType}>
+      <Comp {...widget.props} />
+    </WidgetWrapper>
+  );
 }

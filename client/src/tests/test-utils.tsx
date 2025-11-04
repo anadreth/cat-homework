@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import { render, type RenderOptions } from "@testing-library/react";
 import { Provider } from "react-redux";
 import {
@@ -89,7 +89,7 @@ export function renderWithProviders(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: { children: React.ReactNode }) {
+  function Wrapper({ children }: PropsWithChildren) {
     return <Provider store={store}>{children}</Provider>;
   }
 

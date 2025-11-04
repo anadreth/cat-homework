@@ -1,16 +1,31 @@
 import type { ComponentType } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { WidgetType } from "@/store/types";
-import { AreaChartWidget, type AreaChartWidgetProps } from "@/components/AreaChart/widget";
+import {
+  AreaChartWidget,
+  type AreaChartWidgetProps,
+} from "@/components/AreaChart/widget";
 import { TableWidget, type TableWidgetProps } from "@/components/Table/widget";
 import { ListWidget, type ListWidgetProps } from "@/components/List/widget";
 import { TextWidget, type TextWidgetProps } from "@/components/Text/widget";
-import { RiBarChartBoxLine, RiTableLine, RiListUnordered, RiText } from "@remixicon/react";
+import {
+  RiBarChartBoxLine,
+  RiTableLine,
+  RiListUnordered,
+  RiText,
+} from "@remixicon/react";
 
 export type EditorFieldSchema = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "select" | "checkbox" | "json" | "filters";
+  type:
+    | "text"
+    | "textarea"
+    | "number"
+    | "select"
+    | "checkbox"
+    | "json"
+    | "filters";
   placeholder?: string;
   options?: { value: string; label: string }[];
   description?: string;
@@ -69,8 +84,10 @@ const generateSampleListItems = () => [
   { id: uuidv4(), label: "Update documentation", description: "API endpoints" },
 ];
 
-type WidgetRegistry = {
-  chart: WidgetMeta<AreaChartWidgetProps<Record<string, string | number>, string, string>>;
+export type WidgetRegistry = {
+  chart: WidgetMeta<
+    AreaChartWidgetProps<Record<string, string | number>, string, string>
+  >;
   table: WidgetMeta<TableWidgetProps<Record<string, string | number>, string>>;
   list: WidgetMeta<ListWidgetProps>;
   text: WidgetMeta<TextWidgetProps>;
@@ -247,11 +264,7 @@ export const WIDGET_COMPONENT_MAP = {
   table: TableWidget,
   list: ListWidget,
   text: TextWidget,
-} as const;
-
-// Derive type from implementation - single source of truth
-export type WidgetComponentMap = typeof WIDGET_COMPONENT_MAP;
-
+};
 export const WIDGET_ICONS: Record<WidgetType, typeof RiBarChartBoxLine> = {
   chart: RiBarChartBoxLine,
   table: RiTableLine,
@@ -265,6 +278,3 @@ export const WIDGET_COLORS: Record<WidgetType, string> = {
   list: "bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200",
   text: "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200",
 };
-
-// Legacy type alias for backwards compatibility
-export type ComponentMap = WidgetComponentMap;

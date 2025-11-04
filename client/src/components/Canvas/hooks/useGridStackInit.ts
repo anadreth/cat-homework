@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 import { GridStack, type GridStackOptions } from "gridstack";
 import { gridStackRegistry } from "../registry/gridStackRegistry";
-import { GRID_OPTIONS } from "@/constants/grid";
+import { DEFAULT_GRID_OPTIONS } from "@/constants/grid";
 
 interface UseGridStackInitProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -13,7 +13,7 @@ export function useGridStackInit({
   onGridStackCreated,
 }: UseGridStackInitProps) {
   const gridStackRef = useRef<GridStack | null>(null);
-  const optionsRef = useRef<GridStackOptions>(GRID_OPTIONS);
+  const optionsRef = useRef<GridStackOptions>(DEFAULT_GRID_OPTIONS);
 
   const initGridStack = useCallback(() => {
     if (!containerRef.current) return null;

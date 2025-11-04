@@ -21,21 +21,6 @@ export const COLUMNS_PER_BREAKPOINT = {
   "2xl": 12, // Full 12 columns on XL desktop
 } as const;
 
-export const DEFAULT_GRID_OPTIONS = {
-  column: GRID_COLUMNS,
-  cellHeight: CELL_HEIGHT,
-  margin: VERTICAL_MARGIN,
-  float: true, // Allow items to float up when space is available
-  removable: false, // Don't allow dragging out to remove (we'll use delete button)
-  acceptWidgets: true, // Allow external widgets to be dropped
-  disableOneColumnMode: false, // Enable single-column mode on mobile
-  animate: true, // Smooth animations
-  minRow: 1, // Minimum number of rows
-  resizable: {
-    handles: "e, se, s, sw, w", // All sides except top (header is for dragging)
-  },
-} as const;
-
 export const GRID_CONSTRAINTS = {
   MIN_WIDTH: 1,
   MIN_HEIGHT: 1,
@@ -43,7 +28,7 @@ export const GRID_CONSTRAINTS = {
   MAX_HEIGHT: 100,
 } as const;
 
-export const GRID_OPTIONS: GridStackOptions = {
+export const DEFAULT_GRID_OPTIONS: GridStackOptions = {
   column: GRID_COLUMNS,
   cellHeight: CELL_HEIGHT,
   margin: VERTICAL_MARGIN,

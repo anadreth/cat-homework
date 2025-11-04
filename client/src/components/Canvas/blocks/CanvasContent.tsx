@@ -1,5 +1,3 @@
-import { WidgetWrapper } from "@/components/WidgetWrapper";
-import { WIDGET_COMPONENT_MAP } from "@/constants/widget-registry";
 import { selectLayout } from "@/store";
 import { useAppSelector } from "@/store/hooks";
 import { type GridStackWidget, GridStack } from "gridstack";
@@ -38,15 +36,13 @@ export function CanvasContent() {
         ref={containerRef}
         className="grid-stack min-h-[calc(100vh-8rem)] min-w-full relative"
       >
-        {gridStack ? (
+        {gridStack && (
           <GridStackRender
-            componentMap={WIDGET_COMPONENT_MAP}
-            wrapperComponent={WidgetWrapper}
             getWidgetContainer={(widgetId: string) => {
               return widgetContainersRef.current.get(widgetId) || null;
             }}
           />
-        ) : null}
+        )}
       </div>
 
       {layout.length === 0 && (

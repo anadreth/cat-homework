@@ -1,15 +1,14 @@
-import { type ReactNode, useRef } from "react";
+import { type PropsWithChildren, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { removeWidget } from "@/store";
 import { selectWidget, selectIsSelected } from "@/store/slices/selectionSlice";
 import { toggleInspector, selectInspectorOpen } from "@/store/slices/uiSlice";
 import { RiDeleteBin6Line } from "@remixicon/react";
 
-export interface WidgetWrapperProps {
+export type WidgetWrapperProps = PropsWithChildren & {
   widgetId: string;
   widgetType: string;
-  children: ReactNode;
-}
+};
 
 export function WidgetWrapper({
   widgetId,

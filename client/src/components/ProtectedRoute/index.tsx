@@ -2,10 +2,9 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { selectIsAuthenticated, selectIsLoading } from "@/store";
 import { AppLoader } from "@/components/AppLoader";
+import type { PropsWithChildren } from "react";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
+type ProtectedRouteProps = PropsWithChildren;
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isAuthenticated = useSelector(selectIsAuthenticated);

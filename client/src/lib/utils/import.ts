@@ -12,7 +12,6 @@ const WidgetInstanceSchema = z.object({
   id: z.string().uuid(),
   type: z.enum(["chart", "table", "list", "text"] as const),
   props: z.record(z.string(), z.any()),
-  dataBinding: z.any().optional(),
   createdAt: z.number(),
   updatedAt: z.number(),
 });

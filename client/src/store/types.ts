@@ -1,4 +1,4 @@
-export type WidgetType = 'chart' | 'table' | 'list' | 'text';
+export type WidgetType = "chart" | "table" | "list" | "text";
 
 /**
  * Serializable value types allowed in widget props
@@ -49,27 +49,8 @@ export type WidgetInstance = {
   id: string; // Unique identifier (crypto.randomUUID())
   type: WidgetType;
   props: Record<string, SerializableValue>; // Widget-specific configuration (type-safe, serializable)
-  dataBinding?: DataBinding; // Optional data source configuration
   createdAt: number; // Unix timestamp in milliseconds (Date.now())
   updatedAt: number; // Unix timestamp in milliseconds (Date.now())
-};
-
-/**
- * Data binding configuration for widgets
- * Allows widgets to connect to various data sources
- */
-export type DataBinding = {
-  source: 'STATIC' | 'REST' | 'SQL' | 'CUSTOM';
-  config: {
-    endpoint?: string;
-    query?: string;
-    method?: 'GET' | 'POST';
-    headers?: Record<string, string>;
-    params?: Record<string, SerializableValue>; // Type-safe, serializable parameters
-    mapping?: Record<string, string>; // Map response fields to widget fields
-    refreshInterval?: number; // Auto-refresh in ms
-  };
-  dataSnapshot?: SerializableValue; // Cached data for offline/export (must be serializable)
 };
 
 /**
@@ -112,12 +93,12 @@ export type DashboardDoc = {
 /**
  * Save status for UI feedback
  */
-export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+export type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 /**
  * Inspector panel tabs
  */
-export type InspectorTab = 'properties' | 'data' | 'appearance';
+export type InspectorTab = "properties" | "data" | "appearance";
 
 /**
  * Core state (wrapped with redux-undo)

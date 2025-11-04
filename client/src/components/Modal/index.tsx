@@ -1,11 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type PropsWithChildren } from "react";
 import { RiCloseLine } from "@remixicon/react";
 
-interface ModalProps {
+type ModalProps = PropsWithChildren & {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React.ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl";
 }
 
