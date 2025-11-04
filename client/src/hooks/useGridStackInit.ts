@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 import { GridStack, type GridStackOptions } from "gridstack";
-import { gridStackRegistry } from "../registry/gridStackRegistry";
 import { DEFAULT_GRID_OPTIONS } from "@/constants/grid";
+import { gridStackRegistry } from "@/components/Canvas/registry/gridStackRegistry";
 
 interface UseGridStackInitProps {
   containerRef: React.RefObject<HTMLDivElement | null>;

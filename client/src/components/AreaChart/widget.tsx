@@ -16,8 +16,6 @@ export type AreaChartWidgetProps<
   index: TIndex;
   categories: TCategory[];
   className?: string;
-  valueFormatter?: (value: number) => string;
-  onValueChange?: (value: unknown) => void;
 };
 
 // Default value formatter
@@ -37,14 +35,7 @@ export const AreaChartWidget = <
 >(
   props: AreaChartWidgetProps<TData, TIndex, TCategory>
 ) => {
-  const {
-    className = "h-full",
-    valueFormatter = defaultValueFormatter,
-    onValueChange = defaultOnValueChange,
-    data = [],
-    index,
-    categories = [],
-  } = props;
+  const { className = "h-full", data = [], index, categories = [] } = props;
 
   if (!data || data.length === 0 || !categories || categories.length === 0) {
     return (
@@ -60,8 +51,8 @@ export const AreaChartWidget = <
       data={data}
       index={index}
       categories={categories}
-      valueFormatter={valueFormatter}
-      onValueChange={onValueChange}
+      valueFormatter={defaultValueFormatter}
+      onValueChange={defaultOnValueChange}
     />
   );
 };
