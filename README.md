@@ -41,7 +41,7 @@ Dashboard Builder is a comprehensive web application that enables users to creat
 - **Auth0 OAuth2 + PKCE Flow**
   - `/auth/login` - Generate PKCE challenge
   - `/auth/callback` - Exchange code for tokens
-  - `/auth/profile` - Get user info
+  - `/auth/me` - Get user info
   - `/auth/logout` - Clear session
   - `/auth/refresh` - Refresh access token
 - **HttpOnly Cookies** - Secure token storage (access_token, refresh_token)
