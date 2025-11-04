@@ -1,5 +1,4 @@
-import { WIDGET_REGISTRY } from "@/constants/widget-registry";
-import type { WidgetType } from "@/store/types";
+import { WIDGET_REGISTRY, type WidgetType } from "@/constants/widget-registry";
 
 export function getWidgetMeta(type: WidgetType) {
   return WIDGET_REGISTRY[type];

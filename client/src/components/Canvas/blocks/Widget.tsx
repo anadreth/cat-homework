@@ -1,8 +1,7 @@
 import { WidgetWrapper } from "@/components/WidgetWrapper";
-import { WIDGET_COMPONENT_MAP } from "@/constants/widget-registry";
+import { WIDGET_COMPONENT_MAP, type WidgetType } from "@/constants/widget-registry";
 import { selectWidgetById } from "@/store";
 import { useAppSelector } from "@/store/hooks";
-import type { WidgetType } from "@/store/types";
 
 export function Widget<T extends WidgetType>({
   widgetId,

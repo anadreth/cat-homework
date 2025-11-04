@@ -17,10 +17,10 @@ import type {
   DashboardDoc,
   LayoutItem,
   WidgetInstance,
-  WidgetType,
   SerializableValue,
   RootState,
 } from "../types";
+import type { WidgetType } from "@/constants/widget-registry";
 
 /**
  * Create an empty dashboard document

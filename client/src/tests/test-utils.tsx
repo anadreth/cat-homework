@@ -20,10 +20,10 @@ import type {
   SelectionState,
   UIState,
   AuthState,
-  WidgetType,
   LayoutItem,
   SerializableValue,
 } from "@/store/types";
+import type { WidgetType } from "@/constants/widget-registry";
 
 export function setupStore(preloadedState?: Partial<RootState>) {
   const undoableCore = undoable(coreReducer, {
