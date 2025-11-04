@@ -2,8 +2,8 @@ import { selectLayout } from "@/store";
 import { useAppSelector } from "@/store/hooks";
 import { type GridStackWidget, GridStack } from "gridstack";
 import { useRef, useCallback, useLayoutEffect } from "react";
-import { useGridStackEvents } from "../hooks/useGridStackEvents";
-import { useGridStackInit } from "../hooks/useGridStackInit";
+import { useGridStackEvents } from "@/hooks/useGridStackEvents";
+import { useGridStackInit } from "@/hooks/useGridStackInit";
 import { GridStackRender } from "./GridStackRender";
 
 export function CanvasContent() {
