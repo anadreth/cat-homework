@@ -20,6 +20,9 @@ import type {
   SelectionState,
   UIState,
   AuthState,
+  WidgetType,
+  LayoutItem,
+  SerializableValue,
 } from "@/store/types";
 
 export function setupStore(preloadedState?: Partial<RootState>) {
@@ -187,6 +190,70 @@ export function createMockDashboard(): DashboardDoc {
     meta: {
       createdAt: now,
       updatedAt: now,
+    },
+  };
+}
+
+/**
+ * Creates a preloaded state with a single widget for testing component rendering
+ * Useful for component tests that need to render widgets from store state
+ *
+ * @example
+ * const preloadedState = createWidgetTestState('test-chart', 'chart', {
+ *   data: [{ date: 'Jan', revenue: 100 }],
+ *   index: 'date',
+ *   categories: ['revenue']
+ * });
+ */
+export function createWidgetTestState(
+  widgetId: string,
+  widgetType: WidgetType,
+  widgetProps: Record<string, SerializableValue>,
+  layoutOptions: Partial<
+    Pick<LayoutItem, "x" | "y" | "w" | "h" | "minW" | "minH">
+  > = {}
+): Partial<RootState> {
+  const now = Date.now();
+  const defaultLayout = {
+    x: 0,
+    y: 0,
+    w: 6,
+    h: 4,
+    minW: 2,
+    minH: 2,
+  };
+
+  return {
+    core: {
+      past: [],
+      present: {
+        dashboard: {
+          version: 1,
+          id: "test-dashboard",
+          name: "Test Dashboard",
+          instances: {
+            [widgetId]: {
+              id: widgetId,
+              type: widgetType,
+              props: widgetProps,
+              createdAt: now,
+              updatedAt: now,
+            },
+          },
+          layout: [
+            {
+              id: widgetId,
+              ...defaultLayout,
+              ...layoutOptions,
+            },
+          ],
+          meta: {
+            createdAt: now,
+            updatedAt: now,
+          },
+        },
+      },
+      future: [],
     },
   };
 }

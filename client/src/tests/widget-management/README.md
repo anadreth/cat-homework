@@ -4,6 +4,21 @@
 
 This test suite validates the core widget lifecycle operations: adding, removing, updating, moving/resizing, duplicating, and locking widgets. These operations form the foundation of the dashboard builder's functionality.
 
+## Test Files Organization
+
+The widget management tests are organized by operation type for easy navigation and maintenance:
+
+- **`add-remove.test.ts`** - Widget creation and deletion (10 tests)
+- **`update-props.test.ts`** - Property updates and merging (4 tests)
+- **`move-resize.test.ts`** - Position and size changes (4 tests)
+- **`duplicate.test.ts`** - Widget duplication with offset positioning (4 tests)
+- **`lock.test.ts`** - Widget locking/unlocking (2 tests)
+- **`dashboard-operations.test.ts`** - Dashboard reset and complex workflows (4 tests)
+
+**Total:** 28 tests covering all widget management operations
+
+Each file is self-contained with its own setup and can be run independently.
+
 ## Testing Approach
 
 ### 1. Adding Widgets
