@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
 import { v4 as uuidv4 } from "uuid";
-import type { WidgetType } from "@/store/types";
 import {
   AreaChartWidget,
   type AreaChartWidgetProps,
@@ -13,6 +12,7 @@ import {
   RiTableLine,
   RiListUnordered,
   RiText,
+  type RemixiconComponentType,
 } from "@remixicon/react";
 
 export type EditorFieldSchema = {
@@ -92,6 +92,8 @@ export type WidgetRegistry = {
   list: WidgetMeta<ListWidgetProps>;
   text: WidgetMeta<TextWidgetProps>;
 };
+
+export type WidgetType = keyof WidgetRegistry;
 
 export const WIDGET_REGISTRY: WidgetRegistry = {
   chart: {
@@ -265,16 +267,20 @@ export const WIDGET_COMPONENT_MAP = {
   list: ListWidget,
   text: TextWidget,
 };
-export const WIDGET_ICONS: Record<WidgetType, typeof RiBarChartBoxLine> = {
+export const WIDGET_ICONS = {
   chart: RiBarChartBoxLine,
   table: RiTableLine,
   list: RiListUnordered,
   text: RiText,
-};
+} satisfies Record<WidgetType, RemixiconComponentType>;
 
-export const WIDGET_COLORS: Record<WidgetType, string> = {
+export const WIDGET_COLORS = {
   chart: "bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200",
   table: "bg-green-100 text-green-700 border-green-300 hover:bg-green-200",
   list: "bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200",
   text: "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200",
-};
+} satisfies Record<WidgetType, string>;
+
+export function getWidgetTypes(): WidgetType[] {
+  return Object.keys(WIDGET_REGISTRY) as WidgetType[];
+}

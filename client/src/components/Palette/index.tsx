@@ -4,14 +4,15 @@ import {
   WIDGET_COLORS,
   WIDGET_ICONS,
   WIDGET_REGISTRY,
+  getWidgetTypes,
+  type WidgetType,
 } from "@/constants/widget-registry";
-import type { WidgetType } from "@/store/types";
 import { useAppDispatch } from "@/store/hooks";
 import { addWidget } from "@/store";
 
 import { getWidgetDefaultProps } from "@/lib/utils/widgets";
 
-const widgetTypes = Object.keys(WIDGET_REGISTRY) as WidgetType[];
+const widgetTypes = getWidgetTypes();
 
 export function Palette() {
   const paletteRef = useRef<HTMLDivElement>(null);

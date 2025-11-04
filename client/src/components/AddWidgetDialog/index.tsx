@@ -9,47 +9,33 @@
 import { useAppDispatch } from "@/store/hooks";
 import { addWidget } from "@/store";
 import { selectWidget } from "@/store/slices/selectionSlice";
-import { WIDGET_REGISTRY } from "@/constants/widget-registry";
-import { Modal } from "@/components/Modal";
-import type { WidgetType } from "@/store/types";
 import {
-  RiTableLine,
-  RiListCheck,
-  RiText,
-  RiBarChartBoxLine,
-} from "@remixicon/react";
+  WIDGET_REGISTRY,
+  WIDGET_ICONS,
+  getWidgetTypes,
+  type WidgetType,
+} from "@/constants/widget-registry";
+import { Modal } from "@/components/Modal";
 
 interface AddWidgetDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const WIDGET_OPTIONS: Array<{
-  type: WidgetType;
-  icon: React.ReactNode;
-  color: string;
-}> = [
-  {
-    type: "chart",
-    icon: <RiBarChartBoxLine size={32} />,
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    type: "table",
-    icon: <RiTableLine size={32} />,
-    color: "from-purple-500 to-purple-600",
-  },
-  {
-    type: "list",
-    icon: <RiListCheck size={32} />,
-    color: "from-green-500 to-green-600",
-  },
-  {
-    type: "text",
-    icon: <RiText size={32} />,
-    color: "from-orange-500 to-orange-600",
-  },
-];
+
+const WIDGET_GRADIENT_COLORS = {
+  chart: "from-blue-500 to-blue-600",
+  table: "from-purple-500 to-purple-600",
+  list: "from-green-500 to-green-600",
+  text: "from-orange-500 to-orange-600",
+} satisfies Record<WidgetType, string>;
+
+
+const WIDGET_OPTIONS = getWidgetTypes().map((type) => ({
+  type,
+  icon: WIDGET_ICONS[type],
+  color: WIDGET_GRADIENT_COLORS[type],
+}));
 
 export function AddWidgetDialog({ isOpen, onClose }: AddWidgetDialogProps) {
   const dispatch = useAppDispatch();
@@ -86,6 +72,7 @@ export function AddWidgetDialog({ isOpen, onClose }: AddWidgetDialogProps) {
       <div className="grid grid-cols-2 gap-4 p-6">
         {WIDGET_OPTIONS.map((option) => {
           const meta = WIDGET_REGISTRY[option.type];
+          const IconComponent = option.icon;
           return (
             <button
               key={option.type}
@@ -95,7 +82,7 @@ export function AddWidgetDialog({ isOpen, onClose }: AddWidgetDialogProps) {
               <div
                 className={`flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br ${option.color} text-white shadow-md transition-transform group-hover:scale-110`}
               >
-                {option.icon}
+                <IconComponent size={32} />
               </div>
               <div className="text-center">
                 <p className="font-semibold text-gray-900">{meta.name}</p>

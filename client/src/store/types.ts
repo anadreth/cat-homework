@@ -1,4 +1,4 @@
-export type WidgetType = "chart" | "table" | "list" | "text";
+import type { WidgetType } from "@/constants/widget-registry";
 
 /**
  * Serializable value types allowed in widget props
